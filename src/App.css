@@ -54,22 +54,60 @@
   font-weight: 500;
   font-size: 11pt;
 }
+.icon-table-small{
+   font-size: 10pt; 
+ cursor: pointer;
+}
+.icon-table{
+ font-size: 12pt; 
+ cursor: pointer;
+}
 
 .form-select{
   font-size: 9pt!important;
   line-height: 1.0!important;
   padding: .2rem!important;
 }
+.container-items-select{
+  width: 25%;
+  margin-left: 15px;
+  margin-bottom: 25px;
+}
+.back{
+  font-size: 20pt;
+  position: absolute;
+  right: 10px;
+  top:50px;
+  cursor: pointer;
+  i{
+    cursor: pointer;
+    z-index: 1000;
+  }
+}
+.back-label{
+
+   font-size: 9pt;
+
+}
+.container-label-back{
+    margin-top: 0px;
+    padding-top: 0px;
+    position: absolute;
+    top: 15px;
+    padding-right: 2px;
+}
+
 .input-table{
      width: 80%;
      text-align: center;
-    font-size: 8pt!important;
+     font-size: 8pt!important;
+     background-color: transparent!important;
 }
 
 .input{
    
     outline: none;
-    padding: .2rem!important;
+    padding: .1rem!important;
     font-size: 11pt;
     font-weight: 400;
     line-height: 1.0!important;
@@ -89,30 +127,88 @@
   width: 100%;
 }
 
-.w-70{
-   
-  width: 70%;
-}
 
 .button{
  color:   #808080;
 }
+.container-subtitle{
+  margin-top: 8px;
+  margin-bottom: 8px
+}
 
 .subtitle{
   font-size: 10pt;
-  color:  #808080;
+  color:  black;
+
 }
 
 .table{
-    width: 70%;
     font-size: 8pt;
     margin: auto;
     border: #808080;
     border-style: solid 1px;
+    
     td{
-      padding: .2rem .2rem!important
+      /* padding: .05rem .05rem!important; */
+      border: solid 3px #808080;
+      border-style: double;
+      padding-right: 2px;
+      padding-left: 2px;
+      padding-top: 0px;
+      padding-bottom: 0px;
+    }
+
+    th{
+
+      padding: .05rem .05rem!important;
+      border: solid 3px #808080;
+      border-style: double;
+      background-color: #A1CFB6; 
+      
     }
 }
+
+.w-3{
+      width: 3%;
+}
+
+.w-5{
+      width: 5%;
+}
+
+.w-10{
+      width: 10%;
+}
+
+.w-15{
+      width: 15%;
+}
+
+.w-30{
+      width: 30%;
+}
+
+.w-30{
+      width: 30%;
+}
+
+.w-50{
+      width: 50%;
+}
+.w-60{
+      width: 50%;
+}
+
+.w-70{
+      width: 70%;
+}
+
+.w-40{
+      width: 40%;
+}
+
+
+
 .card-body{
   padding: .2rem!important;
 }
@@ -124,11 +220,7 @@
   /* background:  #ededed!important; */
 }
 
-.folder{
-  font-size: 13pt;
-  color: #e0d43f;
- 
-}
+
 
 .modal, .modal-information {
     background-color: rgba(66, 66, 66, 0.502);

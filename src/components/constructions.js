@@ -3,11 +3,11 @@ import axios from 'axios';
 import ConstructionTable from './constructions/constructionTable'
 import StageTable from './constructions/stageTable'
 
-const Constructions = ({setShowBudget,setIdStage}) => {
+const Constructions = ({ setShowBudget, setIdStage }) => {
     const [constructionsArray, setConstructionsArray] = useState([])
     const [constructionStagesArray, setConstructionStagesArray] = useState([])
     const [showStages, setShowStages] = useState(false)
-  
+
 
     const getConstructions = () => {
         axios.get(`${process.env.REACT_APP_BUDGET_URL_API}/constructions`).then(
@@ -56,9 +56,9 @@ const Constructions = ({setShowBudget,setIdStage}) => {
         getConstructionStages(idConstruction)
     }
 
-    const onViewStageItems=(idStage)=>{
-       setShowBudget(true)
-       setIdStage(idStage)
+    const onViewStageItems = (idStage) => {
+        setShowBudget(true)
+        setIdStage(idStage)
     }
 
     return (
@@ -66,8 +66,9 @@ const Constructions = ({setShowBudget,setIdStage}) => {
             {
                 !showStages && constructionsArray && constructionsArray.length > 0 && (
                     <div>
-                        <b><span className="subtitle">LISTADO DE PROYECTOS</span></b>
-
+                        <div className="container-subtitle">
+                            <b><span className="subtitle">LISTADO DE PROYECTOS</span></b>
+                        </div>
 
                         <ConstructionTable
                             constructionsArray={constructionsArray}
@@ -81,7 +82,9 @@ const Constructions = ({setShowBudget,setIdStage}) => {
 
                 showStages && (
                     <div>
-                        <b><span className="subtitle">LISTADO DE ETAPAS</span></b>
+                        <div className="container-subtitle">
+                            <b><span className="subtitle">LISTADO DE ETAPAS</span></b>
+                        </div>
                         <StageTable
                             constructionStagesArray={constructionStagesArray}
                             onViewStageItems={onViewStageItems}

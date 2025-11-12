@@ -41,8 +41,6 @@ const ContructionItems = ({ idStage,idSubChapter, setShowOption, setIdItem,contr
 
     }
 
-
-
     useEffect(
         () => {
             if(idSubChapter>0)

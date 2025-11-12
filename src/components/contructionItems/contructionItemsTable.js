@@ -20,34 +20,34 @@ const ContructionItemsTable = ({ contructionItemsArray, onChangeQuantity,setShow
    )
     return (
         <div>
-            <table className="table">
+            <table className="table w-70">
                 <thead>
                     <tr>
+                         <th className='w-5'></th>
                        
-                        <td>Todos</td>
-                        <td>
+                        <th className='w-5'>
                             A.P.U
-                        </td>
-                        <td>
-                            Codigo
-                        </td>
+                        </th>
+                        <th className='w-10'>
+                            CODIGO
+                        </th>
 
-                        <td>
-                            Item
-                        </td>
-                        <td>
-                            Unidad
-                        </td>
-                        <td>
-                            Cantidad
-                        </td>
-                        <td>
-                            Valor/Un
-                        </td>
-                        <td>
-                            Total
-                        </td>
-
+                        <th className='w-40'>
+                            ITEM
+                        </th>
+                        <th className='w-5'>
+                            UNIDAD
+                        </th>
+                        <th className='w-10'>
+                            CANTIDAD
+                        </th>
+                        <th className='w-10'>
+                            VALOR/UN
+                        </th>
+                        <th className='w-15'>
+                            TOTAL
+                        </th>
+                       
 
                     </tr>
                 </thead>
@@ -58,13 +58,12 @@ const ContructionItemsTable = ({ contructionItemsArray, onChangeQuantity,setShow
                             (x, index) => {
                                 return (
                                     <tr key={index.toString()} >
-                                        <td className={index % 2 === 0 ? "gray" : ""}>
-                                            <input
-                                                type="checkbox"
-                                            />
+                                  
+                                        <td className={index % 2 === 0 ? "gray " : ""}>
+                                             <i class="far fa-trash-alt icon-table-small"/>
                                         </td>
                                      <td className={index%2===0 ? "gray":""}>
-                                           <i class="fas fa-folder-plus folder"
+                                           <i class="fas fa-folder-open icon-table"
                                             onClick={()=>
                                                 {
                                                  setShowOption('inputItem');
@@ -87,19 +86,20 @@ const ContructionItemsTable = ({ contructionItemsArray, onChangeQuantity,setShow
 
                                             <input
                                                 type="text"
-                                                className="input input-table"
+                                                className="input input-table right"
                                                 maxLength={4}
                                                 value={x.quantity? x.quantity.toString(): "0"}
                                                 onKeyDown={(event)=>handlers.onHandlerNumber(event)}
                                                 onChange={(event) => onChangeQuantity(event,index)}
                                             />
                                         </td>
-                                        <td className={index % 2 === 0 ? "gray" : ""}>
-                                            {x.totalItem}
+                                        <td className={index % 2 === 0 ? "gray right" : "right"}>
+                                            {commom.getMoneyFomat(x.totalItem?x.totalItem:0)}
                                         </td>
-                                        <td className={index % 2 === 0 ? "gray" : ""}>
-                                            {x.totalItem && x.quantity?  x.totalItem * x.quantity:0}
+                                        <td className={index % 2 === 0 ? "gray right" : "right"}>
+                                            {commom.getMoneyFomat(x.totalItem && x.quantity?  x.totalItem * x.quantity:0)}
                                         </td>
+                                    
 
                                     </tr>
                                 )
@@ -109,14 +109,9 @@ const ContructionItemsTable = ({ contructionItemsArray, onChangeQuantity,setShow
                      { contructionItemsArray && contructionItemsArray.length>0 &&(
 
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>{getTotalsSubChapter()}</td>
+                            <td colspan={7}></td>
+                            <td className='right' >{commom.getMoneyFomat(getTotalsSubChapter())}</td>
+                            
                         </tr>
                      )
 

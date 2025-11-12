@@ -1,17 +1,17 @@
-const ConstructionTable=({constructionsArray,onViewStage})=>{
-    return(
+const ConstructionTable = ({ constructionsArray, onViewStage }) => {
+    return (
         <div>
-              <table className="table">
+            <table className="table w-40">
                 <thead>
                     <tr>
-                      
-                        <td>Código</td>
-                        <td>
-                            Name
-                        </td>
-                        <td>
 
-                        </td>
+                        <th>CODIGO</th>
+                        <th>
+                            NOMBRE
+                        </th>
+                        <th>
+
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -21,7 +21,7 @@ const ConstructionTable=({constructionsArray,onViewStage})=>{
                             (x, index) => {
                                 return (
                                     <tr key={index.toString()} >
-                                       
+
 
                                         <td className={index % 2 === 0 ? "gray" : ""}>
                                             {x.idConstruction}
@@ -31,10 +31,9 @@ const ConstructionTable=({constructionsArray,onViewStage})=>{
                                         </td>
 
                                         <td className={index % 2 === 0 ? "gray" : ""}>
-                                            <input
-                                            type="button"
-                                            value="Ver"
-                                            onClick={()=>onViewStage(x.idConstruction)}
+                                            <i
+                                                className="fas fa-folder-open icon-table"
+                                                onClick={() => onViewStage(x.idConstruction)}
                                             />
                                         </td>
 

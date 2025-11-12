@@ -97,18 +97,35 @@ const InputItem = ({ idItem,user,contructionItemsArray,setShowOption,setIdItem }
 
     return (
         <div>
-            <ItemsSelect
-                  id ='idItem'
-                  name ="name"
-                  selectedValue ={idItem} 
-                  setSelectedValue={onChangeItem}
-                  array ={contructionItemsArray}
+
+            <div className='right back'  onClick={()=>{setShowOption("contructionItems")}}>
+            <i 
+                className='fas fa-arrow-alt-circle-left  '
+                onClick={()=>{setShowOption("contructionItems")}}
             />
-            <input
+            <div className='container-label-back'>
+                <span className='back-label'>Atrás</span>
+            </div>
+            </div>
+      
+            <div className='container-items-select'>
+                <ItemsSelect
+                    id ='idItem'
+                    name ="name"
+                    selectedValue ={idItem} 
+                    setSelectedValue={onChangeItem}
+                    array ={contructionItemsArray}
+                />
+            </div>
+      
+
+    
+            
+            {/* <input
              type='button'
              value="Atrás"
              onClick={()=>{setShowOption("contructionItems")}}
-            />
+            /> */}
             {
                 inputItemsArray && inputItemsArray.length > 0 && (
 

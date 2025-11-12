@@ -5,37 +5,38 @@ const InputItemTable = ({ inputItemsArray,onChangeQuantity,onSaveInformation }) 
 
     return (
         <div>
-            <table className="table">
+            <table className="table w-70">
                 <thead>
                     <tr>
-                        <td>
+                        <th className='w-5'>
 
-                        </td>
-                        <td>Código</td>
-                        <td>
-                            Insumo
-                        </td>
-                        <td>
-                            Unidad
-                        </td>
-                        <td>
-                            Cantidad
-                        </td>
-                        <td>
-                            %Desperdicio
-                        </td>
-                        <td>
-                            Valor/Un
-                        </td>
-                        <td>
-                            Total
-                        </td>
-                        <td>
-                            Destino
-                        </td>
-                        <td>
-                            Categoria
-                        </td>
+                        </th>
+                         <th className='w-5'>
+                            DESTINO
+                        </th>
+                        <th  className='w-5'>CODIGO</th>
+                        <th className='w-40'>
+                            INSUMO
+                        </th>
+                        <th className='w-5'>
+                            UNIDAD
+                        </th>
+                        <th className='w-10'>
+                            CANTIDAD
+                        </th>
+                        <th className='w-5'>
+                            %DESPERDICIO
+                        </th>
+                        <th className='w-10'>
+                            VALOR/UN
+                        </th>
+                        <th className='w-10'>
+                            TOTAL
+                        </th>
+                       
+                        {/* <th className='w-10'>
+                            CATEGORIA
+                        </th> */}
                     </tr>
                 </thead>
                 <tbody>
@@ -46,16 +47,16 @@ const InputItemTable = ({ inputItemsArray,onChangeQuantity,onSaveInformation }) 
                                 return (
                                     <tr key={index.toString()} onBlur={()=>{onSaveInformation(index)}}>
                                         <td className={index % 2 === 0 ? "gray" : ""}>
-                                            <input
-                                                type="checkbox"
-                                                checked={x.selected}
-                                            // onChange={() => onSelectInput(index)}
-                                            />
+                                             <i class="far fa-trash-alt icon-table-small"/>
+                                        </td>
+                                        <td className={index % 2 === 0 ? "gray" : ""}>
+                                            {`${x.idChapter.toString()}${x.idSubchapter.toString()}` }
                                         </td>
 
                                         <td className={index % 2 === 0 ? "gray" : ""}>
                                             {x.cod}
                                         </td>
+                                        
                                         <td className={index % 2 === 0 ? "gray" : ""}>
                                             {x.name}
                                         </td>
@@ -97,12 +98,10 @@ const InputItemTable = ({ inputItemsArray,onChangeQuantity,onSaveInformation }) 
                                          <td className={index % 2 === 0 ? "gray right" : "right"}>
                                             {`$${x.totalInput}`}
                                         </td>
-                                         <td className={index % 2 === 0 ? "gray" : ""}>
-                                            {`${x.idChapter.toString()}${x.idSubchapter.toString()}` }
-                                        </td>
-                                        <td className={index % 2 === 0 ? "gray" : ""}>
+                                    
+                                        {/* <td className={index % 2 === 0 ? "gray" : ""}>
                                             {x.inputType}
-                                        </td>
+                                        </td> */}
 
 
                                     </tr>
@@ -112,14 +111,10 @@ const InputItemTable = ({ inputItemsArray,onChangeQuantity,onSaveInformation }) 
                     }
                             {inputItemsArray && inputItemsArray.length>0 && (
                                 <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td> </td>
-                                  <td>{`$${common.getTotals(inputItemsArray,"totalInput").toFixed(2)}`}</td>
+                                <td colSpan={8}></td>
+                                <td className='right'>{common.getMoneyFomat(common.getTotals(inputItemsArray,"totalInput").toFixed(2))}</td>
+                               
+                               
                                 </tr>
                             )
 
