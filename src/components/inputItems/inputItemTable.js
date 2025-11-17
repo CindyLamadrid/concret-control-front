@@ -1,7 +1,7 @@
 const handlers = require('../utils/handlers')
 const common = require('../utils/common')
 
-const InputItemTable = ({ inputItemsArray,onChangeQuantity,onSaveInformation }) => {
+const InputItemTable = ({ inputItemsArray,onChangeQuantity,onSaveInformation ,onRefresh,onRemoveInputItem}) => {
 
     return (
         <div>
@@ -15,28 +15,28 @@ const InputItemTable = ({ inputItemsArray,onChangeQuantity,onSaveInformation }) 
                             DESTINO
                         </th>
                         <th  className='w-5'>CODIGO</th>
-                        <th className='w-40'>
+                        <th className='w-40 '>
                             INSUMO
                         </th>
                         <th className='w-5'>
                             UNIDAD
                         </th>
-                        <th className='w-10'>
+                        <th className='w-7'>
                             CANTIDAD
                         </th>
                         <th className='w-5'>
-                            %DESPERDICIO
+                            %DESP
                         </th>
                         <th className='w-10'>
                             VALOR/UN
                         </th>
-                        <th className='w-10'>
+                        <th className='w-5'>
+
+                        </th>
+                        <th className='w-13'>
                             TOTAL
                         </th>
                        
-                        {/* <th className='w-10'>
-                            CATEGORIA
-                        </th> */}
                     </tr>
                 </thead>
                 <tbody>
@@ -45,9 +45,11 @@ const InputItemTable = ({ inputItemsArray,onChangeQuantity,onSaveInformation }) 
                         inputItemsArray.map(
                             (x, index) => {
                                 return (
-                                    <tr key={index.toString()} onBlur={()=>{onSaveInformation(index)}}>
+                                    <tr key={index.toString()} >
                                         <td className={index % 2 === 0 ? "gray" : ""}>
-                                             <i class="far fa-trash-alt icon-table-small"/>
+                                             <i class="far fa-trash-alt icon-table-small"
+                                             onClick={()=>onRemoveInputItem(index)}
+                                             />
                                         </td>
                                         <td className={index % 2 === 0 ? "gray" : ""}>
                                             {`${x.idChapter.toString()}${x.idSubchapter.toString()}` }
@@ -57,28 +59,28 @@ const InputItemTable = ({ inputItemsArray,onChangeQuantity,onSaveInformation }) 
                                             {x.cod}
                                         </td>
                                         
-                                        <td className={index % 2 === 0 ? "gray" : ""}>
+                                        <td className={index % 2 === 0 ? "gray left" : "left"}>
                                             {x.name}
                                         </td>
                                         <td className={index % 2 === 0 ? "gray" : ""}>
                                             {x.unit}
                                         </td>
-                                        <td className={index % 2 === 0 ? "gray" : ""}>
+                                        <td className={index % 2 === 0 ? "gray w-5" : "w-5"}>
                                           
                                             <input
                                                 type="text"
-                                                className="input input-table right"
+                                                className={`${"input input-table right"} ${x.quantityChanged? 'pending-changes':''}`}
                                                 maxLength={4}
                                                 value={x.quantity? x.quantity.toString(): "0"}
                                                 onKeyDown={(event)=>handlers.onHandlerNumber(event)}
                                                 onChange={(event) => onChangeQuantity(event,index,"quantity")}
                                             />
                                         </td>
-                                        <td className={index % 2 === 0 ? "gray" : ""}>
+                                        <td className={index % 2 === 0 ? "gray w-5" : "w-5"}>
                                             
                                             <input
                                                 type="text"
-                                                className="input input-table right"
+                                                className={`${"input input-table right"} ${x.wasteChanged? 'pending-changes':''}`}
                                                 maxLength={4}
                                                 value={x.waste? x.waste.toString(): "0"}
                                                 onKeyDown={(event)=>handlers.onHandlerNumber(event)}
@@ -86,24 +88,26 @@ const InputItemTable = ({ inputItemsArray,onChangeQuantity,onSaveInformation }) 
                                             />
                                         </td>
                                          <td className={index % 2 === 0 ? "gray" : ""}>
-                                          
+                                    
                                             <input
                                                 type="text"
-                                                className="input input-table right"
+                                                className={`${"input input-table right"} ${x.unitValueChanged? 'pending-changes':''}`}
                                                 value={x.unitValue? x.unitValue.toString(): "0"}
                                                 onKeyDown={(event)=>handlers.onHandlerNumber(event)}
                                                 onChange={(event) => onChangeQuantity(event,index,"unitValue")}
                                             />
                                         </td>
-                                         <td className={index % 2 === 0 ? "gray right" : "right"}>
-                                            {`$${x.totalInput}`}
+                                        <td>
+                                            <i className='far fa-save icon-table'
+                                               onClick={()=>{onSaveInformation(index)}}
+                                            />&nbsp;
+                                            <i className='fas fa-times-circle icon-table'
+                                               onClick={()=>{onRefresh()}}
+                                            />&nbsp;
                                         </td>
-                                    
-                                        {/* <td className={index % 2 === 0 ? "gray" : ""}>
-                                            {x.inputType}
-                                        </td> */}
-
-
+                                         <td className={index % 2 === 0 ? "gray right" : "right"}>
+                                            {`${common.getMoneyFomat(x.totalInput)}`}
+                                        </td>
                                     </tr>
                                 )
                             }
@@ -111,7 +115,7 @@ const InputItemTable = ({ inputItemsArray,onChangeQuantity,onSaveInformation }) 
                     }
                             {inputItemsArray && inputItemsArray.length>0 && (
                                 <tr>
-                                <td colSpan={8}></td>
+                                <td colSpan={9}></td>
                                 <td className='right'>{common.getMoneyFomat(common.getTotals(inputItemsArray,"totalInput").toFixed(2))}</td>
                                
                                

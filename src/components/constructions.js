@@ -2,8 +2,9 @@ import { useEffect, useState } from "react"
 import axios from 'axios';
 import ConstructionTable from './constructions/constructionTable'
 import StageTable from './constructions/stageTable'
+import Back from "./commons/back";
 
-const Constructions = ({ setShowBudget, setIdStage }) => {
+const Constructions = ({ constructionSelected,setShowBudget, setStageSelected,defaultStage,setDefaultStage,setConstructionSelected }) => {
     const [constructionsArray, setConstructionsArray] = useState([])
     const [constructionStagesArray, setConstructionStagesArray] = useState([])
     const [showStages, setShowStages] = useState(false)
@@ -51,21 +52,52 @@ const Constructions = ({ setShowBudget, setIdStage }) => {
         }, []
     )
 
+    useEffect(()=>{
+      if(defaultStage)
+      {
+        setShowStages(true)
+        getConstructionStages(constructionSelected.idConstruction)
+        setDefaultStage(false)
+      }
+    },[defaultStage])
+
+
+
     const onViewStage = (idConstruction) => {
 
         getConstructionStages(idConstruction)
+        const construction  = constructionsArray.filter((x)=>x.idConstruction.toString()===idConstruction.toString())
+        
+        if (construction && construction.length>0)
+            setConstructionSelected(construction[0])
     }
 
     const onViewStageItems = (idStage) => {
         setShowBudget(true)
-        setIdStage(idStage)
+       console.log("idStage===",idStage);
+       console.log("constructionStagesArray===",constructionStagesArray);
+        const stage = constructionStagesArray.filter((x)=>x.idStage.toString()===idStage.toString())
+         console.log("stage==",stage);
+        if (stage && stage.length>0)
+          setStageSelected(stage[0])
+    }
+
+       const onBack=()=>{
+       setShowStages(false)
     }
 
     return (
         <div>
+            <div hidden={!showStages}>
+            <Back
+             onBack={onBack}
+             className="right back-no-menu"
+            />
+            </div>
+            
             {
                 !showStages && constructionsArray && constructionsArray.length > 0 && (
-                    <div>
+                    <div className="container-no-menu">
                         <div className="container-subtitle">
                             <b><span className="subtitle">LISTADO DE PROYECTOS</span></b>
                         </div>
@@ -81,7 +113,7 @@ const Constructions = ({ setShowBudget, setIdStage }) => {
             {
 
                 showStages && (
-                    <div>
+                    <div className="container-no-menu">
                         <div className="container-subtitle">
                             <b><span className="subtitle">LISTADO DE ETAPAS</span></b>
                         </div>

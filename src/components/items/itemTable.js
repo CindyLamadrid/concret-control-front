@@ -2,25 +2,25 @@ const ItemTable = ({ itemArray,onSelectItem }) => {
 
     return (
         <div>
-            <table className="table">
+            <table className="table w-60" >
                 <thead>
                     <tr>
-                        <td>
+                        <th className="w-5">
                            
-                        </td>
-                        <td>A.P.U</td>
-                        <td>
-                            Cod
-                        </td>
-                        <td>
-                            Nombre
-                        </td>
-                        <td>
-                            Unidad
-                        </td>
-                         <td>
-                            Subcapitulo
-                        </td>
+                        </th>
+                        <th className="w-5">A.P.U</th>
+                        <th className="w-10">
+                            CODIGO
+                        </th>
+                        <th className="w-60">
+                            NOMBRE
+                        </th>
+                        <th className="w-10">
+                            UNIDAD
+                        </th>
+                         <th className="w-15">
+                            SUBCAPITULO
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -29,7 +29,7 @@ const ItemTable = ({ itemArray,onSelectItem }) => {
                         itemArray.map(
                             (x, index) => {
                                 return (
-                                    <tr key={index.toString()} >
+                                    <tr key={index.toString()}>
                                           <td className={index%2===0 ? "gray":""}>
                                           <input
                                             type="checkbox"
@@ -38,12 +38,12 @@ const ItemTable = ({ itemArray,onSelectItem }) => {
                                           />
                                         </td>
                                         <td className={index%2===0 ? "gray":""}>
-                                           <i class="fas fa-folder-plus folder"/>
+                                           <i className="fas fa-folder-open icon-table"/>
                                         </td>
                                         <td className={index%2===0 ? "gray":""}>
-                                           {x.idItem}
+                                           {x.cod}
                                         </td>
-                                         <td className={index%2===0 ? "gray":""}>
+                                         <td className={index%2===0 ? "gray left":"left"}>
                                             {x.name}
                                         </td>
                                          <td className={index%2===0 ? "gray":""}>

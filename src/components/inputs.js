@@ -14,6 +14,7 @@ const Inputs = ({idItem,user,setShowOption}) => {
     const [inputTypesArray, setinputTypesArray] = useState([])
     const [noData, setNoData] = useState(false)
     const [input, setInput] = useState('')
+    const [messageResultOperation,setMessageResultOperation]= useState('')
 
     const getUnitsArray = () => {
         axios.get(`${process.env.REACT_APP_BUDGET_URL_API}/units`).then(
@@ -60,7 +61,11 @@ const Inputs = ({idItem,user,setShowOption}) => {
         });
     }
 
+    console.log("messageResultOperation===",messageResultOperation);
+
     const onSearchInput = async () => {
+
+       // setMessageResultOperation('')
         try {
             const result = await axios.get(`${process.env.REACT_APP_BUDGET_URL_API}/inputsByName`, {
                 params: { input }
@@ -68,6 +73,7 @@ const Inputs = ({idItem,user,setShowOption}) => {
             if (result && result.data && result.data.length > 0) {
                 setInputsArray(result.data)
                 setNoData(false)
+                
             } else {
                 setInputsArray([])
                 setNoData(true)
@@ -79,37 +85,30 @@ const Inputs = ({idItem,user,setShowOption}) => {
         }
     }
 
-     const getInputsItem = async () => {
-        try {
-            const result = await axios.get(`${process.env.REACT_APP_BUDGET_URL_API}/inputsItem`, {
-                params: { input }
-            })
-            if (result && result.data && result.data.length > 0) {
-                setInputsArray(result.data)
-                setNoData(false)
-            } else {
-                setInputsArray([])
-                setNoData(true)
-            }
-        } catch (error) {
-            setInputsArray([])
-            setNoData(true)
-            console.error('Error fetching onSearchInput:', error);
-        }
-    }
-
+    
         const onSaveInputItem = async (items) => {
         try {
             const result = await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/createInputItem`, {
                 idInput:items,idItem ,user
             })
-            if (result && result.data && result.data.length > 0) {
-                setInputsArray(result.data)
-                setNoData(false)
-            } else {
-                setInputsArray([])
-                setNoData(true)
+             if (result && result.data && result.data.length>0){
+                 setNoData(false)
+                 
+                const created = result.data[0]
+              
+                   console.log("entrooooo",created);
+                if (created.newInputItem===0)
+                {
+                      console.log("entrooooo1111",created);
+                    setMessageResultOperation('El insumo ya existe para el item seleccionado')
+                }else
+                {
+                    setShowOption('inputItem')
+                }
             }
+
+
+          
         } catch (error) {
             setInputsArray([])
             setNoData(true)
@@ -118,7 +117,10 @@ const Inputs = ({idItem,user,setShowOption}) => {
     }
 
     const onNewInput = () => {
+      
+        setMessageResultOperation('')
         setShowNewInput(true)
+        setNoData(false)
     }
 
     const onAddInput = () => {
@@ -131,7 +133,7 @@ const Inputs = ({idItem,user,setShowOption}) => {
         if (selectedItems && selectedItems.length > 0) {
             const idInputs = selectedItems.map(input => input.idInput).join(", ");
             onSaveInputItem(idInputs)
-            setShowOption('inputItem')
+            
         }
     }
 
@@ -148,27 +150,24 @@ const Inputs = ({idItem,user,setShowOption}) => {
                 unitValue:unitValue,
                 user
             })
-            if (result && result.data && result.data.length > 0) {
-                const newItems = result.data.map(
-                    (x) => {
-                        const item = x;
-                        item.selected = false
-                        return item
-                    }
-                )
-                setInputsArray(newItems)
-                setNoData(false)
-               
-            } else {
-                setInputsArray([])
-                setNoData(true)
+            setInputsArray([])
+           
+            if (result && result.data && result.data.length>0){
+              
+                const created = result.data[0]
+            
+                if (created.newInput===0)
+                    setMessageResultOperation('El insumo ya existe con el mismo nombre ingresado')
+                else
+                    setShowNewInput(false)
             }
+            
         } catch (error) {
             setInputsArray([])
             setNoData(true)
             console.error('Error fetching onSearchItems:', error);
         }
-        setShowNewInput(false)
+       
     }
 
     const onSelectInput = (index) => {
@@ -180,6 +179,10 @@ const Inputs = ({idItem,user,setShowOption}) => {
             console.log("newInputArray", newInputsArray);
             setInputsArray(...[newInputsArray])
         }
+    }
+
+    const onCancelOption=()=>{
+        setShowOption('inputItem')
     }
 
     useEffect(
@@ -199,6 +202,7 @@ const Inputs = ({idItem,user,setShowOption}) => {
                         setValue={setInput}
                         onSearch={onSearchInput}
                         onNewOption={onNewInput}
+                        onCancelOption={onCancelOption}
                         labelOption="Crear Nuevo Insumo"
 
                     />
@@ -212,6 +216,11 @@ const Inputs = ({idItem,user,setShowOption}) => {
                         La busqueda no arrojo resultado
                     </div>
                 )
+            }
+            {
+                <div>
+                    {messageResultOperation}
+                 </div>
             }
 
              {
@@ -234,26 +243,26 @@ const Inputs = ({idItem,user,setShowOption}) => {
             {
                 inputsArray && inputsArray.length > 0 && (
                     <div>
-                        <br />
+                 
+                       
+                        <div>
                         <b><span className="subtitle">LISTADO DE INSUMOS GENERALES</span></b>
+                        </div>
+                           <br />
+                        <div className=" w-75 right">
+                            <input
+                                type="button"
+                                value="Agregar Insumo"
+                                onClick={() => onAddInput()}
+                            /> 
+                        </div>
                         <br />
                         <InputTable
                             inputsArray={inputsArray}
                             onSelectInput={onSelectInput}
                         />
-                        <br />
-                        <div className=" w-70 right">
-                            <input
-                                type="button"
-                                value="Agregar Insumo"
-                                onClick={() => onAddInput()}
-                            /> &nbsp;&nbsp;
-                            <input
-                                type="button"
-                                value="Cancelar"
-                                onClick={() => { setShowNewInput(false); setShowOption('') }}
-                            />
-                        </div>
+                       
+                       
                     </div>
                 )
             }

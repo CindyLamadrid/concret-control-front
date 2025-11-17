@@ -2,7 +2,7 @@
   text-align: center;
    background-color: #F7FFFB!important;
     /* background-color: #E9E8F2!important; */
-   height: 100vh;
+   height: 80vh;
    font-size: 9pt!important;
 }
 
@@ -45,6 +45,43 @@
 .row{
   margin:0px!important
 }
+
+.btn-secondary{
+  background-color: silver!important;
+  border-color: silver!important;
+  color: black;
+  border-radius: 4px;
+}
+
+.btn-primary{
+  background-color: #A1CFB6!important;
+  border-color: #A1CFB6!important;
+  color: black;
+  border-radius: 4px;
+}
+
+.primary-bg{
+  background-color: #EAF8F0;
+}
+
+.modal-content {
+    background-color: #EAF8F0!important;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding: 10px;
+}
+
+.modal-body {
+    position: relative;
+    flex: 1 1 auto;
+    border: 1px silver solid;
+    border-radius: 4px;
+}
+
+.modal-footer {
+  border-top: none;
+}
+
 .menu{
   /* background-color: #808080; */
   background-color: #A1CFB6; 
@@ -61,7 +98,11 @@
 .icon-table{
  font-size: 12pt; 
  cursor: pointer;
+ padding-top: 2px;
+  padding-bottom: 2px;
 }
+
+
 
 .form-select{
   font-size: 9pt!important;
@@ -72,6 +113,17 @@
   width: 25%;
   margin-left: 15px;
   margin-bottom: 25px;
+}
+.back-no-menu{
+   font-size: 20pt;
+    position: absolute;
+    right: 10px;
+    top:0px;
+    cursor: pointer;
+    i{
+      cursor: pointer;
+      z-index: 1000;
+    }
 }
 .back{
   font-size: 20pt;
@@ -126,7 +178,10 @@
    
   width: 100%;
 }
-
+.w-75
+{
+  width: 75%;
+}
 
 .button{
  color:   #808080;
@@ -147,6 +202,7 @@
     margin: auto;
     border: #808080;
     border-style: solid 1px;
+    table-layout: fixed;
     
     td{
       /* padding: .05rem .05rem!important; */
@@ -156,10 +212,11 @@
       padding-left: 2px;
       padding-top: 0px;
       padding-bottom: 0px;
+    
     }
 
     th{
-
+        
       padding: .05rem .05rem!important;
       border: solid 3px #808080;
       border-style: double;
@@ -174,6 +231,11 @@
 
 .w-5{
       width: 5%;
+      min-width: 5%;
+      max-width: 5%;
+}
+.w-6{
+  width: 6%;
 }
 
 .w-10{
@@ -201,6 +263,21 @@
 
 .w-70{
       width: 70%;
+}
+
+.w-75{
+  width: 75;
+}
+.w-80{
+  width: 80%;
+}
+
+.w-85{
+  width: 85%;
+}
+
+.w-90{
+  width: 90%;
 }
 
 .w-40{
@@ -244,6 +321,9 @@
     .left{
       text-align: left;
     }
+    .center{
+      text-align: center;
+    }
 
     .mandatory{
       color:red;
@@ -252,3 +332,21 @@
       text-align: left;
       padding-left: 2px;
     }
+
+    .container-no-menu{
+      margin-top:0%;
+    }
+
+   .pending-changes{
+    color: red;
+    font-weight: 500;
+   }
+
+   .button-space{
+    margin-left: 4px;
+   }
+
+   .header-container{
+    margin-left: 20px;
+    margin-bottom: 20px;
+   }

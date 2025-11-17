@@ -1,4 +1,4 @@
-const AdminOptions = ({ value, setValue, onSearch, onNewOption,labelOption }) => {
+const AdminOptions = ({ value, setValue, onSearch, onNewOption,labelOption,onCancelOption }) => {
     return (
         <div>
             <input
@@ -23,6 +23,14 @@ const AdminOptions = ({ value, setValue, onSearch, onNewOption,labelOption }) =>
                 value={labelOption}
                 onClick={() => onNewOption () }
             />
+              &nbsp;&nbsp;
+            <input
+                type="button"
+                className="button"
+                value="Cancelar"
+                onClick={() => onCancelOption () }
+            />
+
 
 
         </div>

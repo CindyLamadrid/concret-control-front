@@ -5,16 +5,25 @@ import Budget from "./budget"
 
 const Container=({user})=>{
     const [showBudget,setShowBudget] =useState(false)
-    const [idStage,setIdStage] = useState(0)
+    const [stageSelected,setStageSelected] = useState(0)
+    const [defaultStage,setDefaultStage] = useState(0)
+    const [constructionSelected,setConstructionSelected] = useState(0)
 
+    const onShowInit=()=>{
+      setShowBudget(false)
+      setDefaultStage (true)
+    }
     return(
         <div>
         {
             !showBudget && (
                 <Constructions
-                
                 setShowBudget={setShowBudget}
-                setIdStage={setIdStage}
+                setStageSelected={setStageSelected}
+                setDefaultStage={setDefaultStage}
+                defaultStage={defaultStage}
+                setConstructionSelected={setConstructionSelected}
+                constructionSelected={constructionSelected}
                 />
             )
         }
@@ -22,7 +31,10 @@ const Container=({user})=>{
             showBudget &&(
              <Budget user={user}
              defaultOption="contructionItems"
-             idStage={idStage}
+             constructionSelected={constructionSelected}
+             onShowInit={onShowInit}
+             stageSelected={stageSelected}
+            
              />
 
             )

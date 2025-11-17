@@ -4,25 +4,23 @@ const InputTable = ({ inputsArray, onSelectInput }) => {
 
     return (
         <div>
-            <table className="table">
+            <table className="table w-50">
                 <thead>
                     <tr>
-                        <td>
+                      
+                        <th className="w-5">
 
-                        </td>
-                        <td>Código</td>
-                        <td>
-                            Categoria Insumo
-                        </td>
-                        <td>
-                            Descripción
-                        </td>
-                        <td>
-                            Unidad
-                        </td>
-                        <td>
-                            Valor
-                        </td>
+                        </th>
+                        <th className="w-10">CODIGO</th>
+                        <th className="w-50">
+                            DESCRIPCION
+                        </th>
+                        <th className="w-15">
+                            UNIDAD
+                        </th>
+                        <th className="w-20">
+                            VALOR
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,6 +30,7 @@ const InputTable = ({ inputsArray, onSelectInput }) => {
                             (x, index) => {
                                 return (
                                     <tr key={index.toString()} >
+                                     
                                         <td className={index % 2 === 0 ? "gray" : ""}>
                                             <input
                                                 type="checkbox"
@@ -43,10 +42,7 @@ const InputTable = ({ inputsArray, onSelectInput }) => {
                                         <td className={index % 2 === 0 ? "gray" : ""}>
                                             {x.idInput}
                                         </td>
-                                        <td className={index % 2 === 0 ? "gray" : ""}>
-                                            {x.categoryName}
-                                        </td>
-                                        <td className={index % 2 === 0 ? "gray" : ""}>
+                                        <td className={index % 2 === 0 ? "gray left" : "left"}>
                                             {x.name}
                                         </td>
                                         <td className={index % 2 === 0 ? "gray" : ""}>

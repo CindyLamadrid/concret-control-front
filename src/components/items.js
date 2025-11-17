@@ -4,6 +4,7 @@ import AdminOptions from "./commons/adminOptions"
 import NewItem from "./items/newItem";
 import ItemTable from "./items/itemTable";
 
+
 const Items = ({ subchapterSelected, user, setShowOption ,idStage}) => {
 
     const [item, setItem] = useState('')
@@ -65,9 +66,9 @@ const Items = ({ subchapterSelected, user, setShowOption ,idStage}) => {
                         return item
                     }
                 )
-                setItemArray(newItems)
+                // setItemArray(newItems)
                 setNoData(false)
-                onSearchItems()
+                //onSearchItems()
             } else {
                 setItemArray([])
                 setNoData(true)
@@ -144,6 +145,9 @@ const Items = ({ subchapterSelected, user, setShowOption ,idStage}) => {
             getUnitsArray()
         }, []
     )
+    const onCancelOption=()=>{
+        setShowOption('contructionItems')
+    }
 
     return (
         <div>
@@ -155,7 +159,7 @@ const Items = ({ subchapterSelected, user, setShowOption ,idStage}) => {
                         onSearch={onSearchItems}
                         onNewOption={onNewItem}
                         labelOption ="Crear Nuevo Item"
-
+                        onCancelOption={onCancelOption}
                     />
 
 
@@ -187,15 +191,11 @@ const Items = ({ subchapterSelected, user, setShowOption ,idStage}) => {
             {
                 itemArray && itemArray.length > 0 && (
                     <div>
+                        
                         <br />
                         <b><span className="subtitle">LISTADO DE ITEMS GENERALES</span></b>
                         <br />
-                        <ItemTable
-                            itemArray={itemArray}
-                            onSelectItem={onSelectItem}
-                        />
-                        <br />
-                        <div className=" w-70 right">
+                         <div className=" right w-75">
                             <input
                                 type="button"
                                 value="Agregar Items"
@@ -204,9 +204,17 @@ const Items = ({ subchapterSelected, user, setShowOption ,idStage}) => {
                             <input
                                 type="button"
                                 value="Cancelar"
-                                onClick={() => { setShowNewItem(false); setShowOption('') }}
+                                onClick={() => { setShowNewItem(false); setShowOption('contructionItems') }}
                             />
                         </div>
+                        <br/>
+                        <ItemTable
+                            itemArray={itemArray}
+                            onSelectItem={onSelectItem}
+                           
+                        />
+                        <br />
+                       
                     </div>
                 )
             }

@@ -5,85 +5,101 @@ import Items from '../components/items';
 import ContructionItems from '../components/contructionItems'
 import Inputs from '../components/inputs'
 import InputItem from '../components/inputItem'
-
-const Budget = ({user,defaultOption,idStage}) => {
+import Header from '../components/commons/header'
+const Budget = ({ user, constructionSelected, stageSelected, defaultOption, onShowInit }) => {
 
    const [showOption, setShowOption] = useState(defaultOption)
-     
-   const [chapterSelected,setChapterSelected]= useState(0)
-   const [subchapterSelected,setSubchapterSelected]= useState(0)
+   const [chapterSelected, setChapterSelected] = useState(0)
+   const [subchapterSelected, setSubchapterSelected] = useState(0)
    const [contructionItemsArray, setContructionItemsArray] = useState([])
-   const [idItem, setIdItem] = useState('')
+   const [itemSelected, setItemSelected] = useState('')
 
-   console.log("showOption===",showOption);
-   
+
    return (
 
       <div>
+
          <Menu
             setShowOption={setShowOption}
             showOption={showOption}
          />
-         <br/>
-         {
-            showOption !== 'inputItem' && showOption!=='searchInputs' && (
-               <Chapter 
-               chapterSelected={chapterSelected}
-               setChapterSelected={setChapterSelected}
-               subchapterSelected={subchapterSelected}
-               setSubchapterSelected={setSubchapterSelected}
-               setShowOption={setShowOption}
-               showOption={showOption}
-          />
+         <br />
+         {showOption === 'contructionItems' && (
+            <Header
 
-          )
+               stageSelected={stageSelected}
+               constructionSelected={constructionSelected}
+            />)
          }
 
-        
-         
-          {/* <hr class="hr" /> */}
-          <br/>
+         {
+            showOption !== 'inputItem' && showOption !== 'searchInputs' && (
+               <Chapter
+                  chapterSelected={chapterSelected}
+                  setChapterSelected={setChapterSelected}
+                  subchapterSelected={subchapterSelected}
+                  setSubchapterSelected={setSubchapterSelected}
+                  setShowOption={setShowOption}
+                  showOption={showOption}
+               />
+
+            )
+         }
+
+
+
+         {/* <hr class="hr" /> */}
+         <br />
          {
             showOption === 'searchItems' && (
                <Items
-                idStage={idStage}
-                subchapterSelected={subchapterSelected}
-                setShowOption={setShowOption}
-                user={user} 
+                  idStage={stageSelected.idStage}
+                  subchapterSelected={subchapterSelected}
+                  setShowOption={setShowOption}
+                  user={user}
                />
             )
          }
-         { showOption === 'contructionItems' &&(
+
+         {showOption === 'contructionItems' && (
             <ContructionItems
-              idStage={idStage}
-              idSubChapter={subchapterSelected}
-              setShowOption={setShowOption}
-              setIdItem={setIdItem}
-              contructionItemsArray={contructionItemsArray}
+               idStage={stageSelected.idStage}
+               idSubChapter={subchapterSelected}
+               idChapter={chapterSelected}
+               constructionSelected={constructionSelected}
+               stageSelected={stageSelected}
+               setShowOption={setShowOption}
+               setItemSelected={setItemSelected}
+               contructionItemsArray={contructionItemsArray}
                setContructionItemsArray={setContructionItemsArray}
+               onShowInit={onShowInit}
+               user={user}
             />)
          }
          {
-            showOption === 'searchInputs' &&(
-            <Inputs
-              idItem={idItem}
-              setShowOption={setShowOption}
-              user={user} 
-            />
+            showOption === 'searchInputs' && (
+               <Inputs
+                  idItem={itemSelected.idItem}
+                  setShowOption={setShowOption}
+                  user={user}
+               />
             )
          }
-         { showOption === 'inputItem' &&
-               <InputItem
-                contructionItemsArray={contructionItemsArray}
-                idItem={idItem}
-                user={user}
-                setShowOption={setShowOption}
-                setIdItem={setIdItem}
-               />
-         }
-      
+         {showOption === 'inputItem' &&
+            <InputItem
+               contructionItemsArray={contructionItemsArray}
+               constructionSelected={constructionSelected}
+               stageSelected={stageSelected}
+               itemSelected={itemSelected}
+               user={user}
+               setShowOption={setShowOption}
+               setItemSelected={setItemSelected}
 
-       
+            />
+         }
+
+
+
       </div>
    )
 }
