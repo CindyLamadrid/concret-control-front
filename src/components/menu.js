@@ -9,11 +9,8 @@ const Menu=({setShowOption,showOption})=>{
  
        
         <Navbar.Collapse id="basic-navbar-nav">
-             <NavDropdown title="Archivo" id="basic-nav-dropdown">
-               {/* { showOption ==="contructionItems" && (<NavDropdown.Item href="#action/3.1" onClick={()=>setShowOption('searchItems')}>Adicionar Item</NavDropdown.Item>)} */}
-               {/* { showOption ==="inputItem" && (<NavDropdown.Item href="#action/3.1" onClick={()=>setShowOption('searchInputs')}>Adicionar Insumos</NavDropdown.Item>)} */}
-              {/* <NavDropdown.Item href="#action/3.1">Eliminar Items Marcados</NavDropdown.Item> */}
-            </NavDropdown>
+             <NavDropdown title="MENU" id="basic-nav-dropdown">
+              </NavDropdown>
         </Navbar.Collapse>
   
     </Navbar>

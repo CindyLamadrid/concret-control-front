@@ -2,21 +2,21 @@ import { useEffect } from 'react';
 const handlers = require('../utils/handlers')
 const commom = require('../utils/common')
 
-const ContructionItemsTable = ({ contructionItemsArray, onChangeQuantity, setShowOption, setItemSelected, onSaveInformation, onRefresh, onRemoveItem }) => {
+const ConstructionItemsTable = ({ constructionItemsArray, onChangeQuantity, setShowOption, setItemSelected, onSaveInformation, onRefresh, onRemoveItem }) => {
 
 
     const getTotalsSubChapter = () => {
         let total = 0
-        for (let i = 0; i < contructionItemsArray.length; i++) {
-            total += contructionItemsArray[i].totalItem * contructionItemsArray[i].quantity
+        for (let i = 0; i < constructionItemsArray.length; i++) {
+            total += constructionItemsArray[i].totalItem * constructionItemsArray[i].quantity
         }
         return total
     }
 
     useEffect(
         () => {
-            console.log("apuArray===", contructionItemsArray);
-        }, [contructionItemsArray]
+            console.log("apuArray===", constructionItemsArray);
+        }, [constructionItemsArray]
     )
     return (
         <div>
@@ -41,7 +41,9 @@ const ContructionItemsTable = ({ contructionItemsArray, onChangeQuantity, setSho
                         <th className='w-10'>
                             CANTIDAD
                         </th>
-                        <th className='w-5'></th>
+                        <th className='w-5'>
+                            GUARDAR
+                        </th>
                         <th className='w-10'>
                             VALOR/UN
                         </th>
@@ -55,7 +57,7 @@ const ContructionItemsTable = ({ contructionItemsArray, onChangeQuantity, setSho
                 <tbody>
 
                     {
-                        contructionItemsArray.map(
+                        constructionItemsArray.map(
                             (x, index) => {
                                 return (
                                     <tr key={index.toString()} >
@@ -68,7 +70,7 @@ const ContructionItemsTable = ({ contructionItemsArray, onChangeQuantity, setSho
                                         <td className={index % 2 === 0 ? "gray" : ""}>
                                             <i className="fas fa-folder-open icon-table"
                                                 onClick={() => {
-                                                    setShowOption('inputItem');
+                                                    setShowOption('inputItems');
                                                
                                                     setItemSelected(x);
                                                 }
@@ -92,11 +94,11 @@ const ContructionItemsTable = ({ contructionItemsArray, onChangeQuantity, setSho
                                                 className={`${"input input-table right"} ${x.quantityChanged ? 'pending-changes' : ''}`}
                                                 maxLength={4}
                                                 value={x.quantity ? x.quantity.toString() : "0"}
-                                                onKeyDown={(event) => handlers.onHandlerNumber(event)}
+                                                onKeyDown={(event) => handlers.onHandlerDecimal(event)}
                                                 onChange={(event) => onChangeQuantity(event, index)}
                                             />
                                         </td>
-                                        <td>
+                                        <td className={index % 2 === 0 ? "gray right" : "right"}>
                                             <i className='far fa-save icon-table'
                                                 onClick={() => { onSaveInformation(index) }}
                                             />&nbsp;
@@ -117,7 +119,7 @@ const ContructionItemsTable = ({ contructionItemsArray, onChangeQuantity, setSho
                             }
                         )
                     }
-                    {contructionItemsArray && contructionItemsArray.length > 0 && (
+                    {constructionItemsArray && constructionItemsArray.length > 0 && (
 
                         <tr>
                             <td colspan={8}></td>
@@ -135,4 +137,4 @@ const ContructionItemsTable = ({ contructionItemsArray, onChangeQuantity, setSho
     )
 }
 
-export default ContructionItemsTable
+export default ConstructionItemsTable

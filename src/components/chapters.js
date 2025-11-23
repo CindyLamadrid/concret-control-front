@@ -3,7 +3,7 @@ import ChapterSelect from './commons/select'
 import SubchapterSelect from './commons/select'
 import axios from 'axios';
 
-const Chapters = ({ showOption, chapterSelected, setChapterSelected, subchapterSelected, setSubchapterSelected, setShowOption }) => {
+const Chapters = ({  chapterSelected, setChapterSelected, subchapterSelected, setSubchapterSelected, setShowOption }) => {
 
     const [chapterArray, setChapterArray] = useState([])
     const [allSubchapterArray, setAllSubchapterArray] = useState([])
@@ -52,12 +52,12 @@ const Chapters = ({ showOption, chapterSelected, setChapterSelected, subchapterS
             if (subchapters.length > 0) {
                 setSubchapterArray(subchapters)
                 setSubchapterSelected(subchapterSelected || subchapters[0].idSubchapter)
-console.log("subchapters===,subchapterSelected",subchapterSelected);
-               
-                if (showOption !== "searchInputs")
-                    setShowOption("contructionItems")
+                
+                console.log("subchapters===,subchapterSelected", subchapters[0].idSubchapter);
+                   
+                //if (showOption !== "searchInputs" && showOption !== "compoundInputs")
+                //    setShowOption("contructionItems")
             }
-
 
         }
     }
@@ -69,6 +69,12 @@ console.log("subchapters===,subchapterSelected",subchapterSelected);
             if (loadedChapter && loadedSubchapter)
                 selectSubchapter()
         }, [chapterSelected, loadedChapter, loadedSubchapter]
+    )
+
+    useEffect(
+        ()=>{
+          localStorage.setItem("chapterValues",JSON.stringify({chapterSelected,subchapterSelected}))
+        },[chapterSelected,subchapterSelected]
     )
 
 
@@ -85,10 +91,9 @@ console.log("subchapters===,subchapterSelected",subchapterSelected);
     const onChangeSubchapter = (value) => {
         if (value) {
             setSubchapterSelected(parseInt(value, 10))
-            if (showOption !== 'searchItems') {
-                console.log("entroooo2222===");
-                setShowOption("contructionItems")
-            }
+            //if (showOption !== 'searchItems') {
+                setShowOption("constructionItems")
+            //}
 
         }
     }

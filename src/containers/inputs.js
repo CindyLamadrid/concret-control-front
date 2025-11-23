@@ -1,12 +1,21 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState ,useContext} from "react"
 import axios from 'axios';
-import AdminOptions from "./commons/adminOptions"
-import InputTable from "./inputs/inputTable";
-import NewInput from "./inputs/newInput"
+import {useNavigate, useSearchParams,createSearchParams } from 'react-router-dom';
+import { ConstructionContext } from "../context/constructionContext";
+import AdminOptions from "../components/commons/adminOptions"
+import InputTable from "../components//inputs/inputTable";
+import NewInput from "../components//inputs/newInput"
+import useEventListener from '../components/utils/useEventListener';
 
 
-
-const Inputs = ({idItem,user,setShowOption}) => {
+const Inputs = ({}) => {
+      const  {user}=
+        useContext(ConstructionContext);
+    const navigate = useNavigate ();
+    const [searchParams] = useSearchParams();
+    const idItem = searchParams.get('idItem') 
+    const inputType = searchParams.get('inputType') 
+    const idCompoundSelected = searchParams.get('idCompoundSelected') 
     const [showNewInput, setShowNewInput] = useState(false)
     const [inputsArray, setInputsArray] = useState([])
     const [unistsArray, setUnitsArray] = useState([])
@@ -20,7 +29,8 @@ const Inputs = ({idItem,user,setShowOption}) => {
         axios.get(`${process.env.REACT_APP_BUDGET_URL_API}/units`).then(
             (result) => {
                 if (result && result.data) {
-                    setUnitsArray(result.data)
+                    const {data} = result
+                    setUnitsArray(data)
                 } else {
                     setUnitsArray([])
                 }
@@ -67,16 +77,49 @@ const Inputs = ({idItem,user,setShowOption}) => {
 
        // setMessageResultOperation('')
         try {
-            const result = await axios.get(`${process.env.REACT_APP_BUDGET_URL_API}/inputsByName`, {
+            const result = await axios.get(`${process.env.REACT_APP_BUDGET_URL_API}/inputsNameCod`, {
                 params: { input }
             })
             if (result && result.data && result.data.length > 0) {
-                setInputsArray(result.data)
+                 let {data} = result
+                 if (inputType=== "compound")
+                    {
+                          data = data.filter((x)=> !x.compound)
+                    }
+                setInputsArray(data)
                 setNoData(false)
                 
             } else {
                 setInputsArray([])
                 setNoData(true)
+            }
+        } catch (error) {
+            setInputsArray([])
+            setNoData(true)
+            console.error('Error fetching onSearchInput:', error);
+        }
+    }
+
+    const onSaveCompoundInput=async(inputs)=>{
+ try {
+    console.log("compoundSelected===",idCompoundSelected);
+            const result = await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/compoundInput`, {
+                idInputCompound:inputs,idInput: idCompoundSelected ,user
+            })
+            if (result && result.data && result.data.length>0){
+                setNoData(false)
+                
+                const created = result.data[0]
+                
+                if (created.newInputItem===0)
+                {
+                    setMessageResultOperation('El insumo ya existe para el item seleccionado')
+                }else
+                {
+                   
+                    const params = createSearchParams({idItem,option:"compoundInputs",idCompoundSelected});
+                    navigate(`/budget?${params.toString()}`);
+                }
             }
         } catch (error) {
             setInputsArray([])
@@ -91,24 +134,22 @@ const Inputs = ({idItem,user,setShowOption}) => {
             const result = await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/createInputItem`, {
                 idInput:items,idItem ,user
             })
-             if (result && result.data && result.data.length>0){
-                 setNoData(false)
-                 
+            if (result && result.data && result.data.length>0){
+                setNoData(false)
+                
                 const created = result.data[0]
-              
-                   console.log("entrooooo",created);
+                
                 if (created.newInputItem===0)
                 {
-                      console.log("entrooooo1111",created);
+                    console.log("entrooooo1111",created);
                     setMessageResultOperation('El insumo ya existe para el item seleccionado')
                 }else
                 {
-                    setShowOption('inputItem')
+                    console.log("navigate");
+                    const params = createSearchParams({idItem,option:"inputItems"});
+                    navigate(`/budget?${params.toString()}`);
                 }
             }
-
-
-          
         } catch (error) {
             setInputsArray([])
             setNoData(true)
@@ -131,8 +172,11 @@ const Inputs = ({idItem,user,setShowOption}) => {
         )
        
         if (selectedItems && selectedItems.length > 0) {
-            const idInputs = selectedItems.map(input => input.idInput).join(", ");
-            onSaveInputItem(idInputs)
+            const idInputs = selectedItems.map(input => parseInt(input.idInput)).join(", ");
+            if(inputType!=="compound")
+             onSaveInputItem(idInputs)
+            else
+              onSaveCompoundInput(idInputs)
             
         }
     }
@@ -174,7 +218,7 @@ const Inputs = ({idItem,user,setShowOption}) => {
 
         if (index > -1) {
 
-            const newInputsArray = inputsArray
+            const newInputsArray = [...inputsArray]
             newInputsArray[index].selected = !inputsArray[index].selected
             console.log("newInputArray", newInputsArray);
             setInputsArray(...[newInputsArray])
@@ -182,7 +226,10 @@ const Inputs = ({idItem,user,setShowOption}) => {
     }
 
     const onCancelOption=()=>{
-        setShowOption('inputItem')
+        // setShowOption('inputItems')
+        const params = createSearchParams({idItem,option:"inputItems"});
+        navigate(`/budget?${params.toString()}`);
+      
     }
 
     useEffect(
@@ -192,6 +239,15 @@ const Inputs = ({idItem,user,setShowOption}) => {
                 getCategoriesArray()
         },[]
     )
+
+    const handleKeyDownEnter =async(event) => {
+    if (event.key === 'Enter') {
+       if(!showNewInput){
+          await onSearchInput()
+       }
+    }
+}
+    useEventListener('keydown', handleKeyDownEnter);
 
     return (
         <div>
@@ -235,6 +291,7 @@ const Inputs = ({idItem,user,setShowOption}) => {
                             inputTypesArray={inputTypesArray}
                             setShowNewInput={setShowNewInput}
                             onSaveInput={onSaveInput}
+                            inputType={inputType}
                         />
                     </div>
                 )

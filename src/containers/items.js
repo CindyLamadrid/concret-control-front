@@ -1,12 +1,19 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState,useContext} from "react"
+import { useNavigate,useSearchParams } from 'react-router-dom';
 import axios from 'axios';
-import AdminOptions from "./commons/adminOptions"
-import NewItem from "./items/newItem";
-import ItemTable from "./items/itemTable";
+import { ConstructionContext } from "../context/constructionContext";
+import AdminOptions from "../components/commons/adminOptions"
+import NewItem from "../components/items/newItem";
+import ItemTable from "../components/items/itemTable";
+import useEventListener from '../components/utils/useEventListener';
 
-
-const Items = ({ subchapterSelected, user, setShowOption ,idStage}) => {
-
+const Items = ({  }) => {
+     const navigate = useNavigate ();
+    const  {user,stageSelected}=
+            useContext(ConstructionContext);
+    const idStage =  stageSelected.idStage  
+    const [searchParams] = useSearchParams();
+    const idSubChapter = searchParams.get('idSubChapter')     
     const [item, setItem] = useState('')
     const [showNewItem, setShowNewItem] = useState(false)
     const [itemArray, setItemArray] = useState([])
@@ -30,9 +37,9 @@ const Items = ({ subchapterSelected, user, setShowOption ,idStage}) => {
 
     const onSearchItems = async () => {
         try {
-            const result = await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/itemsByName`, {
+            const result = await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/itemsNameCod`, {
                 name:item ,
-                idSubChapter:subchapterSelected
+                idSubChapter
             })
             if (result && result.data && result.data.length > 0) {
                 setItemArray(result.data)
@@ -53,7 +60,7 @@ const Items = ({ subchapterSelected, user, setShowOption ,idStage}) => {
 
         try {
             const result = await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/createItem`, {
-                idSubchapter: subchapterSelected,
+                idSubChapter,
                 idUnit: unitSelected,
                 name: name,
                 user
@@ -136,7 +143,8 @@ const Items = ({ subchapterSelected, user, setShowOption ,idStage}) => {
              stageItems.idItems=idItems
              console.log("stageItems===",stageItems);
              createStageItems(stageItems)
-             setShowOption('contructionItems')
+             navigate(`/budget?option=constructionItems`)
+             // setShowOption('contructionItems')
         }
     }
 
@@ -146,8 +154,18 @@ const Items = ({ subchapterSelected, user, setShowOption ,idStage}) => {
         }, []
     )
     const onCancelOption=()=>{
-        setShowOption('contructionItems')
+       //  setShowOption('contructionItems')
+         navigate(`/budget?option=constructionItems`)
     }
+
+      const handleKeyDownEnter =async(event) => {
+        if (event.key === 'Enter') {
+           if(!showNewItem){
+              await onSearchItems()
+           }
+        }
+    }
+    useEventListener('keydown', handleKeyDownEnter);
 
     return (
         <div>
@@ -204,7 +222,7 @@ const Items = ({ subchapterSelected, user, setShowOption ,idStage}) => {
                             <input
                                 type="button"
                                 value="Cancelar"
-                                onClick={() => { setShowNewItem(false); setShowOption('contructionItems') }}
+                                onClick={() => { setShowNewItem(false);navigate(`/budget?option=constructionItems`) }}
                             />
                         </div>
                         <br/>

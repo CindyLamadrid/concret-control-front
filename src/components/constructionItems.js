@@ -1,12 +1,18 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState,useContext } from "react"
+import { useNavigate ,createSearchParams } from 'react-router-dom';
+import { ConstructionContext } from "../context/constructionContext";
 import axios from 'axios';
-import ContructionItemsTable from './contructionItems/contructionItemsTable'
+import ConstructionItemsTable from './constructionItems/constructionItemsTable'
 import Back from "./commons/back";
 import Modal from './commons/modal';
 
 
-const ContructionItems = ({user, idStage,idChapter,idSubChapter, setShowOption, setItemSelected,contructionItemsArray,setContructionItemsArray,onShowInit }) => {
-
+const ConstructionItems = ({idChapter,idSubChapter, setShowOption, setItemSelected,constructionItemsArray,setConstructionItemsArray,onConstructionItems }) => {
+    const navigate = useNavigate ();
+    const  {user,constructionSelected}=
+        useContext(ConstructionContext);
+  
+    
     const [noData, setNoData] = useState(false)
     const [modalConfiguration,setModalConfiguration] = useState({
         show:false,
@@ -16,39 +22,12 @@ const ContructionItems = ({user, idStage,idChapter,idSubChapter, setShowOption, 
 
     const onChangeQuantity =(event,index)=>{
       
-         const newContructionItemsArray = [...contructionItemsArray]
-         newContructionItemsArray[index].quantityChanged = newContructionItemsArray[index].originalQuantity.toString() !==event.target.value? true:false
-         newContructionItemsArray[index].quantity =  parseInt(event.target.value,10)
-         setContructionItemsArray(...[newContructionItemsArray]);   
+         const newConstructionItemsArray = [...constructionItemsArray]
+         newConstructionItemsArray[index].quantityChanged = newConstructionItemsArray[index].originalQuantity.toString() !==event.target.value? true:false
+         newConstructionItemsArray[index].quantity =  event.target.value
+         setConstructionItemsArray(...[newConstructionItemsArray]);   
    }
 
-    const onConstructionItems = async () => {
-
-        axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/stageItems`, {
-           idStage ,
-           idSubChapter
-        }).then(
-            (result) => {
-                if (result && result.data && result.data.length > 0) {
-                    setContructionItemsArray(result.data)
-                    setNoData(false)
-                } else {
-                    setContructionItemsArray([])
-                    setNoData(true)
-                }
-            }
-        ).catch(
-            (error) => {
-                setContructionItemsArray([])
-                setNoData(true)
-                console.error('Error fetching onConstructionItems:', error);
-            }
-
-
-        )
-
-
-    }
 
     const updateItemStage=async(item)=>{
          try {
@@ -71,8 +50,8 @@ const ContructionItems = ({user, idStage,idChapter,idSubChapter, setShowOption, 
     
     const onSaveInformation=(index)=>{
         console.log("index===",index);
-        const contructionItem = {...contructionItemsArray [index]}
-        updateItemStage(contructionItem)
+        const constructionItem = {...constructionItemsArray [index]}
+        updateItemStage(constructionItem)
     }
 
     useEffect(
@@ -84,8 +63,17 @@ const ContructionItems = ({user, idStage,idChapter,idSubChapter, setShowOption, 
         }, [idSubChapter]
     )
 
+     useEffect(
+        () => {
+          console.log("idChapter==",idChapter);
+            console.log("idSubChapter==",idSubChapter);
+          
+        }, []
+    )
+
     const onBack=()=>{
-        onShowInit(idSubChapter,idChapter)
+     const params = createSearchParams({idConstruction:constructionSelected.idConstruction});
+      navigate(`/stages?${params.toString()}`);
     }
 
     const onRefresh=()=>{
@@ -105,10 +93,10 @@ const ContructionItems = ({user, idStage,idChapter,idSubChapter, setShowOption, 
             })
 
             if (result && result.data)
-                onConstructionItems(    )
+                onConstructionItems()
            
         } catch (error) {
-            setContructionItemsArray([])
+            setConstructionItemsArray([])
             setNoData(true)
             console.error('Error fetching removeItem:', error);
         }
@@ -122,7 +110,7 @@ const ContructionItems = ({user, idStage,idChapter,idSubChapter, setShowOption, 
     }
 
     const onRemoveItem=(index)=>{
-    const item = {...contructionItemsArray [index]}
+    const item = {...constructionItemsArray [index]}
       console.log("remove==",item);
       // removeInputItem(inputItem)
       setModalConfiguration(
@@ -146,8 +134,22 @@ const ContructionItems = ({user, idStage,idChapter,idSubChapter, setShowOption, 
     }
 
     const onAddItems=()=>{
-        setShowOption('searchItems')
+        
+       
+        navigate(`/search-items?idSubChapter=${idSubChapter.toString()}`);
+        
+        //setShowOption('searchItems')
     }
+
+    useEffect(
+        ()=>{
+            if(constructionItemsArray && constructionItemsArray.length>0)
+                setNoData(false)
+            else
+                setNoData(true)
+
+        },[constructionItemsArray]
+    )
 
     return (
 
@@ -177,10 +179,10 @@ const ContructionItems = ({user, idStage,idChapter,idSubChapter, setShowOption, 
              </div>
              <br/>
             {
-                contructionItemsArray && contructionItemsArray.length>0 &&
+                constructionItemsArray && constructionItemsArray.length>0 &&
                 (
-                    <ContructionItemsTable
-                            contructionItemsArray={contructionItemsArray}
+                    <ConstructionItemsTable
+                            constructionItemsArray={constructionItemsArray}
                             onChangeQuantity={onChangeQuantity}
                             setShowOption={setShowOption}
                             setItemSelected={setItemSelected}
@@ -200,4 +202,4 @@ const ContructionItems = ({user, idStage,idChapter,idSubChapter, setShowOption, 
         </div>
     )
 }
-export default ContructionItems
+export default ConstructionItems
