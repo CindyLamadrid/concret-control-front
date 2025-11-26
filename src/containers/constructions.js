@@ -22,11 +22,12 @@ const Constructions = ({}) => {
       })
       .catch((error) => {
         setConstructionsArray([]);
-        console.error("Error fetching getUnitsArray:", error);
+        console.error("Error fetching getConstructions:", error);
       });
   };
 
   useEffect(() => {
+    localStorage.setItem("chapterValues",JSON.stringify({chapterSelected:0,subchapterSelected:0})) 
     getConstructions();
   }, []);
 
@@ -44,16 +45,12 @@ const Constructions = ({}) => {
 
   return (
     <div>
-      {/* <div hidden={!showStages}>
-        <Back onBack={onBack} className="right back-no-menu" />
-      </div> */}
-
+     
       {constructionsArray && constructionsArray.length > 0 && (
-        <div className="container-no-menu">
-          <div className="container-subtitle">
-            <b>
-              <span className="subtitle">LISTADO DE PROYECTOS</span>
-            </b>
+        <div>
+          <div className="header-title">
+              <span>LISTADO DE PROYECTOS</span>
+              <span className="subheader-title"> &nbsp;&nbsp;&nbsp;{constructionsArray.length}{" "} Projecto(s)</span>
           </div>
 
           <ConstructionTable

@@ -6,12 +6,11 @@ import ItemsSelect from "./commons/select";
 import InputItemTable from "./inputItems/inputItemTable";
 import Back from "./commons/back";
 import Modal from "./commons/modal";
-import Header from "./commons/header";
+import Header from "./commons/resume";
 
 const InputItem = ({
   itemSelected,
   constructionItemsArray,
-  subchapterSelected,
   setShowOption,
   setItemSelected,
   setInputType,
@@ -21,7 +20,7 @@ const InputItem = ({
   const { user, stageSelected, constructionSelected } =
     useContext(ConstructionContext);
 
-  const [inputItemsArray, setInputItemsArray] = useState([]);
+  const [itemInputsArray, setItemInputsArray] = useState([]);
   const [noData, setNoData] = useState(false);
   const [modalConfiguration, setModalConfiguration] = useState({
     show: false,
@@ -30,86 +29,88 @@ const InputItem = ({
 
 
 
-  const getInputsItems = async (id) => {
+  const getItemInputs = async (id) => {
     try {
       const result = await axios.get(
-        `${process.env.REACT_APP_BUDGET_URL_API}/inputsItem`,
+        `${process.env.REACT_APP_BUDGET_URL_API}/item-inputs`,
         {
-          params: { idItem: id },
+          params: {idStage: stageSelected.idStage, idItem: id },
         }
       );
       if (result && result.data && result.data.length > 0) {
-        setInputItemsArray(result.data);
+        setItemInputsArray(result.data);
         setNoData(false);
       } else {
-        setInputItemsArray([]);
+        setItemInputsArray([]);
         setNoData(true);
       }
     } catch (error) {
-      setInputItemsArray([]);
+      setItemInputsArray([]);
       setNoData(true);
       console.error("Error fetching onSearchInput:", error);
     }
   };
 
   const onRefresh = () => {
-    getInputsItems(itemSelected.idItem);
+    getItemInputs(itemSelected.idItem);
   };
 
   useEffect(() => {
     if (itemSelected.idItem) {
-      getInputsItems(itemSelected.idItem);
+      getItemInputs(itemSelected.idItem);
      
     }
   }, [itemSelected.idItem]);
 
   const onChangeQuantity = (event, index, type) => {
-    const newInputItemsArray = [...inputItemsArray];
+    const newItemInputsArray = [...itemInputsArray];
     console.log("type====", type);
 
     switch (type) {
       case "quantity":
         {
-          newInputItemsArray[index].quantityChanged =
-            newInputItemsArray[index].originalQuantity.toString() !==
+          newItemInputsArray[index].quantityChanged =
+            newItemInputsArray[index].originalQuantity.toString() !==
             event.target.value
               ? true
               : false;
-          newInputItemsArray[index].quantity = event.target.value;
+          newItemInputsArray[index].quantity = event.target.value;
         }
         break;
       case "unitValue":
         {
-          newInputItemsArray[index].unitValueChanged =
-            newInputItemsArray[index].originalUnitValue.toString() !==
+          newItemInputsArray[index].unitValueChanged =
+            newItemInputsArray[index].originalUnitValue.toString() !==
             event.target.value
               ? true
               : false;
-          newInputItemsArray[index].unitValue = event.target.value;
+          newItemInputsArray[index].unitValue = event.target.value;
         }
         break;
       default: {
-        newInputItemsArray[index].wasteChanged =
-          newInputItemsArray[index].originalWaste.toString() !==
+        newItemInputsArray[index].wasteChanged =
+          newItemInputsArray[index].originalWaste.toString() !==
           event.target.value
             ? true
             : false;
-        newInputItemsArray[index].waste = event.target.value;
+        newItemInputsArray[index].waste = event.target.value;
       }
     }
-    const waste = newInputItemsArray[index].waste || 0;
-    const quantity = newInputItemsArray[index].quantity || 0;
-    const unitValue = newInputItemsArray[index].unitValue || 0;
-    newInputItemsArray[index].totalInput =
+    const waste = newItemInputsArray[index].waste || 0;
+    const quantity = newItemInputsArray[index].quantity || 0;
+    const unitValue = newItemInputsArray[index].unitValue || 0;
+    newItemInputsArray[index].totalInput =
       (1 + parseFloat(waste) / 100) * quantity * unitValue;
-    setInputItemsArray(...[newInputItemsArray]);
+    setItemInputsArray(...[newItemInputsArray]);
   };
 
   const updateInputItem = async (inputItem) => {
     try {
       const result = await axios.post(
-        `${process.env.REACT_APP_BUDGET_URL_API}/updateInputItem`,
+        `${process.env.REACT_APP_BUDGET_URL_API}/update-item-input`,
         {
+          idConstruction: constructionSelected.idConstruction,
+          idStage: stageSelected.idStage,
           idItemInput: inputItem.idItemInput,
           idInput: inputItem.idInput,
           quantity: parseFloat(inputItem.quantity),
@@ -119,9 +120,9 @@ const InputItem = ({
         }
       );
 
-      if (result && result.data) getInputsItems(itemSelected.idItem);
+      if (result && result.data) getItemInputs(itemSelected.idItem);
     } catch (error) {
-      setInputItemsArray([]);
+      setItemInputsArray([]);
       setNoData(true);
       console.error("Error fetching updateInputItem:", error);
     }
@@ -135,17 +136,18 @@ const InputItem = ({
 
     try {
       const result = await axios.post(
-        `${process.env.REACT_APP_BUDGET_URL_API}/removeInputItem`,
+        `${process.env.REACT_APP_BUDGET_URL_API}/remove-item-input`,
         {
+          idStage:stageSelected.idStage,
           idItem: inputItem.idItem,
           idInput: inputItem.idInput,
           user,
         }
       );
 
-      if (result && result.data) getInputsItems(itemSelected.idItem);
+      if (result && result.data) getItemInputs(itemSelected.idItem);
     } catch (error) {
-      setInputItemsArray([]);
+      setItemInputsArray([]);
       setNoData(true);
       console.error("Error fetching removeInputItem:", error);
     }
@@ -153,8 +155,7 @@ const InputItem = ({
 
   const onSaveInformation = (index) => {
     console.log("index===", index);
-    const inputItem = { ...inputItemsArray[index] };
-
+    const inputItem = { ...itemInputsArray[index] };
     updateInputItem(inputItem);
   };
 
@@ -166,7 +167,7 @@ const InputItem = ({
   };
 
   const onRemoveInputItem = (index) => {
-    const inputItem = { ...inputItemsArray[index] };
+    const inputItem = { ...itemInputsArray[index] };
     console.log("remove==", inputItem);
     // removeInputItem(inputItem)
     setModalConfiguration({
@@ -217,7 +218,7 @@ const InputItem = ({
 
   return (
     <div>
-      <Back onBack={onBack} className="right back" />
+      <Back onBack={onBack} className="" />
       {
         <Header
           itemSelected={itemSelected}
@@ -252,9 +253,9 @@ const InputItem = ({
       </div>
       <br />
 
-      {inputItemsArray && inputItemsArray.length > 0 && (
+      {itemInputsArray && itemInputsArray.length > 0 && (
         <InputItemTable
-          inputItemsArray={inputItemsArray}
+          itemInputsArray={itemInputsArray}
           onChangeQuantity={onChangeQuantity}
           onSaveInformation={onSaveInformation}
           onRefresh={onRefresh}

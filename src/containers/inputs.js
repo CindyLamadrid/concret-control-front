@@ -9,7 +9,7 @@ import useEventListener from '../components/utils/useEventListener';
 
 
 const Inputs = ({}) => {
-      const  {user}=
+      const  {user,stageSelected}=
         useContext(ConstructionContext);
     const navigate = useNavigate ();
     const [searchParams] = useSearchParams();
@@ -77,8 +77,8 @@ const Inputs = ({}) => {
 
        // setMessageResultOperation('')
         try {
-            const result = await axios.get(`${process.env.REACT_APP_BUDGET_URL_API}/inputsNameCod`, {
-                params: { input }
+            const result = await axios.get(`${process.env.REACT_APP_BUDGET_URL_API}/item-inputs-nameCod`, {
+                params: { input,idStage:stageSelected.idStage }
             })
             if (result && result.data && result.data.length > 0) {
                  let {data} = result
@@ -103,8 +103,8 @@ const Inputs = ({}) => {
     const onSaveCompoundInput=async(inputs)=>{
  try {
     console.log("compoundSelected===",idCompoundSelected);
-            const result = await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/compoundInput`, {
-                idInputCompound:inputs,idInput: idCompoundSelected ,user
+            const result = await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/compound-input`, {
+                idStage:stageSelected.idStage,idInputCompound:inputs,idInput: idCompoundSelected ,user
             })
             if (result && result.data && result.data.length>0){
                 setNoData(false)
@@ -131,7 +131,8 @@ const Inputs = ({}) => {
     
         const onSaveInputItem = async (items) => {
         try {
-            const result = await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/createInputItem`, {
+            const result = await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/create-item-input`, {
+                idStage:stageSelected.idStage,
                 idInput:items,idItem ,user
             })
             if (result && result.data && result.data.length>0){
@@ -184,7 +185,7 @@ const Inputs = ({}) => {
     const onSaveInput=async(unitSelected,inputTypeSelected, name,unitValue,compound,categorySelected)=>{
 
         try {
-            const result = await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/createInput`, {
+            const result = await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/create-input`, {
                
                 idUnit: unitSelected,
                 idInputType: inputTypeSelected,

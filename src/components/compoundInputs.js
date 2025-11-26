@@ -3,7 +3,7 @@ import { useNavigate,createSearchParams  } from 'react-router-dom';
 import axios from "axios";
 import { ConstructionContext } from "../context/constructionContext";
 import Back from "./commons/back";
-import Header from "./commons/header";
+import Header from "./commons/resume";
 import Modal from './commons/modal';
 import CompoundInputTable from "./inputItems/compoundInputTable";
 
@@ -38,9 +38,9 @@ const CompoundInputs = ({
   const getCompoundInputs = async (id) => {
     try {
       const result = await axios.get(
-        `${process.env.REACT_APP_BUDGET_URL_API}/getCompoundInput`,
+        `${process.env.REACT_APP_BUDGET_URL_API}/compound-input`,
         {
-          params: { idInput: id },
+          params: { idInput: id ,idStage:stageSelected.idStage},
         }
       );
       if (result && result.data && result.data.length > 0) {
@@ -60,9 +60,9 @@ const CompoundInputs = ({
   const getItemsInputId = async (idItem,id) => {
     try {
       const result = await axios.get(
-        `${process.env.REACT_APP_BUDGET_URL_API}/itemsInputId`,
+        `${process.env.REACT_APP_BUDGET_URL_API}/items-Input-id`,
         {
-          params: {idItem, idInput: id },
+          params: {idItem, idInput: id,idStage:stageSelected.idStage },
         }
       );
       if (result && result.data && result.data.length > 0) {
@@ -119,8 +119,9 @@ const CompoundInputs = ({
   const updateCompoundInput = async (input) => {
     try {
       const result = await axios.post(
-        `${process.env.REACT_APP_BUDGET_URL_API}/updateCompoundInput`,
+        `${process.env.REACT_APP_BUDGET_URL_API}/update-compound-input`,
         {
+          idStage: stageSelected.idStage,
           idInputCompound: input.idInputCompound,
           idInput: input.idInput,
           quantity: parseFloat(input.quantity),
@@ -156,7 +157,7 @@ const CompoundInputs = ({
 
     try {
       const result = await axios.post(
-        `${process.env.REACT_APP_BUDGET_URL_API}/removeCompoundInput`,
+        `${process.env.REACT_APP_BUDGET_URL_API}/remove-compound-input`,
         {
           idInputCompound: item.idInputCompound,
           user,

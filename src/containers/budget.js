@@ -5,7 +5,7 @@ import { ConstructionContext } from "../context/constructionContext";
 import Chapter from '../components/chapters'
 import ConstructionItems from '../components/constructionItems'
 import InputItem from '../components/inputItem'
-import Header from '../components/commons/header'
+import Header from '../components/commons/resume'
 import CompoundInputs from '../components/compoundInputs';
 
 const Budget = ({  }) => {
@@ -15,8 +15,8 @@ const Budget = ({  }) => {
    const [searchParams] = useSearchParams();
    const idItem = searchParams.get('idItem')
    const [showOption, setShowOption] = useState(searchParams.get('option') ? searchParams.get('option'):  "constructionItems")
-   const [chapterSelected, setChapterSelected] = useState(0)
-   const [subchapterSelected, setSubchapterSelected] = useState(0)
+   const [chapterSelected, setChapterSelected] = useState(-1)
+   const [subchapterSelected, setSubchapterSelected] = useState(-1)
    const [constructionItemsArray, setConstructionItemsArray] = useState([])
    const [itemSelected, setItemSelected] = useState({idItem:searchParams.get('idItem')?searchParams.get('idItem'):''})
    const [compoundSelected,setCompoundSelected]= useState({idInput:searchParams.get('idCompoundSelected')?searchParams.get('idCompoundSelected'):''} )
@@ -24,9 +24,10 @@ const Budget = ({  }) => {
 
    
     const onConstructionItems = async () => {
-        axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/stageItems`, {
-           idStage: chapterSelected ,
-           idSubChapter: subchapterSelected
+      console.log("fill===");
+        axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/stage-items`, {
+           idStage: stageSelected.idStage ,
+           idSubchapter: subchapterSelected
         }).then(
             (result) => {
                 if (result && result.data && result.data.length > 0) {
@@ -46,17 +47,20 @@ const Budget = ({  }) => {
         )
     }
 
-    useEffect(
-      ()=>{
+   useEffect(
+   ()=>{
          console.log("change",showOption);
+         console.log("chapterSelected change",chapterSelected);
          if ((showOption==="constructionItems" || showOption === 'inputItems')
             && chapterSelected && subchapterSelected )
                onConstructionItems()
-      },[showOption,chapterSelected,subchapterSelected]
+      },[subchapterSelected]
     )
 
+   
     useEffect(
       ()=>{
+         console.log("entrooo",constructionItemsArray);
          if (idItem && constructionItemsArray && constructionItemsArray.length>0){
                const item = constructionItemsArray.filter((x)=>x.idItem.toString()===idItem.toString())
                if(item && item.length>0)
@@ -66,18 +70,33 @@ const Budget = ({  }) => {
       [constructionItemsArray]
     )
 
-    useEffect(
-      ()=>{
-          const chapterValues = localStorage.getItem("chapterValues")
+      useEffect(
+        () => {
+            console.log("budget===");
+            const chapterValues = localStorage.getItem("chapterValues")
+            
+            if(chapterValues )
+            {
+                const values =JSON.parse(chapterValues)
+                const newChapterSelected =  parseInt(values.chapterSelected)
+                const newSubchapterSelected =parseInt(values.subchapterSelected)
+                console.log("entro chapterValues===",chapterValues);
+                setChapterSelected(newChapterSelected)
+                setSubchapterSelected(newSubchapterSelected)
+                
+            }else
+            {
+                 console.log("entro chapterValues1===");
+                 setChapterSelected(0)
+                 setSubchapterSelected(0)
+                 
+            }
 
-          if(chapterValues )
-          {
-            const values =JSON.parse(chapterValues)
-            setSubchapterSelected(values.subchapterSelected)
-            setChapterSelected(values.chapterSelected)
-          }
-      },[]
+            
+        }, []
     )
+
+
    
    return (
       <div>
@@ -89,21 +108,22 @@ const Budget = ({  }) => {
          }
          {
             showOption !== 'inputItems' &&  showOption !== 'compoundInputs'&& (
+               <div className='container_chapters'>
+             
                <Chapter
                   chapterSelected={chapterSelected}
                   setChapterSelected={setChapterSelected}
                   subchapterSelected={subchapterSelected}
                   setSubchapterSelected={setSubchapterSelected}
                   setShowOption={setShowOption}
-               />
+               /></div>
 
             )
          }
 
          {showOption === 'constructionItems' && (
             <ConstructionItems
-               idSubChapter={subchapterSelected}
-               idChapter={chapterSelected}
+               idSubchapter={subchapterSelected}
                setShowOption={setShowOption}
                setItemSelected={setItemSelected}
                constructionItemsArray={constructionItemsArray}

@@ -20,11 +20,11 @@ const ConstructionItemsTable = ({ constructionItemsArray, onChangeQuantity, setS
     )
     return (
         <div>
-            <table className="table w-80">
+            <table className="table construction-items-table">
                 <thead>
                     <tr>
-                        <th className='w-5'></th>
-
+                        <th className='w-5'>ELIMINAR</th>
+                            
                         <th className='w-5'>
                             A.P.U
                         </th>
@@ -62,13 +62,13 @@ const ConstructionItemsTable = ({ constructionItemsArray, onChangeQuantity, setS
                                 return (
                                     <tr key={index.toString()} >
 
-                                        <td className={index % 2 === 0 ? "gray " : ""}>
-                                            <i class="far fa-trash-alt icon-table-small"
+                                        <td className={index % 2 === 0 ? "dark center" : "center"}>
+                                            <i class="far fa-trash-alt icon-view-detail"
                                                 onClick={() => onRemoveItem(index)}
                                             />
                                         </td>
-                                        <td className={index % 2 === 0 ? "gray" : ""}>
-                                            <i className="fas fa-folder-open icon-table"
+                                        <td className={index % 2 === 0 ? "dark center" : "center"}>
+                                            <i className="fas fa-external-link-alt icon-view-detail"
                                                 onClick={() => {
                                                     setShowOption('inputItems');
                                                
@@ -78,16 +78,16 @@ const ConstructionItemsTable = ({ constructionItemsArray, onChangeQuantity, setS
                                             />
                                         </td>
 
-                                        <td className={index % 2 === 0 ? "gray" : ""}>
+                                        <td className={index % 2 === 0 ? "dark" : ""}>
                                             {x.cod}
                                         </td>
-                                        <td className={index % 2 === 0 ? "gray left" : "left"}>
+                                        <td className={index % 2 === 0 ? "dark left" : "left"}>
                                             {x.name}
                                         </td>
-                                        <td className={index % 2 === 0 ? "gray" : ""}>
+                                        <td className={index % 2 === 0 ? "dark" : ""}>
                                             {x.unit}
                                         </td>
-                                        <td className={index % 2 === 0 ? "gray" : ""}>
+                                        <td className={index % 2 === 0 ? "dark " : ""}>
 
                                             <input
                                                 type="text"
@@ -98,18 +98,18 @@ const ConstructionItemsTable = ({ constructionItemsArray, onChangeQuantity, setS
                                                 onChange={(event) => onChangeQuantity(event, index)}
                                             />
                                         </td>
-                                        <td className={index % 2 === 0 ? "gray right" : "right"}>
-                                            <i className='far fa-save icon-table'
+                                        <td className={index % 2 === 0 ? "dark center" : "center"}>
+                                            <i className='far fa-save icon-view-detail'
                                                 onClick={() => { onSaveInformation(index) }}
                                             />&nbsp;
-                                            <i className='fas fa-times-circle icon-table'
+                                            <i className='fas fa-times-circle icon-view-detail'
                                                 onClick={() => { onRefresh() }}
                                             />&nbsp;
                                         </td>
-                                        <td className={index % 2 === 0 ? "gray right" : "right"}>
+                                        <td className={index % 2 === 0 ? "dark right" : "right"}>
                                             {commom.getMoneyFomat(x.totalItem ? x.totalItem : 0)}
                                         </td>
-                                        <td className={index % 2 === 0 ? "gray right" : "right"}>
+                                        <td className={index % 2 === 0 ? "dark right" : "right"}>
                                             {commom.getMoneyFomat(x.totalItem && x.quantity ? x.totalItem * x.quantity : 0)}
                                         </td>
 

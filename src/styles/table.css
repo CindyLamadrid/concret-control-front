@@ -1,0 +1,63 @@
+.table{
+  
+    thead th{
+      background-color: whitesmoke;
+      color: #0F5258;
+      font-size: 8pt;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    tbody td{
+          font-size: 9pt;
+          border-bottom: 1px lightgray solid;
+          padding-right: 2px;
+          padding-left: 2px;
+          padding-top: 1px;
+          padding-bottom: 1px;
+          input{
+            width: 80%;
+            border-radius: 4px  ;
+             border: 1px lightgray solid;
+            height: 20px;
+           
+          }
+          i{
+            vertical-align: middle;
+          }
+    }
+}
+
+.folder{
+  color: #0F5258;
+}
+
+.construction-table{
+  width: 40%;
+}
+
+.construction-items-table{
+  width: 80%;
+}
+
+.icon-view-detail{
+  color: #0F5258;
+  font-size: 12pt;
+  cursor: pointer;
+ 
+}
+
+.icon-view-primary{
+  color: white;
+  font-size: 12pt;
+  cursor: pointer;
+ 
+}
+.dark{
+  background-color: lightgray;
+}
+
+.pending-changes{
+    color: red;
+    font-weight: 500;
+}

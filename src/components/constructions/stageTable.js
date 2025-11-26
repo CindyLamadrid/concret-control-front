@@ -1,54 +1,34 @@
 const StagesTable = ({ constructionStagesArray, onViewStageItems }) => {
-    return (
-        <div>
-            <table className="table  w-40">
-                <thead>
-                    <tr>
+  return (
+    <div>
+      <table className="table construction-table">
+        <thead>
+          <tr>
+            <th>CODIGO</th>
+            <th>NOMBRE</th>
+            <th>VER</th>
+          </tr>
+        </thead>
+        <tbody>
+          {constructionStagesArray.map((x, index) => {
+            return (
+              <tr key={index.toString()}>
+                <td className={index % 2 === 0 ? "dark" : ""}>{x.idStage}</td>
+                <td className={index % 2 === 0 ? "dark" : ""}>{x.name}</td>
 
-                        <th>CODIGO</th>
-                        <th>
-                            NOMBRE
-                        </th>
-                        <th>
+                <td className={index % 2 === 0 ? "dark center" : "center"}>
+                  <i
+                    className="fas fa-external-link-alt icon-view-detail"
+                    onClick={() => onViewStageItems(x.idStage)}
+                  />
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+};
 
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    {
-                        constructionStagesArray.map(
-                            (x, index) => {
-                                return (
-                                    <tr key={index.toString()} >
-
-
-                                        <td className={index % 2 === 0 ? "gray" : ""}>
-                                            {x.idStage}
-                                        </td>
-                                        <td className={index % 2 === 0 ? "gray" : ""}>
-                                            {x.name}
-                                        </td>
-
-                                        <td className={index % 2 === 0 ? "gray" : ""}>
-
-                                            <i
-                                                className="fas fa-folder-open icon-table"
-                                                onClick={() => onViewStageItems(x.idStage)}
-                                            />
-                                        </td>
-
-                                    </tr>
-                                )
-                            }
-                        )
-                    }
-
-
-                </tbody>
-            </table>
-        </div>
-    )
-}
-
-export default StagesTable
+export default StagesTable;

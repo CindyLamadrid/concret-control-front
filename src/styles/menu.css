@@ -1,0 +1,46 @@
+
+.menu-container{
+    background-color: white;
+    border-right: 1px lightgrey solid;
+    margin-right: 2%;
+    height: 82vh;
+}
+.container-menu-title{
+    margin-top: 8%;
+}
+
+.menu-subcontainer{
+    padding: 0px;
+    background-color: white;
+}
+
+.menu-item{
+    font-size: 10pt!important;
+    /* color: 	#006400; */
+    color : #0F5258;
+    font-weight: 400;
+    width: 100%;
+}
+
+.menu-item:hover{
+    font-size: 10pt!important;
+    color: 	#0F5258!important;
+    font-weight: 600;
+    background-color: whitesmoke;
+    border-left: #0F5258 3px solid;
+}
+
+.menu-title{
+    font-size: 10pt!important;
+    color: 	#0F5258;
+    font-weight: 700;
+}
+
+.menu-title:hover{
+    font-size: 10pt!important;
+    color: 	#0F5258!important;
+    font-weight: 600;
+    background-color: whitesmoke;
+    border-left: #0F5258 3px solid;
+}
+

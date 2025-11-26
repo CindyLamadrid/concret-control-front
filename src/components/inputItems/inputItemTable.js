@@ -2,7 +2,7 @@ const handlers = require("../utils/handlers");
 const common = require("../utils/common");
 
 const InputItemTable = ({
-  inputItemsArray,
+  itemInputsArray,
   onChangeQuantity,
   onSaveInformation,
   onRefresh,
@@ -29,7 +29,7 @@ const InputItemTable = ({
           </tr>
         </thead>
         <tbody>
-          {inputItemsArray.map((x, index) => {
+          {itemInputsArray.map((x, index) => {
             return (
               <tr key={index.toString()}>
                 <td className={index % 2 === 0 ? "gray" : ""}>
@@ -124,12 +124,12 @@ const InputItemTable = ({
               </tr>
             );
           })}
-          {inputItemsArray && inputItemsArray.length > 0 && (
+          {itemInputsArray && itemInputsArray.length > 0 && (
             <tr>
               <td colSpan={10}></td>
               <td className="right">
                 {common.getMoneyFomat(
-                  common.getTotals(inputItemsArray, "totalInput")
+                  common.getTotals(itemInputsArray, "totalInput")
                 )}
               </td>
             </tr>

@@ -13,7 +13,7 @@ const Items = ({  }) => {
             useContext(ConstructionContext);
     const idStage =  stageSelected.idStage  
     const [searchParams] = useSearchParams();
-    const idSubChapter = searchParams.get('idSubChapter')     
+    const idSubchapter = searchParams.get('idSubchapter')     
     const [item, setItem] = useState('')
     const [showNewItem, setShowNewItem] = useState(false)
     const [itemArray, setItemArray] = useState([])
@@ -37,9 +37,9 @@ const Items = ({  }) => {
 
     const onSearchItems = async () => {
         try {
-            const result = await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/itemsNameCod`, {
+            const result = await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/search-subchapter-items`, {
                 name:item ,
-                idSubChapter
+                idSubchapter
             })
             if (result && result.data && result.data.length > 0) {
                 setItemArray(result.data)
@@ -59,8 +59,8 @@ const Items = ({  }) => {
 
 
         try {
-            const result = await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/createItem`, {
-                idSubChapter,
+            const result = await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/create-subchapter-item`, {
+                idSubchapter,
                 idUnit: unitSelected,
                 name: name,
                 user
@@ -105,7 +105,7 @@ const Items = ({  }) => {
 
      const createStageItems = async (stageItems) => {
         try {
-            const result = await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/createStageItems`, {
+            const result = await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/create-stage-items`, {
                 idStage: idStage,
                 idItem: stageItems.idItems,
                 user
@@ -154,7 +154,6 @@ const Items = ({  }) => {
         }, []
     )
     const onCancelOption=()=>{
-       //  setShowOption('contructionItems')
          navigate(`/budget?option=constructionItems`)
     }
 
@@ -171,15 +170,22 @@ const Items = ({  }) => {
         <div>
             {
                 !showNewItem && (
-                    <AdminOptions
+                    <div>
+                        <br/>
+                          <div className="header-title">
+                                <span>OPCIONES DE ITEMS</span>
+                               
+                            </div>
+                      
+                        <AdminOptions
                         value={item}
                         setValue={setItem}
                         onSearch={onSearchItems}
                         onNewOption={onNewItem}
                         labelOption ="Crear Nuevo Item"
                         onCancelOption={onCancelOption}
-                    />
-
+                          />
+                   </div>
 
                 )
             }
