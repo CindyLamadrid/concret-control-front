@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import {useState, useContext } from "react";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
@@ -6,38 +6,154 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { useNavigate } from "react-router-dom";
 import { ConstructionContext } from "../context/constructionContext";
 
-const Menu = () => {
+
+
+const Menu = ({reportOption,setReportOption}) => {
   const navigate = useNavigate();
-  const { stageSelected } = useContext(ConstructionContext);
+  const [collapse, setCollapse] = useState(false);
+
+  const [administrationOption, setAdministrationOption] = useState(true);
+  const [report, setReport] = useState(true);
+
+
+  const { user,stageSelected } = useContext(ConstructionContext);
   return (
-    <div className="menu-container">
-      <Navbar className="menu-subcontainer">
-        <Container className="container-menu-title">
-          <Navbar.Brand className="menu-title">MENU</Navbar.Brand>
-        </Container>
-      </Navbar>
-       <Navbar className="menu-subcontainer">
-       <Container>
-          <Navbar.Brand className="menu-item">Projectos</Navbar.Brand>
-        </Container>
-      </Navbar>
-      <br />
-      <Navbar className="menu-subcontainer">
-        <Container>
-          <Navbar.Brand className="menu-item">Reports</Navbar.Brand>
-        </Container>
-      </Navbar>
-      <Navbar className="menu-subcontainer">
-        <Container>
-          <Navbar.Brand className="menu-item"
+    <div className={collapse ? "menu-container menu-collapsed" :"menu-container"} hidden={!user}>
+      {!collapse ? (
+        <div>
+          <Navbar className="menu-subcontainer">
+            <Container className="container-menu-title">
+              <Navbar.Brand className="menu-title">
+                <i className="fas fa-bars white" onClick={()=>{setCollapse(!collapse)}}/> MENU
+              </Navbar.Brand>
+            </Container>
+          </Navbar>
+
+          <Navbar className="menu-subcontainer">
+            <Container className="no-margin">
+              <Navbar.Brand className="menu-item">
+                {" "}
+                <b>Administrar Projectos</b>
+              </Navbar.Brand>
+            </Container>
+          </Navbar>
+          <Navbar
+            className="menu-subcontainer"
             onClick={() => {
-              navigate("reports");
+              setAdministrationOption(!administrationOption);
             }}
           >
-            Subcapitulos
-          </Navbar.Brand>
-        </Container>
-      </Navbar>
+            <Container className="no-margin">
+              <Navbar.Brand className="menu-item">
+                <span className="menu-option-icon">
+                  <i
+                    className={
+                      administrationOption
+                        ? "fas fa-caret-down "
+                        : "fas fa-caret-right  "
+                    }
+                  />
+                </span>
+                <b>Administrar </b>
+              </Navbar.Brand>
+            </Container>
+          </Navbar>
+          {administrationOption ? (
+            <Navbar className="menu-subcontainer">
+              <Container className="no-margin">
+                <Navbar.Brand className="menu-item">
+                  {" "}
+                  <span className="menu-option">Capitulos</span>
+                </Navbar.Brand>
+              </Container>
+            </Navbar>
+          ) : (
+            ""
+          )}
+          {administrationOption ? (
+            <Navbar className="menu-subcontainer">
+              <Container className="no-margin">
+                <Navbar.Brand className="menu-item">
+                  {" "}
+                  <span className="menu-option">Subcapitulos</span>
+                </Navbar.Brand>
+              </Container>
+            </Navbar>
+          ) : (
+            ""
+          )}
+          {administrationOption ? (
+            <Navbar className="menu-subcontainer">
+              <Container className="no-margin">
+                <Navbar.Brand className="menu-item">
+                  {" "}
+                  <span className="menu-option">Categorias</span>
+                </Navbar.Brand>
+              </Container>
+            </Navbar>
+          ) : (
+            ""
+          )}
+          {administrationOption ? (
+            <Navbar className="menu-subcontainer">
+              <Container className="no-margin">
+                <Navbar.Brand className="menu-item">
+                  {" "}
+                  <span className="menu-option">Unidades</span>
+                </Navbar.Brand>
+              </Container>
+            </Navbar>
+          ) : (
+            ""
+          )}
+          <hr />
+          {stageSelected && stageSelected.idStage ? (
+            <Navbar
+              className="menu-subcontainer"
+              onClick={() => {
+                setReport(!report);
+              }}
+            >
+              <Container className="no-margin">
+                <Navbar.Brand className="menu-item">
+                  {" "}
+                  <span className="menu-option-icon">
+                    <i
+                      className={
+                        reportOption
+                          ? "fas fa-caret-down "
+                          : "fas fa-caret-right "
+                      }
+                    />
+                  </span>
+                  <b>Reportes </b>{" "}
+                </Navbar.Brand>
+              </Container>
+            </Navbar>
+          ) : (
+            ""
+          )}
+          {stageSelected && stageSelected.idStage && report ? (
+            <Navbar className="menu-subcontainer">
+              <Container className="no-margin">
+                <Navbar.Brand
+                  className="menu-item"
+                  onClick={() => {
+                    setReportOption('subchapter')
+                  }}
+                >
+                  <span className="menu-option">Presuesto Subcapitulos</span>
+                </Navbar.Brand>
+              </Container>
+            </Navbar>
+          ) : (
+            ""
+          )}
+        </div>
+      ) : (
+       <div className="menu-icon-collapsed"><i className="fas fa-bars white" onClick={()=>{setCollapse(!collapse)}}/></div>
+      )}
+   
     </div>
     // <Navbar expand="lg" className="menu">
     //   <Navbar.Brand>Menu</Navbar.Brand>

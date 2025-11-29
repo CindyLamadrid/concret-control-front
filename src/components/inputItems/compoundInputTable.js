@@ -9,14 +9,9 @@ const CompoundInputTable=({compoundInputsArray,onChangeQuantity,onCompoundRemove
                    <thead>
                        <tr>
                            <th className='w-5'>
-   
+                                ELIMINAR
                            </th>
-                           {/* <th className='w-5'>
-                               A.P.U
-                           </th> */}
-                            {/* <th className='w-5'>
-                               DESTINO
-                           </th> */}
+                          
                            <th  className='w-5'>CODIGO</th>
                            <th className='w-40 '>
                                INSUMO
@@ -49,8 +44,8 @@ const CompoundInputTable=({compoundInputsArray,onChangeQuantity,onCompoundRemove
                                (x, index) => {
                                    return (
                                        <tr key={index.toString()} >
-                                           <td className={index % 2 === 0 ? "gray" : ""}>
-                                                <i class="far fa-trash-alt icon-table-small"
+                                           <td className={index % 2 === 0 ? "dark" : ""}>
+                                                <i class="far fa-trash-alt icon-view-detail"
                                                 onClick={()=>onCompoundRemoveInput(index)}
                                                 />
                                            </td>
@@ -58,57 +53,57 @@ const CompoundInputTable=({compoundInputsArray,onChangeQuantity,onCompoundRemove
                                                {`${x.idChapter.toString()}${x.idSubchapter.toString()}` }
                                            </td> */}
    
-                                           <td className={index % 2 === 0 ? "gray" : ""}>
+                                           <td className={index % 2 === 0 ? "dark" : ""}>
                                                {x.cod}
                                            </td>
                                            
-                                           <td className={index % 2 === 0 ? "gray left" : "left"}>
+                                           <td className={index % 2 === 0 ? "dark left" : "left"}>
                                                {x.name}
                                            </td>
-                                           <td className={index % 2 === 0 ? "gray" : ""}>
+                                           <td className={index % 2 === 0 ? "dark" : ""}>
                                                {x.unit}
                                            </td>
-                                           <td className={index % 2 === 0 ? "gray w-5" : "w-5"}>
+                                           <td className={index % 2 === 0 ? "dark w-5" : "w-5"}>
                                              
                                                <input
                                                    type="text"
-                                                   className={`${"input input-table right"} ${x.quantityChanged? 'pending-changes':''}`}
+                                                   className={`${"input right"} ${x.quantityChanged? 'pending-changes':''}`}
                                                    maxLength={4}
                                                    value={x.quantity? x.quantity.toString(): "0"}
                                                    onKeyDown={(event)=>handlers.onHandlerDecimal(event)}
                                                    onChange={(event) => onChangeQuantity(event,index,"quantity")}
                                                />
                                            </td>
-                                           <td className={index % 2 === 0 ? "gray w-5" : "w-5"}>
+                                           <td className={index % 2 === 0 ? "dark w-5" : "w-5"}>
                                                
                                                <input
                                                    type="text"
-                                                   className={`${"input input-table right"} ${x.wasteChanged? 'pending-changes':''}`}
+                                                   className={`${"input right"} ${x.wasteChanged? 'pending-changes':''}`}
                                                    maxLength={4}
                                                    value={x.waste? x.waste.toString(): "0"}
                                                    onKeyDown={(event)=>handlers.onHandlerDecimal(event)}
                                                    onChange={(event) => onChangeQuantity(event,index,"waste")}
                                                />
                                            </td>
-                                            <td className={index % 2 === 0 ? "gray" : ""}>
+                                            <td className={index % 2 === 0 ? "dark" : ""}>
                                        
                                                <input
                                                    type="text"
-                                                   className={`${"input input-table right"} ${x.unitValueChanged? 'pending-changes':''}`}
+                                                   className={`${"input right"} ${x.unitValueChanged? 'pending-changes':''}`}
                                                    value={x.unitValue? x.unitValue.toString(): "0"}
                                                    onKeyDown={(event)=>handlers.onHandlerDecimal(event)}
                                                    onChange={(event) => onChangeQuantity(event,index,"unitValue")}
                                                />
                                            </td>
-                                           <td className={index % 2 === 0 ? "gray right" : "right"}>
-                                               <i className='far fa-save icon-table'
+                                           <td className={index % 2 === 0 ? "dark right" : "right"}>
+                                               <i className='far fa-save icon-view-detail'
                                                   onClick={()=>{onSaveInformation(index)}}
                                                />&nbsp;
-                                               <i className='fas fa-times-circle icon-table'
+                                               <i className='fas fa-times-circle icon-view-detail'
                                                   onClick={()=>{onRefresh()}}
                                                />&nbsp;
                                            </td>
-                                            <td className={index % 2 === 0 ? "gray right" : "right"}>
+                                            <td className={index % 2 === 0 ? "dark right" : "right"}>
                                                {`${common.getMoneyFomat(x.totalInput)}`}
                                            </td>
                                        </tr>

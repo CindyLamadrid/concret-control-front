@@ -167,14 +167,13 @@ const Items = ({  }) => {
     useEventListener('keydown', handleKeyDownEnter);
 
     return (
-        <div>
+        <div  className="col-10">
             {
                 !showNewItem && (
                     <div>
                         <br/>
                           <div className="header-title">
                                 <span>OPCIONES DE ITEMS</span>
-                               
                             </div>
                       
                         <AdminOptions
@@ -215,21 +214,27 @@ const Items = ({  }) => {
             {
                 itemArray && itemArray.length > 0 && (
                     <div>
-                        
-                        <br />
-                        <b><span className="subtitle">LISTADO DE ITEMS GENERALES</span></b>
-                        <br />
-                         <div className=" right w-75">
-                            <input
+                        <br/>
+                         <div className="subtitle">
+                                <span>LISTADO DE ITEMS GENERALES</span>
+                            </div>
+                      
+                         <div>
+                            <button
                                 type="button"
+                                className="primary"
                                 value="Agregar Items"
                                 onClick={() => onAddItems()}
-                            /> &nbsp;&nbsp;
-                            <input
+                            >
+                               {"Agregar Items"} 
+                            </button> &nbsp;
+                            {/* <button
                                 type="button"
-                                value="Cancelar"
+                                className="secondary"
                                 onClick={() => { setShowNewItem(false);navigate(`/budget?option=constructionItems`) }}
-                            />
+                            >
+                                {"Cancelar"}
+                            </button> */}
                         </div>
                         <br/>
                         <ItemTable

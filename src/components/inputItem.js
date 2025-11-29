@@ -176,11 +176,13 @@ const InputItem = ({
         {
           name: "Aceptar",
           disabled: false,
+          className:'primary',
           action: removeInputItem,
         },
         {
           name: "Cancelar",
           disabled: false,
+          className:'secondary',
           action: closeModal,
         },
       ],
@@ -218,7 +220,7 @@ const InputItem = ({
 
   return (
     <div>
-      <Back onBack={onBack} className="" />
+     
       {
         <Header
           itemSelected={itemSelected}
@@ -233,7 +235,7 @@ const InputItem = ({
           item={modalConfiguration.item}
         />
       )}
-
+<br/>
       <div className="container-items-select">
         <ItemsSelect
           id="idItem"
@@ -243,13 +245,17 @@ const InputItem = ({
           array={constructionItemsArray}
         />
       </div>
-
-      <div className=" w-90 right">
-        <input
+<br/>
+      <div >
+         <Back onBack={onBack} className="" />
+            {" "}
+        <button
           type="button"
-          value="Agregar Insumo"
+          className="primary"
           onClick={() => onAddCompoundItems()}
-        />
+        >
+          {"Agregar Insumo"}
+        </button>
       </div>
       <br />
 

@@ -189,11 +189,13 @@ const CompoundInputs = ({
         {
           name: "Aceptar",
           disabled: false,
+          className:'primary ',
           action: removeCompoundInput,
         },
         {
           name: "Cancelar",
           disabled: false,
+          className:'secondary ',
           action: closeModal,
         },
       ],
@@ -212,7 +214,7 @@ const CompoundInputs = ({
 
   return (
     <div>
-      <Back onBack={onBack} className="right back" />
+      
       {
         <Header
           inputSelected = {compoundSelected}
@@ -228,12 +230,16 @@ const CompoundInputs = ({
         />
       )}
       {
-        <div className=" w-90 right">
-          <input
+        <div>
+          <Back onBack={onBack} className="right back" />
+          {" "}
+          <button
             type="button"
-            value="Agregar Insumo"
+            className="primary"
             onClick={() => onAddInputItems()}
-          />
+          >
+            {"Agregar Insumo"}
+          </button>
         </div>
       }
       <br />

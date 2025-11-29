@@ -1,13 +1,34 @@
-// import Logo from '../images/concretoVivo.png'
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { ConstructionContext } from "../context/constructionContext";
+import Logo from "../images/concretoVivo.png";
 
-export const Header=()=>{
-    return(
-        <div className="header">
-               <div>
-                    CONCRETO VIVO
-                  {/* <img className="logo" src={Logo}  alt="Logo"/> */}
-               </div>
+export const Header = ({}) => {
+  const navigate = useNavigate();
+  const { user,setUser } = useContext(ConstructionContext);
+
+  const onClose=()=>{
+    navigate('login')
+    setUser('')
+    
+  }
+
+  return (
+    <div className="header" hidden={!user}>
+      <div>
+        <img className="logo" src={Logo} alt="Logo" />
+
+        <div className="user">
+          <span className="container-header-icon">
+            <i className="fas fa-user right header-icon" />
+          </span>
+          <span>{user}</span>{" "}
+          <span className="container-close-header-icon close">
+            <i className="fas fa-lock right close-header-icon" onClick={()=>{onClose()}}/>
+          </span>
         </div>
-    )
-}
+      </div>
+    </div>
+  );
+};
 export default Header;

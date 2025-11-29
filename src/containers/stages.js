@@ -62,11 +62,11 @@ const Stages = ({}) => {
   };
 
   return (
-    <div>
+    <div  className="col-10">
       <div>
         <Back onBack={onBack} className="" />
         <div className="header-title">
-          <span className="subtitle">LISTADO DE ETAPAS</span>
+          <span>LISTADO DE ETAPAS</span>
           <span className="subheader-title">
             {" "}
             &nbsp;&nbsp;&nbsp;{constructionStagesArray.length} Etapa(s)

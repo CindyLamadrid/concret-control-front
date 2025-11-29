@@ -17,7 +17,7 @@ const InputTable = ({ inputsArray, onSelectInput }) => {
           {inputsArray.map((x, index) => {
             return (
               <tr key={index.toString()}>
-                <td className={index % 2 === 0 ? "gray" : ""}>
+                <td className={index % 2 === 0 ? "dark" : ""}>
                   <input
                     type="checkbox"
                     checked={x.selected}
@@ -25,12 +25,12 @@ const InputTable = ({ inputsArray, onSelectInput }) => {
                   />
                 </td>
 
-                <td className={index % 2 === 0 ? "gray" : ""}>{x.idInput}</td>
-                <td className={index % 2 === 0 ? "gray left" : "left"}>
+                <td className={index % 2 === 0 ? "dark" : ""}>{x.idInput}</td>
+                <td className={index % 2 === 0 ? "dark left" : "left"}>
                   {x.name}
                 </td>
-                <td className={index % 2 === 0 ? "gray" : ""}>{x.unitName}</td>
-                <td className={index % 2 === 0 ? "gray" : ""}>
+                <td className={index % 2 === 0 ? "dark" : ""}>{x.unitName}</td>
+                <td className={index % 2 === 0 ? "dark" : ""}>
                   {common.getMoneyFomat(x.unitValue)}
                 </td>
               </tr>

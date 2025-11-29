@@ -45,11 +45,11 @@ const NewInput = ({
   return (
     <Modal.Dialog>
       <Modal.Body>
-        <div className="center">
+        <div className="subtitle center">
           <b> CREAR INSUMO</b>
         </div>
         <div className="row">
-          <div className="col-4 right">
+          <div className="col-4 right label">
             <span>Nombre</span>
           </div>
           <div className="col-8">
@@ -67,10 +67,10 @@ const NewInput = ({
         </div>
         <br />
         <div className="row">
-          <div className="col-4 right">
+          <div className="col-4 right label">
             <span>Unidad de Medida</span>
           </div>
-          <div className="col-8">
+          <div className="col-8 container-select">
             <UnitSelect
               id="idUnit"
               name="name"
@@ -81,10 +81,10 @@ const NewInput = ({
           </div>
         </div>
         <div className="row">
-          <div className="col-4 right">
+          <div className="col-4 right label">
             <span>Tipo de Insumo</span>
           </div>
-          <div className="col-8">
+          <div className="col-8 container-select">
             <UnitSelect
               id="idInputType"
               name="name"
@@ -94,10 +94,10 @@ const NewInput = ({
             />
           </div>
           <div className="row">
-            <div className="col-4 right">
+            <div className="col-4 right label">
               <span>Categoria</span>
             </div>
-            <div className="col-8">
+            <div className="col-8 container-select">
               <UnitSelect
                 id="idCategory"
                 name="name"
@@ -128,7 +128,7 @@ const NewInput = ({
         </div> */}
 
         <div className="row" hidden={inputType === "compound"}>
-          <div className="col-4 right">
+          <div className="col-4 right label">
             <span>Compuesto?</span>
           </div>
           <div className="col-8">
@@ -142,17 +142,16 @@ const NewInput = ({
         </div>
         <br />
         <div className="right">
-          <input
-            className="btn-secondary"
+          <button
+            className="secondary"
             type="button"
-            value="Cerrar"
+          
             onClick={() => setShowNewInput(false)}
-          />
-          &nbsp;&nbsp;
-          <input
-            className="btn-primary"
+          >{"Cerrar"}</button>
+          &nbsp;
+          <button
+            className="primary"
             type="button"
-            value="Crear Insumo"
             disabled={!name}
             onClick={() => {
               onSaveInput(
@@ -164,7 +163,7 @@ const NewInput = ({
                 categorySelected
               );
             }}
-          />
+          >{"Crear Insumo"}</button>
         </div>
       </Modal.Body>
     </Modal.Dialog>

@@ -99,7 +99,7 @@ const Budget = ({  }) => {
 
    
    return (
-      <div>
+      <div  className="col-10">
          {showOption === 'constructionItems' && (
             <Header
                stageSelected={stageSelected}

@@ -1,9 +1,12 @@
 import SubchapterBudget from '../components/reports/subchapterBudget'
 
-const Reports=()=>{
+const Reports=({reportOption,setReportOption})=>{
     return(
         <div>
-            <SubchapterBudget />
+            <SubchapterBudget 
+            reportOption={reportOption}
+            setReportOption={setReportOption}
+            />
         </div>
     )
 }

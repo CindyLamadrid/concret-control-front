@@ -30,26 +30,27 @@ const ItemTable = ({ itemArray,onSelectItem }) => {
                             (x, index) => {
                                 return (
                                     <tr key={index.toString()}>
-                                          <td className={index%2===0 ? "gray":""}>
+                                          <td className={index%2===0 ? "dark":""}>
                                           <input
                                             type="checkbox"
+                                            className="checkbox"
                                             checked={x.selected}
                                             onChange={()=>onSelectItem(index)}
                                           />
                                         </td>
-                                        <td className={index%2===0 ? "gray":""}>
-                                           <i className="fas fa-folder-open icon-table"/>
+                                        <td className={index%2===0 ? "dark":""}>
+                                           <i className="fas fa-external-link-alt icon-view-detail"/>
                                         </td>
-                                        <td className={index%2===0 ? "gray":""}>
+                                        <td className={index%2===0 ? "dark":""}>
                                            {x.cod}
                                         </td>
-                                         <td className={index%2===0 ? "gray left":"left"}>
+                                         <td className={index%2===0 ? "dark left":"left"}>
                                             {x.name}
                                         </td>
-                                         <td className={index%2===0 ? "gray":""}>
+                                         <td className={index%2===0 ? "dark":""}>
                                             {x.unitName}
                                         </td>
-                                         <td className={index%2===0 ? "gray":""}>
+                                         <td className={index%2===0 ? "dark":""}>
                                             {x.subChapterName}
                                         </td>
                                     </tr>

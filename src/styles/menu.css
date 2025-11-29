@@ -3,15 +3,30 @@
     background-color: white;
     border-right: 1px lightgrey solid;
     margin-right: 2%;
-    height: 82vh;
+    margin-left: 0px;
+    padding-left: 0px;
+    height: 80vh;
+    background: whitesmoke;
+}
+.menu-collapsed{
+    width: 20%;
+}
+
+.no-margin{
+  margin-left: 0px;
+  margin-right: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 .container-menu-title{
     margin-top: 8%;
+    background-color: #06a796;
+
 }
 
 .menu-subcontainer{
     padding: 0px;
-    background-color: white;
+    background-color: whitesmoke;
 }
 
 .menu-item{
@@ -20,27 +35,58 @@
     color : #0F5258;
     font-weight: 400;
     width: 100%;
+    padding-right: 0px;
+    padding-left: 10px;
+    margin-left: 1px;
+    margin-right: 0px;
 }
 
 .menu-item:hover{
     font-size: 10pt!important;
     color: 	#0F5258!important;
     font-weight: 600;
-    background-color: whitesmoke;
+    background-color: lightgray;
     border-left: #0F5258 3px solid;
 }
 
 .menu-title{
     font-size: 10pt!important;
-    color: 	#0F5258;
+    color: 	white;
     font-weight: 700;
 }
 
 .menu-title:hover{
-    font-size: 10pt!important;
-    color: 	#0F5258!important;
-    font-weight: 600;
-    background-color: whitesmoke;
-    border-left: #0F5258 3px solid;
+  font-size: 10pt!important;
+    color: 	white;
+    font-weight: 700;
 }
 
+.nav{
+    padding-left: 0px!important;
+    padding-right: 0px!important;
+}
+
+.menu-option{
+    padding-left:15%;
+}
+
+.menu-option-icon{
+   
+    padding-right: 3%;
+    margin-top: -3%;
+    font-size: 12pt;
+}
+
+.menu-icon-collapsed {
+    font-size: 10pt !important;
+    background-color: #06a796;
+    color: white;
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    padding: 4px;
+    /* padding-right: 0px;
+    padding-left: 10px;
+    margin-left: 1px;
+    margin-right: 0px; */
+}

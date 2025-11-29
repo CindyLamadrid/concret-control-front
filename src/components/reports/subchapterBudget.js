@@ -2,24 +2,29 @@ import axios from "axios";
 import {  useContext, useState ,useEffect} from "react";
 import Hogan from "hogan.js";
 import { ConstructionContext } from "../../context/constructionContext";
-
-
-
-
+const commom = require('../utils/common')
  
-const SubchapterBudget = () => {
-  const { stageSelected } = useContext(ConstructionContext);
+const SubchapterBudget = ({reportOption,setReportOption}) => {
+  const { stageSelected,constructionSelected } = useContext(ConstructionContext);
   const [reportArray, setReportArray] =useState([]);
   const [loadReport, setLoadReport] =useState(false);
 
    const printReport = (report) => {
-    window.open("", "_self");
-    window.document.write(report);
+    const newTab = window.open("", "_blank");
+    newTab.document.write(report);
+     newTab.document.close(); 
+       setTimeout(() => {
+      newTab.print();
+    }, 1000);
+    // const pri = document.getElementById("ifmcontentstoprint").contentWindow;
+    // pri.document.open();
+    // pri.document.write(report);
     // pri.document.close();
     // pri.focus();
     // setTimeout(() => {
     //   pri.print();
     // }, 1000);
+   
   };
 
 const generateReport=(reportArray)=>{
@@ -28,7 +33,8 @@ const generateReport=(reportArray)=>{
       .then((dataInfo) => {
             const newTemplates = Hogan.compile(dataInfo);
             const data ={
-               list:reportArray
+               list:reportArray,
+               projectName: constructionSelected.name
             }
             const htmlOutput = newTemplates.render(data);
             printReport(htmlOutput)
@@ -44,6 +50,12 @@ const generateReport=(reportArray)=>{
         })
         .then((result) => {
           if (result && result.data && result.data.length > 0) {
+            const report = result.data.map(
+              (x)=>{
+                const newItem = x;
+                newItem.valueFormat =  `${ commom.getMoneyFomat(x.value ? x.value : 0)}`
+              }
+            )
             setReportArray(result.data);
             
           } else {
@@ -64,8 +76,13 @@ const generateReport=(reportArray)=>{
   };
 
   useEffect(() => {
-    getSubchapterBudget()
-  }, []);
+    if(reportOption==="subchapter")
+    {
+      getSubchapterBudget()
+      setReportOption('')
+    }
+    
+  }, [reportOption]);
 
   useEffect(
     ()=>{
@@ -78,7 +95,7 @@ const generateReport=(reportArray)=>{
     },[reportArray,loadReport]
   )
 
-  return <div></div>;
+  return <div> <iframe id="ifmcontentstoprint" title="print" className="printOnly" /></div>;
 };
 
 export default SubchapterBudget;

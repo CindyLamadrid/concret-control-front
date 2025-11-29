@@ -116,11 +116,13 @@ const ConstructionItems = ({
         {
           name: "Aceptar",
           disabled: false,
+          className:'primary',
           action: removeItem,
         },
         {
           name: "Cancelar",
           disabled: false,
+          className:'secondary',
           action: closeModal,
         },
       ],

@@ -7,6 +7,7 @@ export const ConstructionContext = createContext({
   stageSelected: "",
   constructionSelected: "",
   defaultStage:0,
+  setUser: () => {},
   setConstructionSelected: () => {},
   setStageSelected: () => {},
   setDefaultStage: () => {}

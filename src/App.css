@@ -22,15 +22,63 @@
 {
   text-align: center;
 }
+.mandatory{
+  color: red;
+  font-size: 9pt;
+}
 
 .w-5{
   width: 5%;
 }
+.w-7{
+  width: 7%;
+}
+
 
 .w-10{
   width: 10%;
 }
 
+.w-13{
+  width: 13%;
+}
+
+.w-15{
+  width: 15%;
+}
+
 .w-40{
   width: 40%;
 }
+.w-60{
+  width: 60%;
+}
+
+.w-80{
+  width: 80%;
+}
+
+.w-100{
+  width: 40%;
+}
+
+.mg-5{
+  margin-left:5px;
+}
+
+.white{
+  color: white;
+}
+
+.modal, .modal-information {
+    background-color: rgba(66, 66, 66, 0.502);
+    height: 100vh;
+    left: 0;
+    outline: 0;
+    position: fixed!important;
+    top: 50;
+    transition: opacity .15s linear;
+    width: 100%;
+    z-index: 3000;
+}
+

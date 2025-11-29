@@ -15,7 +15,7 @@ const InputItemTable = ({
       <table className="table w-80">
         <thead>
           <tr>
-            <th className="w-5"></th>
+            <th className="w-5">ELIMINAR</th>
             <th className="w-5">A.P.U</th>
             <th className="w-5">DESTINO</th>
             <th className="w-5">CODIGO</th>
@@ -32,15 +32,15 @@ const InputItemTable = ({
           {itemInputsArray.map((x, index) => {
             return (
               <tr key={index.toString()}>
-                <td className={index % 2 === 0 ? "gray" : ""}>
+                <td className={index % 2 === 0 ? "dark center" : "center"}>
                   <i
-                    class="far fa-trash-alt icon-table-small"
+                    class="far fa-trash-alt icon-view-detail"
                     onClick={() => onRemoveInputItem(index)}
                   />
                 </td>
-                <td className={index % 2 === 0 ? "gray" : ""}>
+                <td className={index % 2 === 0 ? "dark center" : "center"}>
                   <i
-                    className="fas fa-folder-open icon-table"
+                    className="fas fa-external-link-alt icon-view-detail"
                     onClick={() => {
                       setShowOption("compoundInputs");
                       console.log("compoundSelected",x);
@@ -50,20 +50,20 @@ const InputItemTable = ({
                     hidden={!x.compound}
                   />
                 </td>
-                <td className={index % 2 === 0 ? "gray" : ""}>
+                <td className={index % 2 === 0 ? "dark" : ""}>
                   {`${x.idChapter.toString()}${x.idSubchapter.toString()}`}
                 </td>
 
-                <td className={index % 2 === 0 ? "gray" : ""}>{x.cod}</td>
+                <td className={index % 2 === 0 ? "dark" : ""}>{x.cod}</td>
 
-                <td className={index % 2 === 0 ? "gray left" : "left"}>
+                <td className={index % 2 === 0 ? "dark left" : "left"}>
                   {x.name}
                 </td>
-                <td className={index % 2 === 0 ? "gray" : ""}>{x.unit}</td>
-                <td className={index % 2 === 0 ? "gray w-5" : "w-5"}>
+                <td className={index % 2 === 0 ? "dark" : ""}>{x.unit}</td>
+                <td className={index % 2 === 0 ? "dark w-5" : "w-5"}>
                   <input
                     type="text"
-                    className={`${"input input-table right"} ${
+                    className={`${"input right"} ${
                       x.quantityChanged ? "pending-changes" : ""
                     }`}
                     maxLength={4}
@@ -74,10 +74,10 @@ const InputItemTable = ({
                     }
                   />
                 </td>
-                <td className={index % 2 === 0 ? "gray w-5" : "w-5"}>
+                <td className={index % 2 === 0 ? "dark w-5" : "w-5"}>
                   <input
                     type="text"
-                    className={`${"input input-table right"} ${
+                    className={`${"input right"} ${
                       x.wasteChanged ? "pending-changes" : ""
                     }`}
                     maxLength={4}
@@ -88,10 +88,10 @@ const InputItemTable = ({
                     }
                   />
                 </td>
-                <td className={index % 2 === 0 ? "gray" : ""}>
+                <td className={index % 2 === 0 ? "dark" : ""}>
                   <input
                     type="text"
-                    className={`${"input input-table right"} ${
+                    className={`${"input right"} ${
                       x.unitValueChanged ? "pending-changes" : ""
                     }`}
                     value={x.unitValue ? x.unitValue.toString() : "0"}
@@ -102,23 +102,23 @@ const InputItemTable = ({
                     }
                   />
                 </td>
-                <td className={index % 2 === 0 ? "gray right" : "right"}>
+                <td className={index % 2 === 0 ? "dark center" : "center"}>
                   <i
-                    className="far fa-save icon-table"
+                    className="far fa-save icon-view-detail"
                     onClick={() => {
                       onSaveInformation(index);
                     }}
                   />
                   &nbsp;
                   <i
-                    className="fas fa-times-circle icon-table"
+                    className="fas fa-times-circle icon-view-detail"
                     onClick={() => {
                       onRefresh();
                     }}
                   />
                   &nbsp;
                 </td>
-                <td className={index % 2 === 0 ? "gray right" : "right"}>
+                <td className={index % 2 === 0 ? "dark center" : "center"}>
                   {`${common.getMoneyFomat(x.totalInput)}`}
                 </td>
               </tr>
