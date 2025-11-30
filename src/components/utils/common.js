@@ -7,7 +7,9 @@ export const getTotals=(array,field)=>{
     return total
 }
 
-export const getMoneyFomat=(value)=>{
+export const getMoneyFomat=(value,isEditing)=>{
+  if(isEditing)
+     return value
 const formatter = new Intl.NumberFormat('es-CO', {
   style: 'currency',
   currency: 'COP',
@@ -15,6 +17,9 @@ const formatter = new Intl.NumberFormat('es-CO', {
 
   return formatter
 }
+
+
+
 
 
 

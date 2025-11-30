@@ -1,7 +1,7 @@
 const handlers = require('../utils/handlers')
 const common = require('../utils/common')
 
-const CompoundInputTable=({compoundInputsArray,onChangeQuantity,onCompoundRemoveInput,onSaveInformation,onRefresh})=>{
+const CompoundInputTable=({compoundInputsArray,onChangeQuantity,onCompoundRemoveInput,onSaveInformation,onRefresh,onFocusInput,onBlurInput})=>{
 
        return (
            <div>
@@ -90,8 +90,10 @@ const CompoundInputTable=({compoundInputsArray,onChangeQuantity,onCompoundRemove
                                                <input
                                                    type="text"
                                                    className={`${"input right"} ${x.unitValueChanged? 'pending-changes':''}`}
-                                                   value={x.unitValue? x.unitValue.toString(): "0"}
+                                                   value={x.unitValue? common.getMoneyFomat(x.unitValue.toString(),x.editing): "0"}
                                                    onKeyDown={(event)=>handlers.onHandlerDecimal(event)}
+                                                    onFocus={()=>onFocusInput(index)}
+                                                    onBlur={()=>onBlurInput(index)}
                                                    onChange={(event) => onChangeQuantity(event,index,"unitValue")}
                                                />
                                            </td>

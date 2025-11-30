@@ -77,7 +77,7 @@ const Resume = ({
               <b>VALOR/UN: </b>
             </span>{" "}
             <span className="text">
-              {commom.getMoneyFomat(inputSelected.totalInput)}
+              {commom.getMoneyFomat(inputSelected.unitValue)}
             </span>
           </div>
         </>

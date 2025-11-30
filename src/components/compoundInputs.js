@@ -212,6 +212,19 @@ const CompoundInputs = ({
     }
   }, [compoundSelected.idInput]);
 
+    const onFocusInput=(index)=>{
+    console.log("focus")
+     const newCompoundInputsArray = [...compoundInputsArray];
+     newCompoundInputsArray[index].editing = true
+     setCompoundInputArray(...[newCompoundInputsArray]);
+  }
+
+  const onBlurInput=(index)=>{
+  const newCompoundInputsArray = [...compoundInputsArray];
+     newCompoundInputsArray[index].editing = false
+     setCompoundInputArray(...[newCompoundInputsArray]);
+  }
+
   return (
     <div>
       
@@ -251,6 +264,8 @@ const CompoundInputs = ({
           onRefresh={onRefresh}
           onCompoundRemoveInput={onCompoundRemoveInput}
           setShowOption={setShowOption}
+          onFocusInput={onFocusInput} 
+          onBlurInput={onBlurInput}
           // setCompoundSelected={setCompoundSelected}
         />
       )}

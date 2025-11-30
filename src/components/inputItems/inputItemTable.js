@@ -9,6 +9,8 @@ const InputItemTable = ({
   onRemoveInputItem,
   setShowOption,
   setCompoundSelected,
+  onFocusInput,
+  onBlurInput
 }) => {
   return (
     <div>
@@ -31,7 +33,7 @@ const InputItemTable = ({
         <tbody>
           {itemInputsArray.map((x, index) => {
             return (
-              <tr key={index.toString()}>
+              <tr key={index.toString()} >
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
                   <i
                     class="far fa-trash-alt icon-view-detail"
@@ -45,7 +47,6 @@ const InputItemTable = ({
                       setShowOption("compoundInputs");
                       console.log("compoundSelected",x);
                       setCompoundSelected(x);
-                      //  setItemSelected(x);
                     }}
                     hidden={!x.compound}
                   />
@@ -94,9 +95,11 @@ const InputItemTable = ({
                     className={`${"input right"} ${
                       x.unitValueChanged ? "pending-changes" : ""
                     }`}
-                    value={x.unitValue ? x.unitValue.toString() : "0"}
+                    value={x.unitValue ? common.getMoneyFomat(x.unitValue.toString(),x.editing) : "0"}
                     onKeyDown={(event) => handlers.onHandlerDecimal(event)}
                     disabled={x.compound}
+                    onFocus={()=>onFocusInput(index)}
+                    onBlur={()=>onBlurInput(index)}
                     onChange={(event) =>
                       onChangeQuantity(event, index, "unitValue")
                     }

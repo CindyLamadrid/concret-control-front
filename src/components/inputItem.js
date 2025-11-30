@@ -218,6 +218,19 @@ const InputItem = ({
     // setShowOption('searchInputs')
   };
 
+  const onFocusInput=(index)=>{
+    console.log("focus")
+     const newItemInputsArray = [...itemInputsArray];
+     newItemInputsArray[index].editing = true
+     setItemInputsArray(...[newItemInputsArray]);
+  }
+
+  const onBlurInput=(index)=>{
+  const newItemInputsArray = [...itemInputsArray];
+     newItemInputsArray[index].editing = false
+     setItemInputsArray(...[newItemInputsArray]);
+  }
+
   return (
     <div>
      
@@ -268,6 +281,8 @@ const InputItem = ({
           onRemoveInputItem={onRemoveInputItem}
           setShowOption={setShowOption}
           setCompoundSelected={setCompoundSelected}
+          onFocusInput={onFocusInput}
+          onBlurInput={onBlurInput}
         />
       )}
       {noData && <div>La busqueda no arrojo resultado</div>}

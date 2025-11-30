@@ -149,6 +149,23 @@ const Menu = ({reportOption,setReportOption}) => {
           ) : (
             ""
           )}
+
+            {stageSelected && stageSelected.idStage && report ? (
+            <Navbar className="menu-subcontainer">
+              <Container className="no-margin">
+                <Navbar.Brand
+                  className="menu-item"
+                  onClick={() => {
+                    setReportOption('itemsInputs')
+                  }}
+                >
+                  <span className="menu-option">Presuesto Items</span>
+                </Navbar.Brand>
+              </Container>
+            </Navbar>
+          ) : (
+            ""
+          )}
         </div>
       ) : (
        <div className="menu-icon-collapsed"><i className="fas fa-bars white" onClick={()=>{setCollapse(!collapse)}}/></div>

@@ -9,6 +9,9 @@
       .right{
         text-align: right;
       }
+      .left{
+        text-align: left!important;
+      }
       .center{
         text-align: right;
       }
@@ -102,30 +105,48 @@
       </table>
      
       <br/>
+       {{#items}}
+       <div class="left subtitle">{{chapter}} - {{itemName}}</div>
       <div class="center">
         <table class="table">
           <thead>
             <tr>
               <th class="center">CODIGO</th>
               <th class="center">DESCRIPCION</th>
+              <th class="center">UNIDAD</th>
+              <th class="center">CANTIDAD</th>
+              <th class="center">FACTOR</th>
               <th class="center">VALOR</th>
+               <th class="center">TOTAL</th>
+                <th class="center">CANT. T</th>
             </tr>
           </thead>
           <tbody>
-            {{#list}}
+            {{#inputs}}
             <tr>
               <td class="center">{{cod}}</td>
               <td>{{description}}</td>
-              <td class="right">{{valueFormat}}</td>
+              <td>{{unit}}</td>
+              <td>{{quantity}}</td>
+              <td>{{waste}}</td>
+              <td class="right">{{unitValue}}</td>
+              <td class="right">{{totalInput}}</td>
+               <td class="right">{{totalQuantity}}</td>
             </tr>
-            {{/list}}
+            {{/inputs}}
             <tr>
-              <td class="footer"><b>TOTAL PRESUPUESTO:</b></td>
+              <td class="footer"></td>
+              <td class="footer"></td>
+              <td class="footer">{{unitItem}}</td>
+              <td class="footer">{{quantityItem}}</td>
+              <td class="footer"></td>
               <td class="footer"></td>
               <td class="right footer">{{totalValue}}</td>
             </tr>
           </tbody>
         </table>
+        <br/>
+         {{/items}}
       </div>
     </div>
   </body>

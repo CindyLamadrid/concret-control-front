@@ -2,9 +2,10 @@ import axios from "axios";
 import {  useContext, useState ,useEffect} from "react";
 import Hogan from "hogan.js";
 import { ConstructionContext } from "../../context/constructionContext";
+import Items from "../../containers/items";
 const commom = require('../utils/common')
  
-const SubchapterBudget = ({reportOption,setReportOption}) => {
+const ItemsInputs = ({reportOption,setReportOption}) => {
   const { stageSelected,constructionSelected } = useContext(ConstructionContext);
   const [reportArray, setReportArray] =useState([]);
   const [loadReport, setLoadReport] =useState(false);
@@ -27,14 +28,54 @@ const SubchapterBudget = ({reportOption,setReportOption}) => {
    
   };
 
+const createArrayData=(array)=>{
+    const items =[]
+   
+   array.forEach(i => {
+     const exists = items.findIndex(x=> x.idItem===i.idItem)
+     if(exists ===-1)
+     {
+        const inputs = array.filter(x=>x.idItem===i.idItem).map(
+            (y)=>
+            {
+                return {
+                    cod: y.cod,
+                   
+                    description : y.name,
+                    unitValue :  commom.getMoneyFomat(y.unitValue) ,
+                    unit:y.unit,
+                    quantity :y.quantity,
+                    waste: y.waste,
+                    totalInput:  commom.getMoneyFomat(y.totalInput),
+                    totalQuantity: y.totalQuantity
+                }
+            }
+               
+        )
+        items.push(
+            {
+                idItem: i.idItem,
+                itemName: i.itemName,
+                chapter: i.chapter,
+                unitItem:i.unitItem,
+                quantityItem:i.quantityItem,
+                inputs 
+            }
+        )
+     }
+   });
+   console.log(items);
+   return items
+}
+
 const generateReport=(reportArray)=>{
   const timezone =  new Date().toLocaleTimeString();
-     fetch("/templates/subchapterBudget.html")
+     fetch("/templates/itemsInputs.html")
       .then((r) => r.text())
       .then((dataInfo) => {
             const newTemplates = Hogan.compile(dataInfo);
             const data ={
-               list:reportArray,
+               items:createArrayData(reportArray),
                projectName: constructionSelected.name,
                stageName : stageSelected.name,
                totalValue: commom.getMoneyFomat(commom.getTotals(reportArray,"value")),
@@ -46,10 +87,10 @@ const generateReport=(reportArray)=>{
       })
 }
 
-  const getSubchapterBudget = () => {
+  const getItemsInputsBudget = () => {
     try {
       axios
-        .get(`${process.env.REACT_APP_BUDGET_URL_API}/subchapter-budget`, {
+        .get(`${process.env.REACT_APP_BUDGET_URL_API}/items-input-budget`, {
           params: { idStage: stageSelected.idStage },
         })
         .then((result) => {
@@ -80,12 +121,11 @@ const generateReport=(reportArray)=>{
   };
 
   useEffect(() => {
-    if(reportOption==="subchapter")
+    if(reportOption==="itemsInputs")
     {
-      getSubchapterBudget()
+      getItemsInputsBudget()
       setReportOption('')
     }
-    
   }, [reportOption]);
 
   useEffect(
@@ -102,4 +142,4 @@ const generateReport=(reportArray)=>{
   return <div> <iframe id="ifmcontentstoprint" title="print" className="printOnly" type="application/pdf"/></div>;
 };
 
-export default SubchapterBudget;
+export default ItemsInputs;

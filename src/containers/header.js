@@ -5,10 +5,12 @@ import Logo from "../images/concretoVivo.png";
 
 export const Header = ({}) => {
   const navigate = useNavigate();
-  const { user,setUser } = useContext(ConstructionContext);
+  const { user,setUser ,setStageSelected,setConstructionSelected} = useContext(ConstructionContext);
 
   const onClose=()=>{
     navigate('login')
+    setStageSelected('')
+    setConstructionSelected('')
     setUser('')
     
   }
