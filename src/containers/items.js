@@ -167,7 +167,7 @@ const Items = ({  }) => {
     useEventListener('keydown', handleKeyDownEnter);
 
     return (
-        <div  className="col-10">
+        <div >
             {
                 !showNewItem && (
                     <div>

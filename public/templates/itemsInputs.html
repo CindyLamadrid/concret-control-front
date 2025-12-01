@@ -4,7 +4,9 @@
     <style type="text/css">
       .logo {
         display: block;
-        width:120px;
+        width:170px;
+        text-align: center;
+         margin: auto;
       }
       .right{
         text-align: right;
@@ -16,11 +18,11 @@
         text-align: right;
       }
       .table{
-        font-size: 10pt;
-        width: 100%;
+        font-size: 8pt;
+        width: 80%;
         border: 1px solid gray;
         border-collapse: collapse;
-       
+        margin: auto;
        
       }
       table, th, td{
@@ -42,11 +44,11 @@
         width: 50%;
       }
       .containerReport{
-       width: 50%;
+       width: 100%;
        text-align: center;
       }
       .title{
-        font-size:10pt;
+        font-size:8pt;
         border-bottom: 1px solid gray;
         padding-bottom: 4px;
          padding-top: 4px;
@@ -58,6 +60,8 @@
         padding-bottom: 4px;
         padding-top: 4px;
         text-align: center;
+        width: 100%;
+        margin: auto;
       }
       
 
@@ -66,7 +70,18 @@
         padding-bottom: 4px;
         padding-top: 4px;
         text-align: center;
+        width: 100%;
+        margin: auto;
       }
+      .subtitle-2{
+        font-size:8pt;
+        padding-bottom: 4px;
+        padding-top: 4px;
+        text-align: center;
+        width: 80%;
+        margin: auto;
+      }
+      
       .center{
         text-align: center;
       }
@@ -94,7 +109,7 @@
                     PRESUPUESTO REVISADO
                   </div>
                   <div class="subtitle">
-                    RESUMEN GENERAL DE CAPITULOS 
+                    RESUMEN GENERAL DE ITEMS 
                   </div>
                   <div class="subtitle-1">
                     Fecha Impresión: {{date}}
@@ -106,7 +121,7 @@
      
       <br/>
        {{#items}}
-       <div class="left subtitle">{{chapter}} - {{itemName}}</div>
+       <div class="left subtitle-2"> A.P.U: {{itemCod}} - {{itemName}}</div>
       <div class="center">
         <table class="table">
           <thead>
@@ -117,8 +132,8 @@
               <th class="center">CANTIDAD</th>
               <th class="center">FACTOR</th>
               <th class="center">VALOR</th>
-               <th class="center">TOTAL</th>
-                <th class="center">CANT. T</th>
+              <th class="center">TOTAL</th>
+              <th class="center">CANT. T</th>
             </tr>
           </thead>
           <tbody>
@@ -126,22 +141,23 @@
             <tr>
               <td class="center">{{cod}}</td>
               <td>{{description}}</td>
-              <td>{{unit}}</td>
-              <td>{{quantity}}</td>
-              <td>{{waste}}</td>
+              <td class="center">{{unit}}</td>
+              <td class="right">{{quantity}}</td>
+              <td class="right">{{waste}}</td>
               <td class="right">{{unitValue}}</td>
               <td class="right">{{totalInput}}</td>
                <td class="right">{{totalQuantity}}</td>
             </tr>
             {{/inputs}}
             <tr>
+              <td class="footer" colspan="2"><b>Total A.P.U</b></td>
+              <!-- <td class="footer"></td> -->
+              <td class="footer center">{{unitItem}}</td>
+              <td class="footer right">{{quantityItem}}</td>
               <td class="footer"></td>
-              <td class="footer"></td>
-              <td class="footer">{{unitItem}}</td>
-              <td class="footer">{{quantityItem}}</td>
-              <td class="footer"></td>
-              <td class="footer"></td>
-              <td class="right footer">{{totalValue}}</td>
+              <td class="footer right">{{totalValue}}</td>
+              <td class="footer right">{{total}}</td>
+               <td class="footer"></td>
             </tr>
           </tbody>
         </table>

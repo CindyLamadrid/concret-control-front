@@ -19,6 +19,7 @@ import Reports from "./containers/reports";
 import Footer from "./containers/footer";
 import Header from "./containers/header";
 import Login from "./containers/login"
+import AdminUsers from "./containers/users"
 
 function App() {
   const [reportOption,setReportOption] = useState('')
@@ -44,11 +45,12 @@ function App() {
               <Routes>
                 <Route exact path="/login" element={<Login />} />
                 
-                  <Route exact path="/home" element={<Constructions />} />
-                  <Route exact path="/budget" element={<Budget />} />
-                  <Route exact path="/stages" element={<Stages />} />
-                  <Route exact path="/search-items" element={<Items />} />
-                  <Route exact path="/search-inputs" element={<Inputs />} />
+                  <Route exact path="/home" element={<div className="col-10"><Constructions /></div>} />
+                  <Route exact path="/budget" element={<div className="col-10"><Budget /></div>} />
+                  <Route exact path="/stages" element={<div className="col-10"><Stages /></div>} />
+                  <Route exact path="/search-items" element={<div className="col-10"><Items /></div>} />
+                  <Route exact path="/search-inputs" element={<div className="col-10"><Inputs /></div>} />
+                  <Route exact path="/users" element={<div className="col-10"><AdminUsers /></div>} />
                 {/* <Route exact path="/reports" element={<Reports />} /> */}
                 <Route path="*" element={<Navigate to="/login" replace />} />
                 

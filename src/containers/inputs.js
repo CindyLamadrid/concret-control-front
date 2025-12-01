@@ -264,7 +264,7 @@ const Inputs = ({}) => {
   useEventListener("keydown", handleKeyDownEnter);
 
   return (
-    <div  className="col-10">
+    <div>
       {!showNewInput && (
         <div>
           <br />

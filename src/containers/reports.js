@@ -1,5 +1,7 @@
 import SubchapterBudget from "../components/reports/subchapterBudget";
 import ItemsInputs from "../components/reports/itemsInputs";
+import CompundInputs from "../components/reports/compundInputs";
+
 const Reports = ({ reportOption, setReportOption }) => {
   return (
     <div>
@@ -9,6 +11,10 @@ const Reports = ({ reportOption, setReportOption }) => {
           setReportOption={setReportOption}
         />
         <ItemsInputs
+          reportOption={reportOption}
+          setReportOption={setReportOption}
+        />
+        <CompundInputs
           reportOption={reportOption}
           setReportOption={setReportOption}
         />

@@ -97,9 +97,9 @@ const Budget = ({  }) => {
     )
 
 
-   
+   console.log("showOption===",showOption);
    return (
-      <div  className="col-10">
+      <div >
          {showOption === 'constructionItems' && (
             <Header
                stageSelected={stageSelected}

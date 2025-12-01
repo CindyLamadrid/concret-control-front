@@ -92,7 +92,7 @@ const ConstructionItemsTable = ({ constructionItemsArray, onChangeQuantity, setS
                                             <input
                                                 type="text"
                                                 className={`${"input input-table right"} ${x.quantityChanged ? 'pending-changes' : ''}`}
-                                                maxLength={4}
+                                               
                                                 value={x.quantity ? x.quantity.toString() : "0"}
                                                 onKeyDown={(event) => handlers.onHandlerDecimal(event)}
                                                 onChange={(event) => onChangeQuantity(event, index)}

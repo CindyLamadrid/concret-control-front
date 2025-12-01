@@ -2,10 +2,9 @@ import axios from "axios";
 import {  useContext, useState ,useEffect} from "react";
 import Hogan from "hogan.js";
 import { ConstructionContext } from "../../context/constructionContext";
-import Items from "../../containers/items";
 const commom = require('../utils/common')
  
-const ItemsInputs = ({reportOption,setReportOption}) => {
+const CompundInputs = ({reportOption,setReportOption}) => {
   const { stageSelected,constructionSelected } = useContext(ConstructionContext);
   const [reportArray, setReportArray] =useState([]);
   const [loadReport, setLoadReport] =useState(false);
@@ -13,72 +12,58 @@ const ItemsInputs = ({reportOption,setReportOption}) => {
    const printReport = (report) => {
     const newTab = window.open("", "_blank");
     newTab.document.write(report);
-     newTab.document.close(); 
-    //    setTimeout(() => {
-    //   newTab.print();
-    // }, 1000);
-    // const pri = document.getElementById("ifmcontentstoprint").contentWindow;
-    // pri.document.open();
-    // pri.document.write(report);
-    // pri.document.close();
-    // pri.focus();
-    // setTimeout(() => {
-    //   pri.print();
-    // }, 1000);
+    newTab.document.close(); 
    
   };
 
-const createArrayData=(array)=>{
-    const items =[]
-   
-   array.forEach(i => {
-     const exists = items.findIndex(x=> x.idItem===i.idItem)
-     if(exists ===-1)
-     {
-        const inputs = array.filter(x=>x.idItem===i.idItem).map(
-            (y)=>
-            {
-                return {
-                    cod: y.cod,
-                   
-                    description : y.name,
-                    unitValue :  commom.getMoneyFomat(y.unitValue) ,
-                    unit:y.unit,
-                    quantity :y.quantity,
-                    waste: y.waste,
-                    totalInput:  commom.getMoneyFomat(y.totalInput),
-                    totalQuantity: y.totalQuantity,
-                    value:y.totalInput
-                }
-            }
-               
-        )
-        items.push(
-            {
-                idItem: i.idItem,
-                itemName: i.itemName,
-                itemCod: i.itemCod,
-                unitItem:i.unitItem,
-                quantityItem:i.quantityItem,
-                inputs ,
-                totalValue: commom.getMoneyFomat(commom.getTotals(inputs,"value") ),
-                total: commom.getMoneyFomat(commom.getTotals(inputs,"value") * i.quantityItem)
-            }
-        )
-     }
-   });
-   console.log(items);
-   return items
-}
+  
+  const createArrayData=(array)=>{
+    const inputsMain =[]
+    console.log("array===",array);
+     
+    array.forEach(i => {
+       const exists = inputsMain.findIndex(x=> x.idInputMain===i.idInputMain)
+       if(exists ===-1)
+       {
+          const inputs = array.filter(x=>x.idInputMain===i.idInputMain).map(
+              (y)=>
+              {
+                  return {
+                      name: y.name,
+                      cod: y.cod,
+                      unit : y.unit,
+                      unitValue :  y.unitValue ,
+                      quantity:y.quantity,
+                      waste: y.waste,
+                      totalInput:  y.totalInput,
+                      totalInputFormat:  y.totalInputFormat
+                  }
+              }
+                 
+          )
+          inputsMain.push(
+              {
+                  compoundMain:i.compoundMain,
+                  idInputMain:i.idInputMain,
+                  compoundMainCod: i.cod,
+                  inputs ,
+                  total: commom.getMoneyFomat(commom.getTotals(inputs,"totalInput"))
+              }
+          )
+       }
+     });
+     console.log(inputsMain);
+     return inputsMain
+  }
 
-const generateReport=(reportArray)=>{
+const generateReport=()=>{
   const timezone =  new Date().toLocaleTimeString();
-     fetch("/templates/itemsInputs.html")
+     fetch("/templates/compoundItems.html")
       .then((r) => r.text())
       .then((dataInfo) => {
             const newTemplates = Hogan.compile(dataInfo);
             const data ={
-               items:createArrayData(reportArray),
+               inputsMain: reportArray,
                projectName: constructionSelected.name,
                stageName : stageSelected.name,
                totalValue: commom.getMoneyFomat(commom.getTotals(reportArray,"value")),
@@ -90,10 +75,10 @@ const generateReport=(reportArray)=>{
       })
 }
 
-  const getItemsInputsBudget = () => {
+  const getCompundInputsBudget = () => {
     try {
       axios
-        .get(`${process.env.REACT_APP_BUDGET_URL_API}/items-input-budget`, {
+        .get(`${process.env.REACT_APP_BUDGET_URL_API}/items-input-compound-budget`, {
           params: { idStage: stageSelected.idStage },
         })
         .then((result) => {
@@ -101,10 +86,11 @@ const generateReport=(reportArray)=>{
             const report = result.data.map(
               (x)=>{
                 const newItem = x;
-                newItem.valueFormat =  `${ commom.getMoneyFomat(x.value ? x.value : 0)}`
+                newItem.unitValue =  `${ commom.getMoneyFomat(x.unitValue ? x.unitValue : 0)}`
+                newItem.totalInputFormat =  `${ commom.getMoneyFomat(x.totalInput ? x.totalInput : 0)}`
               }
             )
-            setReportArray(result.data);
+            setReportArray(createArrayData(result.data));
             
           } else {
             setReportArray([]);
@@ -124,11 +110,12 @@ const generateReport=(reportArray)=>{
   };
 
   useEffect(() => {
-    if(reportOption==="itemsInputs")
+    if(reportOption==="compoundInputs")
     {
-      getItemsInputsBudget()
+      getCompundInputsBudget()
       setReportOption('')
     }
+    
   }, [reportOption]);
 
   useEffect(
@@ -145,4 +132,4 @@ const generateReport=(reportArray)=>{
   return <div> <iframe id="ifmcontentstoprint" title="print" className="printOnly" type="application/pdf"/></div>;
 };
 
-export default ItemsInputs;
+export default CompundInputs;

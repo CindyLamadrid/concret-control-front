@@ -2,7 +2,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <style type="text/css">
-     .logo {
+      .logo {
         display: block;
         width:170px;
         text-align: center;
@@ -120,30 +120,41 @@
       </table>
      
       <br/>
+       {{#inputsMain}}
+       <div class="left subtitle-2">  {{compoundMainCod}} - {{compoundMain}}</div>
       <div class="center">
         <table class="table">
           <thead>
             <tr>
               <th class="center">CODIGO</th>
               <th class="center">DESCRIPCION</th>
+              <th class="center">UNIDAD</th>
+              <th class="center">CANTIDAD</th>
+              <th class="center">FACTOR</th>
               <th class="center">VALOR</th>
+              <th class="center">TOTAL</th>
             </tr>
           </thead>
           <tbody>
-            {{#list}}
+            {{#inputs}}
             <tr>
               <td class="center">{{cod}}</td>
-              <td>{{description}}</td>
-              <td class="right">{{valueFormat}}</td>
+              <td>{{name}}</td>
+              <td class="center">{{unit}}</td>
+              <td class="right">{{quantity}}</td>
+              <td class="right">{{waste}}</td>
+              <td class="right">{{unitValue}}</td>
+              <td class="right">{{totalInputFormat}}</td>
             </tr>
-            {{/list}}
+            {{/inputs}}
             <tr>
-              <td class="footer" colspan="2"><b>TOTAL PRESUPUESTO:</b></td>
-              <!-- <td class="footer"></td> -->
-              <td class="right footer">{{totalValue}}</td>
+               <td class="footer" colspan="6"></td>
+                <td class="footer right" >{{total}}</td>
             </tr>
           </tbody>
         </table>
+        <br/>
+         {{/inputsMain}}
       </div>
     </div>
   </body>

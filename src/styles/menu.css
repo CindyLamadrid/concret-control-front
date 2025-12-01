@@ -32,13 +32,23 @@
 .menu-item{
     font-size: 10pt!important;
     /* color: 	#006400; */
-    color : #0F5258;
+    color : #0F5258!important;
     font-weight: 400;
     width: 100%;
     padding-right: 0px;
     padding-left: 10px;
     margin-left: 1px;
     margin-right: 0px;
+
+ 
+}
+
+.menu-item .dropdown-toggle {
+    color : #0F5258!important;
+}
+
+.menu-item .dropdown-toggle::after {
+    display: none!important;
 }
 
 .menu-item:hover{
@@ -85,8 +95,17 @@
     margin: auto;
     text-align: center;
     padding: 4px;
-    /* padding-right: 0px;
-    padding-left: 10px;
-    margin-left: 1px;
-    margin-right: 0px; */
+   
 }
+
+.dropdown-toggle::after {
+    display: none!important;
+   
+}
+
+.sub-menu-select{
+    color: 	#0F5258!important;
+    font-size: 8pt;
+    /* background-color: lightgray; */
+}
+

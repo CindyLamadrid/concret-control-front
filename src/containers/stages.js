@@ -62,7 +62,7 @@ const Stages = ({}) => {
   };
 
   return (
-    <div  className="col-10">
+    <div>
       <div>
         <Back onBack={onBack} className="" />
         <div className="header-title">

@@ -44,7 +44,7 @@ const Constructions = ({}) => {
   };
 
   return (
-    <div className="col-10">
+    <div>
      
       {constructionsArray && constructionsArray.length > 0 && (
         <div>

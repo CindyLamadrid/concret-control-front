@@ -1,4 +1,4 @@
-.login{
+.login {
   background: url(/public/assets/login2.jpg);
   background-repeat: no-repeat;
   background-origin: content-box;
@@ -12,34 +12,46 @@
   background-attachment: fixed;
   height: 97.5vh;
 
-     input[type=text]{
-              
-                appearance: none;
-                background-color: #0000;
-                border: 0;
-                border-bottom: 1px solid #b1b1b1;
-                border-radius: 0;
-                font-size: 20px;
-                height: auto;
-                line-height: 24px;
-                margin-bottom: 20px;
-                padding: 0 0 5px;
-                width: 100%;
-                color: black;
-           
-          }
+  input[type="text"] {
+    appearance: none;
+    background-color: #0000;
+    border: 0;
+    border-bottom: 1px solid #b1b1b1;
+    border-radius: 0;
+    font-size: 20px;
+    height: auto;
+    line-height: 24px;
+    margin-bottom: 20px;
+    padding: 0 0 5px;
+    width: 100%;
+    color: black;
+  }
+
+  input[type="password"] {
+    appearance: none;
+    background-color: #0000;
+    border: 0;
+    border-bottom: 1px solid #b1b1b1;
+    border-radius: 0;
+    font-size: 20px;
+    height: auto;
+    line-height: 24px;
+    margin-bottom: 20px;
+    padding: 0 0 5px;
+    width: 100%;
+    color: black;
+  }
 }
 
-.login-container{
+.login-container {
   text-align: center;
   margin-top: 20%;
-
 }
 
-.form-container{
-    background: #00000014;
-    border-radius: 20px;
-    box-shadow: 1px 1px 2px 1px #0000004a;
-    padding: 30px;
-    width: 40%;
+.form-container {
+  background: #00000014;
+  border-radius: 20px;
+  box-shadow: 1px 1px 2px 1px #0000004a;
+  padding: 30px;
+  width: 40%;
 }

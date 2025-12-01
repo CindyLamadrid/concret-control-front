@@ -67,7 +67,7 @@ const InputItemTable = ({
                     className={`${"input right"} ${
                       x.quantityChanged ? "pending-changes" : ""
                     }`}
-                    maxLength={4}
+                  
                     value={x.quantity ? x.quantity.toString() : "0"}
                     onKeyDown={(event) => handlers.onHandlerDecimal(event)}
                     onChange={(event) =>
@@ -81,7 +81,7 @@ const InputItemTable = ({
                     className={`${"input right"} ${
                       x.wasteChanged ? "pending-changes" : ""
                     }`}
-                    maxLength={4}
+                    
                     value={x.waste ? x.waste.toString() : "0"}
                     onKeyDown={(event) => handlers.onHandlerDecimal(event)}
                     onChange={(event) =>
