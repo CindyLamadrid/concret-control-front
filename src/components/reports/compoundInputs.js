@@ -4,22 +4,28 @@ import Hogan from "hogan.js";
 import { ConstructionContext } from "../../context/constructionContext";
 const commom = require('../utils/common')
  
-const CompundInputs = ({reportOption,setReportOption}) => {
+const CompoundInputs = ({reportOption,setReportOption}) => {
   const { stageSelected,constructionSelected } = useContext(ConstructionContext);
   const [reportArray, setReportArray] =useState([]);
   const [loadReport, setLoadReport] =useState(false);
 
-   const printReport = (report) => {
+  const printReport = (report) => {
     const newTab = window.open("", "_blank");
     newTab.document.write(report);
     newTab.document.close(); 
-   
+
+    if(reportOption.type==="pdf")
+    {
+        setTimeout(() => {
+        newTab.print();
+        }, 1000);
+    }
   };
 
   
   const createArrayData=(array)=>{
     const inputsMain =[]
-    console.log("array===",array);
+   
      
     array.forEach(i => {
        const exists = inputsMain.findIndex(x=> x.idInputMain===i.idInputMain)
@@ -71,14 +77,14 @@ const generateReport=()=>{
             }
             const htmlOutput = newTemplates.render(data);
             printReport(htmlOutput)
-            console.log("htmlOutput===>",htmlOutput);
+           
       })
 }
 
   const getCompundInputsBudget = () => {
     try {
       axios
-        .get(`${process.env.REACT_APP_BUDGET_URL_API}/items-input-compound-budget`, {
+        .get(`${process.env.REACT_APP_BUDGET_URL_API}/input-compound-budget`, {
           params: { idStage: stageSelected.idStage },
         })
         .then((result) => {
@@ -110,10 +116,10 @@ const generateReport=()=>{
   };
 
   useEffect(() => {
-    if(reportOption==="compoundInputs")
+   if(reportOption && reportOption.name==="compoundInputs")
     {
       getCompundInputsBudget()
-      setReportOption('')
+      
     }
     
   }, [reportOption]);
@@ -125,11 +131,11 @@ const generateReport=()=>{
         setLoadReport(false)
         generateReport(reportArray)
        }
-       
+       setReportOption('')
     },[reportArray,loadReport]
   )
 
   return <div> <iframe id="ifmcontentstoprint" title="print" className="printOnly" type="application/pdf"/></div>;
 };
 
-export default CompundInputs;
+export default CompoundInputs;

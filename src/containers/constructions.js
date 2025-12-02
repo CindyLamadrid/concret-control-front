@@ -4,9 +4,10 @@ import { useNavigate,createSearchParams } from "react-router-dom";
 import { ConstructionContext } from "../context/constructionContext";
 import ConstructionTable from "../components/constructions/constructionTable";
 
+
 const Constructions = ({}) => {
   const navigate = useNavigate();
-  const { setConstructionSelected } = useContext(ConstructionContext);
+  const { setConstructionSelected,user } = useContext(ConstructionContext);
 
   const [constructionsArray, setConstructionsArray] = useState([]);
 
@@ -27,6 +28,7 @@ const Constructions = ({}) => {
   };
 
   useEffect(() => {
+ 
     localStorage.setItem("chapterValues",JSON.stringify({chapterSelected:0,subchapterSelected:0})) 
     getConstructions();
   }, []);
@@ -39,7 +41,7 @@ const Constructions = ({}) => {
     if (construction && construction.length > 0) {
       setConstructionSelected(construction[0]);
       const params = createSearchParams({idConstruction:construction[0].idConstruction});
-      navigate(`/stages?${params.toString()}`);
+      navigate(`/stages?${params.toString()}&user=${btoa(user)}`);
     }
   };
 

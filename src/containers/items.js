@@ -9,7 +9,7 @@ import useEventListener from '../components/utils/useEventListener';
 
 const Items = ({  }) => {
      const navigate = useNavigate ();
-    const  {user,stageSelected}=
+    const  {user,stageSelected,constructionSelected}=
             useContext(ConstructionContext);
     const idStage =  stageSelected.idStage  
     const [searchParams] = useSearchParams();
@@ -143,7 +143,7 @@ const Items = ({  }) => {
              stageItems.idItems=idItems
              console.log("stageItems===",stageItems);
              createStageItems(stageItems)
-             navigate(`/budget?option=constructionItems`)
+             navigate(`/budget?option=constructionItems&user=${btoa(user)}&idStage=${stageSelected.idStage}&idConstruction=${constructionSelected.idConstruction}`)
              // setShowOption('contructionItems')
         }
     }
@@ -154,7 +154,7 @@ const Items = ({  }) => {
         }, []
     )
     const onCancelOption=()=>{
-         navigate(`/budget?option=constructionItems`)
+         navigate(`/budget?option=constructionItems&user=${btoa(user)}&idStage=${stageSelected.idStage}&idConstruction=${constructionSelected.idConstruction}`)
     }
 
       const handleKeyDownEnter =async(event) => {

@@ -6,18 +6,18 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { useNavigate } from "react-router-dom";
 import { ConstructionContext } from "../context/constructionContext";
 
-const Menu = ({ reportOption, setReportOption }) => {
+const Menu = ({ reportOption, setReportOption ,setReportType}) => {
   const navigate = useNavigate();
   const [collapse, setCollapse] = useState(false);
 
-  const [administrationOption, setAdministrationOption] = useState(true);
+  const [administrationOption, setAdministrationOption] = useState(false);
   const [report, setReport] = useState(true);
 
   const { user, stageSelected, setStageSelected, setConstructionSelected } =
     useContext(ConstructionContext);
 
   const onShowHome = () => {
-    navigate("/home");
+    navigate(`/home?user=${btoa(user)}`);
     setStageSelected("");
     setConstructionSelected("");
     localStorage.setItem(
@@ -54,7 +54,7 @@ const Menu = ({ reportOption, setReportOption }) => {
                   <Navbar.Brand
                     className="menu-item"
                     onClick={() => {
-                      navigate("/users");
+                      navigate(`/users?user=${btoa(user)}`);
                     }}
                   >
                     {" "}
@@ -188,11 +188,11 @@ const Menu = ({ reportOption, setReportOption }) => {
                       title="Capitulos"
                      
                     >
-                      <NavDropdown.Item className="sub-menu-select"  onClick={() => { setReportOption("subchapter"); }}>
+                      <NavDropdown.Item className="sub-menu-select"  onClick={() => { setReportOption({name:"subchapter",type:""}); }}>
                         <i className="far fa-window-maximize"/>{" "}
                         Pantalla Completa
                       </NavDropdown.Item>
-                      <NavDropdown.Item className="sub-menu-select">
+                      <NavDropdown.Item className="sub-menu-select" onClick={() => { setReportOption({name:"subchapter",type:"pdf"}); }}>
                         <i className="far fa-file-pdf"/>{" "}
                          PDF
                       </NavDropdown.Item>
@@ -206,16 +206,27 @@ const Menu = ({ reportOption, setReportOption }) => {
           )}
 
           {stageSelected && stageSelected.idStage && report ? (
-            <Navbar className="menu-subcontainer">
+          
+             <Navbar className="menu-subcontainer">
               <Container className="no-margin">
-                <Navbar.Brand
-                  className="menu-item"
-                  onClick={() => {
-                    setReportOption("itemsInputs");
-                  }}
-                >
-                  <span className="menu-option">Items</span>
+                <Navbar.Collapse id="basic-navbar-nav">
+                   <Navbar.Brand className="menu-item">
+                    <NavDropdown
+                      className=" menu-option "
+                      title="Items"
+                     
+                    >
+                      <NavDropdown.Item className="sub-menu-select"  onClick={() => { setReportOption({name:"itemsInputs",type:""}); }}>
+                        <i className="far fa-window-maximize"/>{" "}
+                        Pantalla Completa
+                      </NavDropdown.Item>
+                      <NavDropdown.Item className="sub-menu-select" onClick={() => { setReportOption({name:"itemsInputs",type:"pdf"}); }}>
+                        <i className="far fa-file-pdf"/>{" "}
+                         PDF
+                      </NavDropdown.Item>
+                    </NavDropdown>
                 </Navbar.Brand>
+                </Navbar.Collapse>
               </Container>
             </Navbar>
           ) : (
@@ -223,16 +234,53 @@ const Menu = ({ reportOption, setReportOption }) => {
           )}
 
           {stageSelected && stageSelected.idStage && report ? (
-            <Navbar className="menu-subcontainer">
+             <Navbar className="menu-subcontainer">
               <Container className="no-margin">
-                <Navbar.Brand
-                  className="menu-item"
-                  onClick={() => {
-                    setReportOption("compoundInputs");
-                  }}
-                >
-                  <span className="menu-option">Insumos Compuestos</span>
+                <Navbar.Collapse id="basic-navbar-nav">
+                   <Navbar.Brand className="menu-item">
+                    <NavDropdown
+                      className=" menu-option "
+                      title="Insumos Compuestos"
+                     
+                    >
+                      <NavDropdown.Item className="sub-menu-select"  onClick={() => { setReportOption({name:"compoundInputs",type:""}) }}>
+                        <i className="far fa-window-maximize"/>{" "}
+                        Pantalla Completa
+                      </NavDropdown.Item>
+                      <NavDropdown.Item className="sub-menu-select"onClick={() => { setReportOption({name:"compoundInputs",type:"pdf"}) }} >
+                        <i className="far fa-file-pdf"/>{" "}
+                         PDF
+                      </NavDropdown.Item>
+                    </NavDropdown>
                 </Navbar.Brand>
+                </Navbar.Collapse>
+              </Container>
+            </Navbar>
+          ) : (
+            ""
+          )}
+
+                {stageSelected && stageSelected.idStage && report ? (
+             <Navbar className="menu-subcontainer">
+              <Container className="no-margin">
+                <Navbar.Collapse id="basic-navbar-nav">
+                   <Navbar.Brand className="menu-item">
+                    <NavDropdown
+                      className=" menu-option "
+                      title="Insumos Generales"
+                     
+                    >
+                      <NavDropdown.Item className="sub-menu-select"  onClick={() => { setReportOption({name:"inputs",type:""}); }}>
+                        <i className="far fa-window-maximize"/>{" "}
+                        Pantalla Completa
+                      </NavDropdown.Item>
+                      <NavDropdown.Item className="sub-menu-select"  onClick={() => { setReportOption({name:"inputs",type:"pdf"}); }}>
+                        <i className="far fa-file-pdf"/>{" "}
+                         PDF
+                      </NavDropdown.Item>
+                    </NavDropdown>
+                </Navbar.Brand>
+                </Navbar.Collapse>
               </Container>
             </Navbar>
           ) : (

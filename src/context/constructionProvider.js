@@ -3,6 +3,7 @@ import { ConstructionContext } from './constructionContext';
 
 
 export const ConstructionProvider = ({children}) => {
+ 
   const [user, setUser] = useState("");
   const [stageSelected, setStageSelected] = useState(0);
   const [constructionSelected, setConstructionSelected] = useState(0);

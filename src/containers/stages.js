@@ -7,7 +7,7 @@ import Back from "../components/commons/back";
 
 const Stages = ({}) => {
   const navigate = useNavigate();
-  const { constructionSelected, setStageSelected, setConstructionSelected } =
+  const {user, constructionSelected, setStageSelected, setConstructionSelected } =
     useContext(ConstructionContext);
 
   const [constructionsArray, setConstructionsArray] = useState([]);
@@ -34,8 +34,12 @@ const Stages = ({}) => {
   };
 
   useEffect(() => {
-    getConstructionStages();
-  }, []);
+    
+    if(constructionSelected && constructionSelected.idConstruction)
+        getConstructionStages();
+  }, [constructionSelected]);
+
+
 
   const onViewStage = (idConstruction) => {
     getConstructionStages(idConstruction);
@@ -52,13 +56,15 @@ const Stages = ({}) => {
       (x) => x.idStage.toString() === idStage.toString()
     );
     console.log("stage==", stage);
-    if (stage && stage.length > 0) setStageSelected(stage[0]);
-
-    navigate("/budget?option=constructionItems");
+    if (stage && stage.length > 0) 
+    {
+      setStageSelected(stage[0]);
+      navigate(`/budget?option=constructionItems&user=${btoa(user)}&idStage=${stage[0].idStage}&idConstruction=${constructionSelected.idConstruction}`);
+    }
   };
 
   const onBack = () => {
-    navigate("/home");
+    navigate(`/home?user=${btoa(user)}`);
   };
 
   return (

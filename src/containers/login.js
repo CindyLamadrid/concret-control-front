@@ -1,12 +1,12 @@
 import axios from "axios";
-import { useContext, useState} from 'react';
+import { useContext, useEffect, useState} from 'react';
 import { useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs-react";
 import { ConstructionContext } from "../context/constructionContext";
 
 const Login = () => {
   const navigate = useNavigate();
-   const  {setUser}=
+   const  {setUser,setConstructionSelected,setStageSelected}=
       useContext(ConstructionContext);
    const[userInput,setUserInput] = useState("fabian.lopera")
    const[password,setPassword] = useState("santi123")
@@ -20,7 +20,6 @@ const Login = () => {
     if(!userInput || !password)
     {
        setMessage("Usuario y Contraseña obligatorios")
-         console.log("entro1");
        return
     }
       
@@ -40,16 +39,23 @@ const Login = () => {
         if(response)
         {
           setUser(userInput)
-          navigate("/home");
+          navigate(`/home?user=${btoa(userInput)}`);
         }else
         {
-          console.log("entro");
           setMessage("Usuario o Contraseña incorrecta")
         }
       }else{
            setMessage("Usuario o Contraseña incorrecta")
         }
   }
+
+  useEffect(
+    ()=>{
+      setUser("")
+      setConstructionSelected("")
+      setStageSelected("")
+    },[]
+  )
 
   return (
     <div className="login">

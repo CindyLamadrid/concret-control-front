@@ -7,6 +7,8 @@
     padding-left: 0px;
     height: 80vh;
     background: whitesmoke;
+    max-height: 79vh;
+    overflow-y: auto;
 }
 .menu-collapsed{
     width: 20%;

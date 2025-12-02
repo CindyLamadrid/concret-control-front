@@ -49,12 +49,12 @@ const Budget = ({  }) => {
 
    useEffect(
    ()=>{
-         console.log("change",showOption);
+         console.log("stageSelected===",stageSelected);
          console.log("chapterSelected change",chapterSelected);
          if ((showOption==="constructionItems" || showOption === 'inputItems')
-            && chapterSelected && subchapterSelected )
+            && chapterSelected && subchapterSelected && stageSelected.idStage )
                onConstructionItems()
-      },[subchapterSelected]
+      },[subchapterSelected,stageSelected]
     )
 
    

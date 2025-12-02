@@ -32,7 +32,7 @@ const CompoundInputs = ({
     // setShowOption("searchInputs");
 
     const params = createSearchParams({idItem:itemSelected.idItem,inputType:'compound',idCompoundSelected:compoundSelected.idInput});
-    navigate(`/search-inputs?${params.toString()}`);
+    navigate(`/search-inputs?${params.toString()}&user=${btoa(user)}&idStage=${stageSelected.idStage}&idConstruction=${constructionSelected.idConstruction}`);
   };
 
   const getCompoundInputs = async (id) => {

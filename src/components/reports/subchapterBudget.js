@@ -1,8 +1,27 @@
 import axios from "axios";
-import {  useContext, useState ,useEffect} from "react";
+import {  useContext, useState ,useEffect,useRef} from "react";
+import html2pdf from 'html2pdf.js';
 import Hogan from "hogan.js";
 import { ConstructionContext } from "../../context/constructionContext";
+import Reports from "../../containers/reports";
 const commom = require('../utils/common')
+
+
+// const pdf=(report)=>{
+//    const options = {
+//       filename: 'my-document.pdf',
+//       margin: 1,
+//       image: { type: 'jpeg', quality: 0.98 },
+//       html2canvas: { scale: 2 },
+//       jsPDF: {
+//         unit: 'in',
+//         format: 'letter',
+//         orientation: 'portrait',
+//       },
+//     };
+
+//     html2pdf().set(options).from(report).save();
+// }
  
 const SubchapterBudget = ({reportOption,setReportOption}) => {
   const { stageSelected,constructionSelected } = useContext(ConstructionContext);
@@ -12,7 +31,19 @@ const SubchapterBudget = ({reportOption,setReportOption}) => {
    const printReport = (report) => {
     const newTab = window.open("", "_blank");
     newTab.document.write(report);
-     newTab.document.close(); 
+    newTab.document.close(); 
+    console.log("reportOption===",reportOption);
+    if(reportOption.type==="pdf")
+    {
+        setTimeout(() => {
+        newTab.print();
+        }, 1000);
+    }
+
+    //const newTab = window.open("", "_blank");
+    //newTab.document.write(pdf(report));
+    //newTab.document.close(); 
+   
     //    setTimeout(() => {
     //   newTab.print();
     // }, 1000);
@@ -24,7 +55,9 @@ const SubchapterBudget = ({reportOption,setReportOption}) => {
     // setTimeout(() => {
     //   pri.print();
     // }, 1000);
-   
+
+    //const content = contentRef.current;
+
   };
 
 const generateReport=(reportArray)=>{
@@ -42,7 +75,7 @@ const generateReport=(reportArray)=>{
             }
             const htmlOutput = newTemplates.render(data);
             printReport(htmlOutput)
-            console.log("htmlOutput===>",htmlOutput);
+           
       })
 }
 
@@ -80,10 +113,10 @@ const generateReport=(reportArray)=>{
   };
 
   useEffect(() => {
-    if(reportOption==="subchapter")
+    if(reportOption && reportOption.name==="subchapter")
     {
-      getSubchapterBudget()
-      setReportOption('')
+      getSubchapterBudget(reportOption.type)
+     
     }
     
   }, [reportOption]);
@@ -95,6 +128,7 @@ const generateReport=(reportArray)=>{
         setLoadReport(false)
         generateReport(reportArray)
        }
+        setReportOption('')
        
     },[reportArray,loadReport]
   )

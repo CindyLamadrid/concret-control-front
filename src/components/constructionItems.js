@@ -54,21 +54,17 @@ const ConstructionItems = ({
   };
 
   const onSaveInformation = (index) => {
-    console.log("index===", index);
     const constructionItem = { ...constructionItemsArray[index] };
     updateItemStage(constructionItem);
   };
 
-  useEffect(() => {
-    // if(idSubchapter>0 )
-    //   onConstructionItems()
-  }, [idSubchapter]);
+
 
   const onBack = () => {
     const params = createSearchParams({
       idConstruction: constructionSelected.idConstruction,
     });
-    navigate(`/stages?${params.toString()}`);
+    navigate(`/stages?${params.toString()}&user=${btoa(user)}&idStage=${stageSelected.idStage}&idConstruction=${constructionSelected.idConstruction}`);
   };
 
   const onRefresh = () => {
@@ -131,7 +127,7 @@ const ConstructionItems = ({
   };
 
   const onAddItems = () => {
-    navigate(`/search-items?idSubchapter=${idSubchapter.toString()}`);
+    navigate(`/search-items?idSubchapter=${idSubchapter.toString()}&user=${btoa(user)}&idStage=${stageSelected.idStage}&idConstruction=${constructionSelected.idConstruction}`);
 
     //setShowOption('searchItems')
   };

@@ -12,7 +12,7 @@ import NewInput from "../components//inputs/newInput";
 import useEventListener from "../components/utils/useEventListener";
 
 const Inputs = ({}) => {
-  const { user, stageSelected } = useContext(ConstructionContext);
+  const { user, stageSelected,constructionSelected } = useContext(ConstructionContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const idItem = searchParams.get("idItem");
@@ -131,6 +131,10 @@ const Inputs = ({}) => {
             idItem,
             option: "compoundInputs",
             idCompoundSelected,
+            user,
+            idStage:stageSelected.idStage,
+            idConstruction:constructionSelected.idConstruction
+
           });
           navigate(`/budget?${params.toString()}`);
         }
@@ -165,7 +169,10 @@ const Inputs = ({}) => {
           );
         } else {
           console.log("navigate");
-          const params = createSearchParams({ idItem, option: "inputItems" });
+          const params = createSearchParams({user, idItem, option: "inputItems",
+            idStage:stageSelected.idStage,
+            idConstruction:constructionSelected.idConstruction
+           });
           navigate(`/budget?${params.toString()}`);
         }
       }
@@ -244,7 +251,10 @@ const Inputs = ({}) => {
 
   const onCancelOption = () => {
     // setShowOption('inputItems')
-    const params = createSearchParams({ idItem, option: "inputItems" });
+    const params = createSearchParams({ user,idItem, option: "inputItems",
+      idStage:stageSelected.idStage,
+      idConstruction:constructionSelected.idConstruction
+     });
     navigate(`/budget?${params.toString()}`);
   };
 

@@ -1,5 +1,6 @@
 import {useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
 import "./App.css";
 import "./styles/menu.css";
 import "./styles/container.css";
@@ -10,6 +11,7 @@ import "./styles/login.css"
 // import Container from "./containers/container";
 import Menu from "./components/menu";
 import { ConstructionProvider } from "./context/constructionProvider";
+import Settings from "./containers/setting";
 import Constructions from "./containers/constructions";
 import Stages from "./containers/stages";
 import Budget from "./containers/budget";
@@ -24,7 +26,7 @@ import AdminUsers from "./containers/users"
 function App() {
   const [reportOption,setReportOption] = useState('')
   const [user,setUser] = useState('')
-
+ 
   useEffect(()=>{
     const userLogged = localStorage.getItem("user")
     console.log("userLogged",userLogged);
@@ -36,6 +38,7 @@ function App() {
       <BrowserRouter>
         <div>
          <Header />
+         <Settings/>
           <div className="row no-margin">
           
             <div className="col-2 no-margin" >

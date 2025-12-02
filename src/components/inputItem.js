@@ -213,7 +213,7 @@ const InputItem = ({
       inputType: "",
       idCompoundSelected: "",
     });
-    navigate(`/search-inputs?${params.toString()}`);
+    navigate(`/search-inputs?${params.toString()}&user=${btoa(user)}&idStage=${stageSelected.idStage}&idConstruction=${constructionSelected.idConstruction}`);
 
     // setShowOption('searchInputs')
   };
