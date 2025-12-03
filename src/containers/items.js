@@ -120,6 +120,10 @@ const Items = ({  }) => {
         setShowNewItem(false)
     }
 
+    const onEditItem=(index)=>{
+
+    }
+    
     const onAddItems = () => {
         const selectedItems = itemArray.filter(
             (x) => 
@@ -240,7 +244,7 @@ const Items = ({  }) => {
                         <ItemTable
                             itemArray={itemArray}
                             onSelectItem={onSelectItem}
-                           
+                            onEditItem={onEditItem}
                         />
                         <br />
                        

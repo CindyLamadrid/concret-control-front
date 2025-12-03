@@ -71,23 +71,22 @@ const ConstructionItemsTable = ({ constructionItemsArray, onChangeQuantity, setS
                                             <i className="fas fa-external-link-alt icon-view-detail"
                                                 onClick={() => {
                                                     setShowOption('inputItems');
-                                               
                                                     setItemSelected(x);
                                                 }
                                                 }
                                             />
                                         </td>
 
-                                        <td className={index % 2 === 0 ? "dark" : ""}>
+                                        <td className={index % 2 === 0 ? "dark center" : "center"}>
                                             {x.cod}
                                         </td>
                                         <td className={index % 2 === 0 ? "dark left" : "left"}>
                                             {x.name}
                                         </td>
-                                        <td className={index % 2 === 0 ? "dark" : ""}>
+                                        <td className={index % 2 === 0 ? "dark center" : "center"}>
                                             {x.unit}
                                         </td>
-                                        <td className={index % 2 === 0 ? "dark " : ""}>
+                                        <td className={index % 2 === 0 ? "dark right" : "right"}>
 
                                             <input
                                                 type="text"

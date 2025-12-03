@@ -7,6 +7,8 @@ import InputItemTable from "./inputItems/inputItemTable";
 import Back from "./commons/back";
 import Modal from "./commons/modal";
 import Header from "./commons/resume";
+import AdminInput from "./inputs/adminInput"
+
 
 const InputItem = ({
   itemSelected,
@@ -26,10 +28,17 @@ const InputItem = ({
     show: false,
     buttonArray: [],
   });
+  const [messageResultOperation, setMessageResultOperation] = useState("");
 
 
+  const [adminInput, setAdminInput] = useState({
+    show: false,
+    input: "",
+    action: "",
+  });
 
   const getItemInputs = async (id) => {
+    setMessageResultOperation("")
     try {
       const result = await axios.get(
         `${process.env.REACT_APP_BUDGET_URL_API}/item-inputs`,
@@ -56,11 +65,11 @@ const InputItem = ({
   };
 
   useEffect(() => {
-    if (itemSelected.idItem) {
+    if (itemSelected.idItem && stageSelected.idStage) {
       getItemInputs(itemSelected.idItem);
      
     }
-  }, [itemSelected.idItem]);
+  }, [itemSelected.idItem,stageSelected]);
 
   const onChangeQuantity = (event, index, type) => {
     const newItemInputsArray = [...itemInputsArray];
@@ -231,6 +240,61 @@ const InputItem = ({
      setItemInputsArray(...[newItemInputsArray]);
   }
 
+  const onEditInput = (index) => {
+    if (index > -1) {
+      const input = itemInputsArray[index];
+
+      setAdminInput({ show: true, input, action: "edit" });
+    }
+  };
+
+  const onCloseAdminInput = () => {
+    setAdminInput({ show: false, input: "", action: "" });
+    setMessageResultOperation("");
+  };
+
+   const onSaveInput = async (
+    unitSelected,
+    inputTypeSelected,
+    name,
+    unitValue,
+    compound,
+    categorySelected,
+    action
+  ) => {
+    try {
+      const result = await axios.post(
+        `${process.env.REACT_APP_BUDGET_URL_API}/update-input`,
+        {
+          idInput: action === "edit" ? parseInt(adminInput.input.idInput) : 0,
+          idUnit: unitSelected,
+          idInputType: inputTypeSelected,
+          idCategory: categorySelected,
+          name: name,
+          compound: compound,
+          unitValue: unitValue,
+          user,
+        }
+      );
+
+      if (result && result.data && result.data.length > 0) {
+        const response = result.data[0];
+        if (response.input === 0) {
+          setMessageResultOperation(
+            "El insumo ya existe con el mismo nombre ingresado"
+          );
+        } else {
+          setAdminInput({ show: false, input: "", action: "" });
+          if (adminInput.action === "edit") await getItemInputs(itemSelected.idItem);
+        }
+      }
+    } catch (error) {
+      
+      console.error("Error fetching onSaveInput:", error);
+    }
+  };
+
+
   return (
     <div>
      
@@ -243,7 +307,7 @@ const InputItem = ({
       }
       {modalConfiguration && modalConfiguration.show && (
         <Modal
-          message="Desea elimiar el insumo?"
+          message="Desea eliminar el insumo del item?"
           buttonArray={modalConfiguration.buttonArray}
           item={modalConfiguration.item}
         />
@@ -272,6 +336,22 @@ const InputItem = ({
       </div>
       <br />
 
+      {adminInput && adminInput.show && (
+        <div
+          className="modal show"
+          style={{ display: "block", position: "initial" }}
+        >
+          <AdminInput
+            messageResultOperation={messageResultOperation}
+            setAdminInput={setAdminInput}
+            onSaveInput={onSaveInput}
+            inputType=""
+            adminInput={adminInput}
+            onCloseAdminInput={onCloseAdminInput}
+          />
+        </div>
+      )}
+
       {itemInputsArray && itemInputsArray.length > 0 && (
         <InputItemTable
           itemInputsArray={itemInputsArray}
@@ -283,6 +363,7 @@ const InputItem = ({
           setCompoundSelected={setCompoundSelected}
           onFocusInput={onFocusInput}
           onBlurInput={onBlurInput}
+          onEditInput={onEditInput}
         />
       )}
       {noData && <div>La busqueda no arrojo resultado</div>}

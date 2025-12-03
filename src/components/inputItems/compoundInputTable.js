@@ -31,7 +31,7 @@ const CompoundInputTable = ({
           {compoundInputsArray.map((x, index) => {
             return (
               <tr key={index.toString()}>
-                <td className={index % 2 === 0 ? "dark" : ""}>
+                <td className={index % 2 === 0 ? "dark center" : "center"}>
                   <i
                     class="far fa-trash-alt icon-view-detail"
                     onClick={() => onCompoundRemoveInput(index)}
@@ -41,13 +41,13 @@ const CompoundInputTable = ({
                                                {`${x.idChapter.toString()}${x.idSubchapter.toString()}` }
                                            </td> */}
 
-                <td className={index % 2 === 0 ? "dark" : ""}>{x.cod}</td>
+                <td className={index % 2 === 0 ? "dark center" : "center"}>{x.cod}</td>
 
                 <td className={index % 2 === 0 ? "dark left" : "left"}>
                   {x.name}
                 </td>
-                <td className={index % 2 === 0 ? "dark" : ""}>{x.unit}</td>
-                <td className={index % 2 === 0 ? "dark w-5" : "w-5"}>
+                <td className={index % 2 === 0 ? "dark center" : "center"}>{x.unit}</td>
+                <td className={index % 2 === 0 ? "dark w-5 right" : "w-5 right"}>
                   <input
                     type="text"
                     className={`${"input right"} ${
@@ -60,7 +60,7 @@ const CompoundInputTable = ({
                     }
                   />
                 </td>
-                <td className={index % 2 === 0 ? "dark w-5" : "w-5"}>
+                <td className={index % 2 === 0 ? "dark w-5 right" : "w-5 right"}>
                   <input
                     type="text"
                     className={`${"input right"} ${
@@ -73,7 +73,7 @@ const CompoundInputTable = ({
                     }
                   />
                 </td>
-                <td className={index % 2 === 0 ? "dark" : ""}>
+                <td className={index % 2 === 0 ? "dark right" : "right"}>
                   <input
                     type="text"
                     className={`${"input right"} ${
@@ -95,7 +95,7 @@ const CompoundInputTable = ({
                     }
                   />
                 </td>
-                <td className={index % 2 === 0 ? "dark right" : "right"}>
+                <td className={index % 2 === 0 ? "dark center" : "center"}>
                   <i
                     className="far fa-save icon-view-detail"
                     onClick={() => {

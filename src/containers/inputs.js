@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import {
   useNavigate,
@@ -7,79 +7,37 @@ import {
 } from "react-router-dom";
 import { ConstructionContext } from "../context/constructionContext";
 import AdminOptions from "../components/commons/adminOptions";
-import InputTable from "../components//inputs/inputTable";
-import NewInput from "../components//inputs/newInput";
+import InputTable from "../components/inputs/inputTable";
+import AdminInput from "../components/inputs/adminInput";
 import useEventListener from "../components/utils/useEventListener";
 
 const Inputs = ({}) => {
-  const { user, stageSelected,constructionSelected } = useContext(ConstructionContext);
+  const { user, stageSelected, constructionSelected } =
+    useContext(ConstructionContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const idItem = searchParams.get("idItem");
   const inputType = searchParams.get("inputType");
   const idCompoundSelected = searchParams.get("idCompoundSelected");
-  const [showNewInput, setShowNewInput] = useState(false);
   const [inputsArray, setInputsArray] = useState([]);
-  const [unistsArray, setUnitsArray] = useState([]);
-  const [categoriesArray, setCategories] = useState([]);
-  const [inputTypesArray, setinputTypesArray] = useState([]);
   const [noData, setNoData] = useState(false);
   const [input, setInput] = useState("");
   const [messageResultOperation, setMessageResultOperation] = useState("");
+  const [adminInput, setAdminInput] = useState({
+    show: false,
+    input: "",
+    action: "",
+  });
+  const [showCompoundInputs, setShowCompoundInputs] = useState(false);
 
-  const getUnitsArray = () => {
-    axios
-      .get(`${process.env.REACT_APP_BUDGET_URL_API}/units`)
-      .then((result) => {
-        if (result && result.data) {
-          const { data } = result;
-          setUnitsArray(data);
-        } else {
-          setUnitsArray([]);
-        }
-      })
-      .catch((error) => {
-        setUnitsArray([]);
-        console.error("Error fetching getUnitsArray:", error);
-      });
-  };
-
-  const getCategoriesArray = () => {
-    axios
-      .get(`${process.env.REACT_APP_BUDGET_URL_API}/categories`)
-      .then((result) => {
-        if (result && result.data) {
-          setCategories(result.data);
-        } else {
-          setCategories([]);
-        }
-      })
-      .catch((error) => {
-        setCategories([]);
-        console.error("Error fetching getCategoriesArray:", error);
-      });
-  };
-
-  const getInputTypes = async () => {
-    axios
-      .get(`${process.env.REACT_APP_BUDGET_URL_API}/inputTypes`)
-      .then((result) => {
-        if (result && result.data) {
-          setinputTypesArray(result.data);
-        } else {
-          setinputTypesArray([]);
-        }
-      })
-      .catch((error) => {
-        setinputTypesArray([]);
-        console.error("Error fetching getInputTypes:", error);
-      });
-  };
+  
 
   console.log("messageResultOperation===", messageResultOperation);
 
   const onSearchInput = async () => {
-    // setMessageResultOperation('')
+    setShowCompoundInputs(false);
+    if (!input) return;
+    setMessageResultOperation("");
     try {
       const result = await axios.get(
         `${process.env.REACT_APP_BUDGET_URL_API}/item-inputs-nameCod`,
@@ -131,10 +89,9 @@ const Inputs = ({}) => {
             idItem,
             option: "compoundInputs",
             idCompoundSelected,
-            user,
-            idStage:stageSelected.idStage,
-            idConstruction:constructionSelected.idConstruction
-
+            user: btoa(user),
+            idStage: stageSelected.idStage,
+            idConstruction: constructionSelected.idConstruction,
           });
           navigate(`/budget?${params.toString()}`);
         }
@@ -169,10 +126,13 @@ const Inputs = ({}) => {
           );
         } else {
           console.log("navigate");
-          const params = createSearchParams({user, idItem, option: "inputItems",
-            idStage:stageSelected.idStage,
-            idConstruction:constructionSelected.idConstruction
-           });
+          const params = createSearchParams({
+            user: btoa(user),
+            idItem,
+            option: "inputItems",
+            idStage: stageSelected.idStage,
+            idConstruction: constructionSelected.idConstruction,
+          });
           navigate(`/budget?${params.toString()}`);
         }
       }
@@ -185,7 +145,7 @@ const Inputs = ({}) => {
 
   const onNewInput = () => {
     setMessageResultOperation("");
-    setShowNewInput(true);
+    setAdminInput({ show: true, input: "", action: "new" });
     setNoData(false);
   };
 
@@ -207,12 +167,16 @@ const Inputs = ({}) => {
     name,
     unitValue,
     compound,
-    categorySelected
+    categorySelected,
+    action
   ) => {
     try {
       const result = await axios.post(
-        `${process.env.REACT_APP_BUDGET_URL_API}/create-input`,
+        `${process.env.REACT_APP_BUDGET_URL_API}/${
+          action === "edit" ? "update-input" : "create-input"
+        }`,
         {
+          idInput: action === "edit" ? parseInt(adminInput.input.idInput) : 0,
           idUnit: unitSelected,
           idInputType: inputTypeSelected,
           idCategory: categorySelected,
@@ -222,16 +186,18 @@ const Inputs = ({}) => {
           user,
         }
       );
-      setInputsArray([]);
 
       if (result && result.data && result.data.length > 0) {
-        const created = result.data[0];
-
-        if (created.newInput === 0)
+        const response = result.data[0];
+        if (response.input === 0) {
           setMessageResultOperation(
             "El insumo ya existe con el mismo nombre ingresado"
           );
-        else setShowNewInput(false);
+        } else {
+          setInputsArray([]);
+          setAdminInput({ show: false, input: "", action: "" });
+          if (adminInput.action === "edit") await onSearchInput();
+        }
       }
     } catch (error) {
       setInputsArray([]);
@@ -251,22 +217,57 @@ const Inputs = ({}) => {
 
   const onCancelOption = () => {
     // setShowOption('inputItems')
-    const params = createSearchParams({ user,idItem, option: "inputItems",
-      idStage:stageSelected.idStage,
-      idConstruction:constructionSelected.idConstruction
-     });
+    const params = createSearchParams({
+      user: btoa(user),
+      idItem,
+      option: "inputItems",
+      idStage: stageSelected.idStage,
+      idConstruction: constructionSelected.idConstruction,
+    });
     navigate(`/budget?${params.toString()}`);
   };
 
-  useEffect(() => {
-    getUnitsArray();
-    getInputTypes();
-    getCategoriesArray();
-  }, []);
+  const onEditInput = (index) => {
+    if (index > -1) {
+      const input = inputsArray[index];
+
+      setAdminInput({ show: true, input, action: "edit" });
+    }
+  };
+
+  const onCloseAdminInput = () => {
+    setAdminInput({ show: false, input: "", action: "" });
+    setMessageResultOperation("");
+  };
+
+  const onShowCompoundInputs = async (id) => {
+    try {
+      const result = await axios.get(
+        `${process.env.REACT_APP_BUDGET_URL_API}/compound-input`,
+        {
+          params: { idInput: id, idStage: stageSelected.idStage },
+        }
+      );
+      if (result && result.data && result.data.length > 0) {
+        setInputsArray(result.data);
+        setShowCompoundInputs(true);
+        setNoData(false);
+      } else {
+        setInputsArray([]);
+        setNoData(true);
+      }
+    } catch (error) {
+      setInputsArray([]);
+      setNoData(true);
+      console.error("Error fetching onShowCompoundInputs:", error);
+    }
+  };
+
+
 
   const handleKeyDownEnter = async (event) => {
     if (event.key === "Enter") {
-      if (!showNewInput) {
+      if (!adminInput.show) {
         await onSearchInput();
       }
     }
@@ -275,7 +276,7 @@ const Inputs = ({}) => {
 
   return (
     <div>
-      {!showNewInput && (
+      {!adminInput.show && (
         <div>
           <br />
           <div className="header-title">
@@ -291,43 +292,64 @@ const Inputs = ({}) => {
           />
         </div>
       )}
-      {noData && <div>La busqueda no arrojo resultado</div>}
-      {<div>{messageResultOperation}</div>}
 
-      {showNewInput && (
+      {noData && <div>La busqueda no arrojo resultado</div>}
+      {
+        <div hidden={adminInput && adminInput.show}>
+          {messageResultOperation}
+        </div>
+      }
+
+      {adminInput && adminInput.show && (
         <div
           className="modal show"
           style={{ display: "block", position: "initial" }}
         >
-          <NewInput
-            unistsArray={unistsArray}
-            categoriesArray={categoriesArray}
-            inputTypesArray={inputTypesArray}
-            setShowNewInput={setShowNewInput}
+          <AdminInput
+            messageResultOperation={messageResultOperation}
+            setAdminInput={setAdminInput}
             onSaveInput={onSaveInput}
             inputType={inputType}
+            adminInput={adminInput}
+            onCloseAdminInput={onCloseAdminInput}
           />
         </div>
       )}
 
       {inputsArray && inputsArray.length > 0 && (
         <div>
-         
           <div className="subtitle">
-            <span >LISTADO DE INSUMOS GENERALES</span>
+            <span>LISTADO DE INSUMOS GENERALES</span>
           </div>
-         
+
           <div>
+            {showCompoundInputs && (
+              <button
+                type="button"
+                className="secondary"
+                onClick={() => {onSearchInput(); setShowCompoundInputs(false)}}
+              >
+                {"Atrás"}
+              </button> 
+            )}
+            {showCompoundInputs ? " ":""}
             <button
               type="button"
               className="primary"
               onClick={() => onAddInput()}
             >
-                {"Agregar Insumo"}
+              {"Agregar Insumo"}
             </button>
+            
           </div>
           <br />
-          <InputTable inputsArray={inputsArray} onSelectInput={onSelectInput} />
+          <InputTable
+            inputsArray={inputsArray}
+            onSelectInput={onSelectInput}
+            onEditInput={onEditInput}
+            onShowCompoundInputs={onShowCompoundInputs}
+            showCompoundInputs={showCompoundInputs}
+          />
         </div>
       )}
     </div>

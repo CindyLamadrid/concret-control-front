@@ -47,8 +47,20 @@
   width: 15%;
 }
 
+.w-20{
+  width: 20%;
+}
+
+
+.w-30{
+  width: 30%;
+}
+
 .w-40{
   width: 40%;
+}
+.w-55{
+  width: 55%;
 }
 .w-60{
   width: 60%;
@@ -57,14 +69,18 @@
 .w-80{
   width: 80%;
 }
+.w-90{
+  width: 90%;
+}
 
 .w-100{
-  width: 40%;
+  width: 100%;
 }
 
 .mg-5{
   margin-left:5px;
 }
+
 
 .white{
   color: white;
@@ -82,3 +98,25 @@
     z-index: 3000;
 }
 
+html,
+.body{
+  width: 100%;
+}
+
+@media only screen and (max-width: 480px) {
+  body {
+    width: 275%!important;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+  body {
+    width: 180%!important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  body {
+    width: 100%!important;
+  }
+}

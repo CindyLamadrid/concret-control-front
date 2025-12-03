@@ -45,6 +45,10 @@ const Constructions = ({}) => {
     }
   };
 
+  const onEditStage=()=>{
+    
+  }
+
   return (
     <div>
      
@@ -58,6 +62,7 @@ const Constructions = ({}) => {
           <ConstructionTable
             constructionsArray={constructionsArray}
             onViewStage={onViewStage}
+            onEditStage={onEditStage}
           />
         </div>
       )}

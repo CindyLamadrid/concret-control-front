@@ -52,7 +52,7 @@ const Budget = ({  }) => {
          console.log("stageSelected===",stageSelected);
          console.log("chapterSelected change",chapterSelected);
          if ((showOption==="constructionItems" || showOption === 'inputItems')
-            && chapterSelected && subchapterSelected && stageSelected.idStage )
+            && chapterSelected>0 && subchapterSelected>0 && stageSelected.idStage )
                onConstructionItems()
       },[subchapterSelected,stageSelected]
     )

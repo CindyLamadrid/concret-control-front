@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import Modal from "react-bootstrap/Modal";
 import UnitSelect from "../commons/select";
 
 const handlers = require("../utils/handlers");
 
-const NewInput = ({
-  unistsArray,
-  categoriesArray,
-  inputTypesArray,
-  setShowNewInput,
+const AdminInput = ({
   onSaveInput,
   inputType,
+  adminInput,
+  messageResultOperation,
+  onCloseAdminInput,
+  
 }) => {
   const [name, setName] = useState("");
   const [unitSelected, setUnitSelected] = useState("");
@@ -18,6 +19,9 @@ const NewInput = ({
   const [categorySelected, setCategorySelected] = useState("");
   const [unitValue, setUnitValue] = useState(0);
   const [compound, setCompound] = useState(false);
+  const [unistsArray, setUnitsArray] = useState([]);
+  const [categoriesArray, setCategories] = useState([]);
+  const [inputTypesArray, setinputTypesArray] = useState([]);
 
   const onChangeUnit = (value) => {
     if (value) setUnitSelected(parseInt(value, 10));
@@ -30,22 +34,95 @@ const NewInput = ({
   const onChangeCategory = (value) => {
     if (value) setCategorySelected(parseInt(value, 10));
   };
+  const getUnitsArray = () => {
+    axios
+      .get(`${process.env.REACT_APP_BUDGET_URL_API}/units`)
+      .then((result) => {
+        if (result && result.data && result.data.length>0) {
+          const { data } = result;
+          setUnitsArray(data);
+          if(adminInput.action!=="edit")
+          setUnitSelected(parseInt(data[0].idUnit));
+        } else {
+          setUnitsArray([]);
+        }
+      })
+      .catch((error) => {
+        setUnitsArray([]);
+        console.error("Error fetching getUnitsArray:", error);
+      });
+  };
+
+  const getCategoriesArray = () => {
+    axios
+      .get(`${process.env.REACT_APP_BUDGET_URL_API}/categories`)
+      .then((result) => {
+         const { data } = result;
+        if (data && data.length>0) {
+          setCategories(data);
+          if(adminInput.action!=="edit")
+          setCategorySelected(parseInt(data[0].idCategory));
+        } else {
+          setCategories([]);
+        }
+      })
+      .catch((error) => {
+        setCategories([]);
+        console.error("Error fetching getCategoriesArray:", error);
+      });
+  };
+
+  const getInputTypes = async () => {
+    axios
+      .get(`${process.env.REACT_APP_BUDGET_URL_API}/inputTypes`)
+      .then((result) => {
+         const { data } = result;
+        if (data && data.length>0) {
+          setinputTypesArray(data);
+          if(adminInput.action!=="edit")
+           setInputTypeSelected(parseInt(data[0].idInputType));
+        } else {
+          setinputTypesArray([]);
+        }
+      })
+      .catch((error) => {
+        setinputTypesArray([]);
+        console.error("Error fetching getInputTypes:", error);
+      });
+  };
 
   useEffect(() => {
-    if (unistsArray && unistsArray.length > 0)
-      setUnitSelected(unistsArray[0].idUnit);
-    if (inputTypesArray && inputTypesArray.length > 0)
-      setInputTypeSelected(inputTypesArray[0].idInputType);
-
-    if (categoriesArray && categoriesArray.length > 0)
-      setCategorySelected(categoriesArray[0].idCategory);
+    getUnitsArray();
+    getInputTypes();
+    getCategoriesArray();
+    
   }, []);
+
+  useEffect(
+    ()=>{
+      console.log(adminInput.action,adminInput.input)
+      if(adminInput.action==="edit")
+      {
+         setName(adminInput.input.name)
+         if (unistsArray && unistsArray.length>0)
+          setUnitSelected(adminInput.input.idUnit)
+          if (inputTypesArray && inputTypesArray.length>0)
+          setInputTypeSelected(adminInput.input.idInputType)
+          if(categoriesArray && categoriesArray.length>0)
+            setCategorySelected(adminInput.input.idCategory)
+         setCompound(adminInput.input.compound)
+      }
+    },[adminInput.action,unistsArray,inputTypesArray,categoriesArray]
+  )
 
   return (
     <Modal.Dialog>
       <Modal.Body>
         <div className="subtitle center">
-          <b> CREAR INSUMO</b>
+          <b> {adminInput.action ==="edit" ? "EDITAR INSUMO": "CREAR INSUMO" } </b>
+        </div>
+        <div className="center mandatory">
+          <div>{messageResultOperation}</div> <br/>
         </div>
         <div className="row">
           <div className="col-4 right label">
@@ -107,26 +184,8 @@ const NewInput = ({
             </div>
           </div>
         </div>
-        {/* <div className="row">
-          <div className="col-4 right">
-            <span>Valor</span>
-          </div>
-          <div className="col-8">
-            <input
-              className="input w-100"
-              type="text"
-              value={unitValue}
-              onKeyDown={(event) => handlers.onHandlerDecimal(event)}
-              onChange={(event) => setUnitValue(event.target.value)}
-            />
-            <div className="mandatory left" hidden={unitValue}>
-              <i className="fas fa-exclamation-circle" />
-              &nbsp; Valor Obligatorio
-            </div>
-          </div>
-        </div> */}
-
-        <div className="row" hidden={inputType === "compound"}>
+       
+        <div className="row" hidden={inputType === "compound" || adminInput.action==="edit"}>
           <div className="col-4 right label">
             <span>Compuesto?</span>
           </div>
@@ -145,7 +204,7 @@ const NewInput = ({
             className="secondary"
             type="button"
           
-            onClick={() => setShowNewInput(false)}
+            onClick={() => { onCloseAdminInput()}}
           >{"Cerrar"}</button>
           &nbsp;
           <button
@@ -159,14 +218,15 @@ const NewInput = ({
                 name,
                 unitValue,
                 compound,
-                categorySelected
+                categorySelected,
+                adminInput.action,
               );
             }}
-          >{"Crear Insumo"}</button>
+          >{adminInput.action ==="edit" ? "Guardar Insumo" :"Crear Insumo"}</button>
         </div>
       </Modal.Body>
     </Modal.Dialog>
   );
 };
 
-export default NewInput;
+export default AdminInput;

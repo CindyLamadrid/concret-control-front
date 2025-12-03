@@ -10,24 +10,26 @@ const InputItemTable = ({
   setShowOption,
   setCompoundSelected,
   onFocusInput,
-  onBlurInput
+  onBlurInput,
+  onEditInput
 }) => {
   return (
     <div>
-      <table className="table w-80">
+      <table className="table w-90">
         <thead>
           <tr>
             <th className="w-5">ELIMINAR</th>
             <th className="w-5">A.P.U</th>
             <th className="w-5">DESTINO</th>
             <th className="w-5">CODIGO</th>
-            <th className="w-40 ">INSUMO</th>
+            <th className="w-30 ">INSUMO</th>
             <th className="w-5">UNIDAD</th>
             <th className="w-7">CANTIDAD</th>
             <th className="w-5">%DESP</th>
             <th className="w-10">VALOR/UN</th>
             <th className="w-5">GUARDAR</th>
             <th className="w-13">TOTAL</th>
+            <th className="w-5">EDITAR</th>
           </tr>
         </thead>
         <tbody>
@@ -60,8 +62,8 @@ const InputItemTable = ({
                 <td className={index % 2 === 0 ? "dark left" : "left"}>
                   {x.name}
                 </td>
-                <td className={index % 2 === 0 ? "dark" : ""}>{x.unit}</td>
-                <td className={index % 2 === 0 ? "dark w-5" : "w-5"}>
+                <td className={index % 2 === 0 ? "dark center" : "center"}>{x.unit}</td>
+                <td className={index % 2 === 0 ? "dark w-5 right" : "w-5 right"}>
                   <input
                     type="text"
                     className={`${"input right"} ${
@@ -75,7 +77,7 @@ const InputItemTable = ({
                     }
                   />
                 </td>
-                <td className={index % 2 === 0 ? "dark w-5" : "w-5"}>
+                <td className={index % 2 === 0 ? "dark w-5 right" : "w-5 right"}>
                   <input
                     type="text"
                     className={`${"input right"} ${
@@ -89,7 +91,7 @@ const InputItemTable = ({
                     }
                   />
                 </td>
-                <td className={index % 2 === 0 ? "dark" : ""}>
+                <td className={index % 2 === 0 ? "dark right" : "right"}>
                   <input
                     type="text"
                     className={`${"input right"} ${
@@ -121,8 +123,14 @@ const InputItemTable = ({
                   />
                   &nbsp;
                 </td>
-                <td className={index % 2 === 0 ? "dark center" : "center"}>
+                <td className={index % 2 === 0 ? "dark right" : "right"}>
                   {`${common.getMoneyFomat(x.totalInput)}`}
+                </td>
+                 <td className={index % 2 === 0 ? "dark center" : "center"}>
+                  <i
+                    className="fas fa-pencil-alt icon-view-detail"
+                      onClick={() => onEditInput(index)}
+                  />
                 </td>
               </tr>
             );
@@ -135,6 +143,7 @@ const InputItemTable = ({
                   common.getTotals(itemInputsArray, "totalInput")
                 )}
               </td>
+              <td></td>
             </tr>
           )}
         </tbody>

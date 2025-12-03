@@ -156,7 +156,7 @@ const ConstructionItems = ({
 
       {modalConfiguration && modalConfiguration.show && (
         <Modal
-          message="Desea elimiar el item?"
+          message="Desea eliminar el item?"
           buttonArray={modalConfiguration.buttonArray}
           item={modalConfiguration.item}
         />

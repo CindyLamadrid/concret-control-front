@@ -29,7 +29,7 @@ const CompoundInputs = ({
 
   const onAddInputItems = () => {
     setInputType("compound");
-    // setShowOption("searchInputs");
+   
 
     const params = createSearchParams({idItem:itemSelected.idItem,inputType:'compound',idCompoundSelected:compoundSelected.idInput});
     navigate(`/search-inputs?${params.toString()}&user=${btoa(user)}&idStage=${stageSelected.idStage}&idConstruction=${constructionSelected.idConstruction}`);
@@ -237,7 +237,7 @@ const CompoundInputs = ({
       }
       {modalConfiguration && modalConfiguration.show && (
         <Modal
-          message="Desea elimiar el insumo?"
+          message="Desea eliminar el insumo del compuesto?"
           buttonArray={modalConfiguration.buttonArray}
           item={modalConfiguration.item}
         />
