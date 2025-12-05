@@ -1,26 +1,56 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import Modal from "react-bootstrap/Modal";
 import UnitSelect from "../commons/select";
 import { Button } from "react-bootstrap";
 
-const NewItem = ({ unistsArray, setShowNewItem, onSaveItem }) => {
+const AdminItem = ({ adminItem, messageResultOperation, setAdminItem, onSaveItem }) => {
   const [name, setName] = useState("");
   const [unitSelected, setUnitSelected] = useState("");
+  const [unistsArray, setUnitsArray] = useState([]);
 
   const onChangeUnit = (value) => {
     if (value) setUnitSelected(parseInt(value, 10));
   };
 
+  const getUnitsArray = () => {
+    axios
+      .get(`${process.env.REACT_APP_BUDGET_URL_API}/units`)
+      .then((result) => {
+        if (result && result.data) {
+          const { data } = result;
+          setUnitsArray(data);
+          if (adminItem.action !== "edit") setUnitSelected(data[0].idUnit);
+        } else {
+          setUnitsArray([]);
+        }
+      })
+      .catch((error) => {
+        setUnitsArray([]);
+        console.error("Error fetching getUnitsArray:", error);
+      });
+  };
+
   useEffect(() => {
-    if (unistsArray && unistsArray.length > 0)
-      setUnitSelected(unistsArray[0].idUnit);
+    if (adminItem.action === "edit") {
+      setName(adminItem.item.name);
+      if (unistsArray && unistsArray.length > 0)
+        setUnitSelected(adminItem.item.idUnit);
+    }
+  }, [adminItem.action, unistsArray]);
+
+  useEffect(() => {
+    getUnitsArray();
   }, []);
 
   return (
     <Modal.Dialog>
       <Modal.Body>
         <div className="subtitle center">
-          <b> CREAR ITEM</b>
+         <b> {adminItem.action ==="edit" ? "EDITAR ITEM": "CREAR ITEM" } </b>
+        </div>
+        <div className="center mandatory">
+          <div>{messageResultOperation}</div> <br/>
         </div>
         <div className="row ">
           <div className="col-4 right label">
@@ -59,7 +89,7 @@ const NewItem = ({ unistsArray, setShowNewItem, onSaveItem }) => {
           <button
             className="secondary"
             type="button"
-            onClick={() => setShowNewItem(false)}
+            onClick={() => setAdminItem({ show: false, item: "", action: "" })}
           >
             {"Cerrar"}
           </button>
@@ -68,13 +98,15 @@ const NewItem = ({ unistsArray, setShowNewItem, onSaveItem }) => {
             className="primary"
             disabled={!name}
             onClick={() => {
-              onSaveItem(unitSelected, name);
+              onSaveItem(unitSelected, name, adminItem.action);
             }}
-          >{"Crear Item"}</button>
+          >
+            {adminItem.action === "edit" ? "Guardar Item" : "Crear Item"}
+          </button>
         </div>
       </Modal.Body>
     </Modal.Dialog>
   );
 };
 
-export default NewItem;
+export default AdminItem;

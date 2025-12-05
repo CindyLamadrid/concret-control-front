@@ -29,11 +29,6 @@ const Inputs = ({}) => {
     action: "",
   });
   const [showCompoundInputs, setShowCompoundInputs] = useState(false);
-
-  
-
-  console.log("messageResultOperation===", messageResultOperation);
-
   const onSearchInput = async () => {
     setShowCompoundInputs(false);
     if (!input) return;
@@ -67,7 +62,7 @@ const Inputs = ({}) => {
     try {
       console.log("compoundSelected===", idCompoundSelected);
       const result = await axios.post(
-        `${process.env.REACT_APP_BUDGET_URL_API}/compound-input`,
+        `${process.env.REACT_APP_BUDGET_URL_API}/create-compound-input`,
         {
           idStage: stageSelected.idStage,
           idInputCompound: inputs,
@@ -80,7 +75,7 @@ const Inputs = ({}) => {
 
         const created = result.data[0];
 
-        if (created.newInputItem === 0) {
+        if (created.idInputCompound === 0) {
           setMessageResultOperation(
             "El insumo ya existe para el item seleccionado"
           );
@@ -119,8 +114,8 @@ const Inputs = ({}) => {
 
         const created = result.data[0];
 
-        if (created.newInputItem === 0) {
-          console.log("entrooooo1111", created);
+        if (created.itemInput === 0) {
+        
           setMessageResultOperation(
             "El insumo ya existe para el item seleccionado"
           );
@@ -145,6 +140,7 @@ const Inputs = ({}) => {
 
   const onNewInput = () => {
     setMessageResultOperation("");
+  
     setAdminInput({ show: true, input: "", action: "new" });
     setNoData(false);
   };
@@ -228,6 +224,7 @@ const Inputs = ({}) => {
   };
 
   const onEditInput = (index) => {
+     setMessageResultOperation("");
     if (index > -1) {
       const input = inputsArray[index];
 
@@ -276,7 +273,7 @@ const Inputs = ({}) => {
 
   return (
     <div>
-      {!adminInput.show && (
+      {/* {!adminInput.show && ( */}
         <div>
           <br />
           <div className="header-title">
@@ -291,7 +288,7 @@ const Inputs = ({}) => {
             labelOption="Crear Nuevo Insumo"
           />
         </div>
-      )}
+      {/* )} */}
 
       {noData && <div>La busqueda no arrojo resultado</div>}
       {

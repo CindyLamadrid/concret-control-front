@@ -1,8 +1,9 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate, createSearchParams } from "react-router-dom";
-import { ConstructionContext } from "../context/constructionContext";
 import axios from "axios";
+import { ConstructionContext } from "../context/constructionContext";
 import ConstructionItemsTable from "./constructionItems/constructionItemsTable";
+import AdminItem from './items/adminItem'
 import Back from "./commons/back";
 import Modal from "./commons/modal";
 
@@ -19,6 +20,8 @@ const ConstructionItems = ({
     useContext(ConstructionContext);
 
   const [noData, setNoData] = useState(false);
+  const [messageResultOperation, setMessageResultOperation] = useState("");
+  const [adminItem ,setAdminItem]=useState({ show: false, input: "", action: "" });
   const [modalConfiguration, setModalConfiguration] = useState({
     show: false,
     buttonArray: [],
@@ -132,6 +135,52 @@ const ConstructionItems = ({
     //setShowOption('searchItems')
   };
 
+    const onEditItem = (index) => {
+    if (index > -1) {
+      const item = constructionItemsArray[index];
+
+      setAdminItem({ show: true, item, action: "edit" });
+    }
+  };
+
+  const onCloseAdminItem = () => {
+    setAdminItem({ show: false, input: "", action: "" });
+    setMessageResultOperation("");
+  };
+
+  const onSaveItem = async (unitSelected, name,action) => {
+    try {
+      const result = await axios.post(
+        `${process.env.REACT_APP_BUDGET_URL_API}/update-item`,
+        {
+          idItem:action === "edit" ? parseInt(adminItem.item.idItem) : 0,
+          idSubchapter,
+          idUnit: unitSelected,
+          name: name,
+          user,
+        }
+      );
+      if (result && result.data && result.data.length > 0) {
+        const response = result.data[0];
+        
+        if (response.item === 0) {
+          setMessageResultOperation(
+            "El item ya existe con el mismo nombre ingresado"
+          );
+        } else {
+          setConstructionItemsArray([]);
+          setAdminItem({ show: false, input: "", action: "" });
+          if (adminItem.action === "edit") await onConstructionItems();
+        }
+      }
+    } catch (error) {
+      setConstructionItemsArray([]);
+      setNoData(true);
+      console.error("Error fetching onSearchItems:", error);
+    }
+   
+  };
+
   useEffect(() => {
     if (constructionItemsArray && constructionItemsArray.length > 0)
       setNoData(false);
@@ -161,6 +210,22 @@ const ConstructionItems = ({
           item={modalConfiguration.item}
         />
       )}
+
+        {adminItem && adminItem.show && (
+        <div
+          className="modal show"
+          style={{ display: "block", position: "initial" }}
+        >
+          <AdminItem
+            messageResultOperation={messageResultOperation}
+            setAdminItem={setAdminItem}
+            onSaveItem={onSaveItem}
+            inputType=""
+            adminItem={adminItem}
+            onCloseAdminItem={onCloseAdminItem}
+          />
+        </div>
+      )}
    
       <br />
       {constructionItemsArray && constructionItemsArray.length > 0 && (
@@ -172,6 +237,7 @@ const ConstructionItems = ({
           onSaveInformation={onSaveInformation}
           onRefresh={onRefresh}
           onRemoveItem={onRemoveItem}
+          onEditItem={onEditItem}
         />
       )}
       {noData && <div>La busqueda no arrojo resultado</div>}

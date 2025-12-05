@@ -1,258 +1,253 @@
-import { useEffect, useState,useContext} from "react"
-import { useNavigate,useSearchParams } from 'react-router-dom';
-import axios from 'axios';
+import { useEffect, useState, useContext } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import axios from "axios";
 import { ConstructionContext } from "../context/constructionContext";
-import AdminOptions from "../components/commons/adminOptions"
-import NewItem from "../components/items/newItem";
+import AdminOptions from "../components/commons/adminOptions";
+import AdminItem from "../components/items/adminItem";
 import ItemTable from "../components/items/itemTable";
-import useEventListener from '../components/utils/useEventListener';
+import useEventListener from "../components/utils/useEventListener";
 
-const Items = ({  }) => {
-     const navigate = useNavigate ();
-    const  {user,stageSelected,constructionSelected}=
-            useContext(ConstructionContext);
-    const idStage =  stageSelected.idStage  
-    const [searchParams] = useSearchParams();
-    const idSubchapter = searchParams.get('idSubchapter')     
-    const [item, setItem] = useState('')
-    const [showNewItem, setShowNewItem] = useState(false)
-    const [itemArray, setItemArray] = useState([])
-    const [unistsArray, setUnitsArray] = useState([])
-    const [noData, setNoData] = useState(false)
+const Items = ({}) => {
+  const navigate = useNavigate();
+  const { user, stageSelected, constructionSelected } =
+    useContext(ConstructionContext);
+  const idStage = stageSelected.idStage;
+  const [searchParams] = useSearchParams();
+  const idSubchapter = searchParams.get("idSubchapter");
+  const [item, setItem] = useState("");
+  const [messageResultOperation, setMessageResultOperation] = useState("");
+  const [itemArray, setItemArray] = useState([]);
+  const [noData, setNoData] = useState(false);
+  const [adminItem, setAdminItem] = useState({
+    show: false,
+    item: "",
+    action: "",
+  });
 
-    const getUnitsArray = () => {
-        axios.get(`${process.env.REACT_APP_BUDGET_URL_API}/units`).then(
-            (result) => {
-                if (result && result.data) {
-                    setUnitsArray(result.data)
-                } else {
-                    setUnitsArray([])
-                }
-            }
-        ).catch(error => {
-            setUnitsArray([])
-            console.error('Error fetching getUnitsArray:', error);
-        });
-    }
-
-    const onSearchItems = async () => {
-        try {
-            const result = await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/search-subchapter-items`, {
-                name:item ,
-                idSubchapter
-            })
-            if (result && result.data && result.data.length > 0) {
-                setItemArray(result.data)
-                setNoData(false)
-            } else {
-                setItemArray([])
-                setNoData(true)
-            }
-        } catch (error) {
-            setItemArray([])
-            setNoData(true)
-            console.error('Error fetching onSearchItems:', error);
+  const onSearchItems = async () => {
+    if (!item) return;
+    setMessageResultOperation("");
+    try {
+      const result = await axios.post(
+        `${process.env.REACT_APP_BUDGET_URL_API}/search-subchapter-items`,
+        {
+          name: item,
+          idSubchapter,
         }
+      );
+      if (result && result.data && result.data.length > 0) {
+        setItemArray(result.data);
+        setNoData(false);
+      } else {
+        setItemArray([]);
+        setNoData(true);
+      }
+    } catch (error) {
+      setItemArray([]);
+      setNoData(true);
+      console.error("Error fetching onSearchItems:", error);
     }
+  };
 
-    const onSaveItem = async (unitSelected, name) => {
-
-
-        try {
-            const result = await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/create-subchapter-item`, {
-                idSubchapter,
-                idUnit: unitSelected,
-                name: name,
-                user
-            })
-            if (result && result.data && result.data.length > 0) {
-                const newItems = result.data.map(
-                    (x) => {
-                        const item = x;
-                        item.selected = false
-                        return item
-                    }
-                )
-                // setItemArray(newItems)
-                setNoData(false)
-                //onSearchItems()
-            } else {
-                setItemArray([])
-                setNoData(true)
-            }
-        } catch (error) {
-            setItemArray([])
-            setNoData(true)
-            console.error('Error fetching onSearchItems:', error);
+  const onSaveItem = async (unitSelected, name,action) => {
+    try {
+      const result = await axios.post(
+        `${process.env.REACT_APP_BUDGET_URL_API}/${
+         action === "edit" ?  "update-item":"create-subchapter-item"}`,
+        {
+          idItem:action === "edit" ? parseInt(adminItem.item.idItem) : 0,
+          idSubchapter,
+          idUnit: unitSelected,
+          name: name,
+          user,
         }
-        setShowNewItem(false)
-    }
-
-    const onNewItem = () => {
-        setShowNewItem(true)
-    }
-
-    const onSelectItem = (index) => {
-
-        if (index > -1) {
-
-            const newItemArray = itemArray
-            newItemArray[index].selected = !itemArray[index].selected
-            console.log("newItemArray", newItemArray);
-            setItemArray(...[newItemArray])
+      );
+      if (result && result.data && result.data.length > 0) {
+        const response = result.data[0];
+        // const newItems = response.map((x) => {
+        //   const item = x;
+        //   item.selected = false;
+        //   return item;
+        // });
+        // setItemArray(newItems);
+        if (response.item === 0) {
+          setMessageResultOperation(
+            "El item ya existe con el mismo nombre ingresado"
+          );
+        } else {
+          setItemArray([]);
+          setAdminItem({ show: false, input: "", action: "" });
+          if (adminItem.action === "edit") await onSearchItems();
         }
+      }
+    } catch (error) {
+      setItemArray([]);
+      setNoData(true);
+      console.error("Error fetching onSearchItems:", error);
     }
+   
+  };
 
-     const createStageItems = async (stageItems) => {
-        try {
-            const result = await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/create-stage-items`, {
-                idStage: idStage,
-                idItem: stageItems.idItems,
-                user
-            })
-           
-           
-        } catch (error) {
-            setItemArray([])
-            setNoData(true)
-            console.error('Error fetching onSearchItems:', error);
-        }
-        setShowNewItem(false)
-    }
+  const onNewItem = () => {
+    setMessageResultOperation("")
+    setNoData(false)
+    setAdminItem({ show: true, action: "new", item: "" });
+  };
 
-    const onEditItem=(index)=>{
-
-    }
+  const onSelectItem = (index) => {
+    if (index > -1) {
+      const newItemArray = [...itemArray]; ;
+      newItemArray[index].selected = !itemArray[index].selected;
     
-    const onAddItems = () => {
-        const selectedItems = itemArray.filter(
-            (x) => 
-                x.selected
-            
-        )
-        if (selectedItems && selectedItems.length > 0) {
-            const defaultItems = selectedItems.map(
-                (x) => {
-                    const apu = x
-                    x.quantity = 0
-                    x.value = 0
-                    return apu
-                }
-               
-            )
-             // setContructionItemsArray (defaultItems)
-             //
-             const stageItems = [...defaultItems]
-             const idItems = selectedItems.map(input => input.idItem).join(", ");
-             stageItems.idItems=idItems
-             console.log("stageItems===",stageItems);
-             createStageItems(stageItems)
-             navigate(`/budget?option=constructionItems&user=${btoa(user)}&idStage=${stageSelected.idStage}&idConstruction=${constructionSelected.idConstruction}`)
-             // setShowOption('contructionItems')
+      setItemArray(...[newItemArray]);
+    }
+  };
+
+  const createStageItems = async (stageItems) => {
+    try {
+      const result = await axios.post(
+        `${process.env.REACT_APP_BUDGET_URL_API}/create-stage-items`,
+        {
+          idStage: idStage,
+          idItem: stageItems.idItems,
+          user,
         }
+      );
+       if (result && result.data && result.data.length > 0) {
+        setNoData(false);
+
+        const created = result.data[0];
+
+        if (created.stageItem === 0) {
+        
+          setMessageResultOperation(
+            "El item ya existe para el capitulo seleccionado"
+          );
+        }else{
+         navigate(
+        `/budget?option=constructionItems&user=${btoa(user)}&idStage=${
+          stageSelected.idStage
+        }&idConstruction=${constructionSelected.idConstruction}`
+      );
+        } 
     }
-
-    useEffect(
-        () => {
-            getUnitsArray()
-        }, []
-    )
-    const onCancelOption=()=>{
-         navigate(`/budget?option=constructionItems&user=${btoa(user)}&idStage=${stageSelected.idStage}&idConstruction=${constructionSelected.idConstruction}`)
+    } catch (error) {
+      setItemArray([]);
+      setNoData(true);
+      console.error("Error fetching onSearchItems:", error);
     }
+    setAdminItem({ show: false, action: "", item: "" });
+  };
 
-      const handleKeyDownEnter =async(event) => {
-        if (event.key === 'Enter') {
-           if(!showNewItem){
-              await onSearchItems()
-           }
-        }
+  const onEditItem = (index) => {
+     setMessageResultOperation("");
+    if (index > -1) {
+      const item = itemArray[index];
+      setAdminItem({ show: true, action: "edit", item });
     }
-    useEventListener('keydown', handleKeyDownEnter);
+  };
 
-    return (
-        <div >
-            {
-                !showNewItem && (
-                    <div>
-                        <br/>
-                          <div className="header-title">
-                                <span>OPCIONES DE ITEMS</span>
-                            </div>
-                      
-                        <AdminOptions
-                        value={item}
-                        setValue={setItem}
-                        onSearch={onSearchItems}
-                        onNewOption={onNewItem}
-                        labelOption ="Crear Nuevo Item"
-                        onCancelOption={onCancelOption}
-                          />
-                   </div>
+  const onAddItems = () => {
+    const selectedItems = itemArray.filter((x) => x.selected);
+    if (selectedItems && selectedItems.length > 0) {
+      const defaultItems = selectedItems.map((x) => {
+        const apu = x;
+        x.quantity = 0;
+        x.value = 0;
+        return apu;
+      });
+      // setContructionItemsArray (defaultItems)
+      //
+      const stageItems = [...defaultItems];
+      const idItems = selectedItems.map((input) => input.idItem).join(", ");
+      stageItems.idItems = idItems;
+      console.log("stageItems===", stageItems);
+      createStageItems(stageItems);
+     
+      // setShowOption('contructionItems')
+    }
+  };
 
-                )
-            }
-            {
-                noData && (
-                    <div>
-                        La busqueda no arrojo resultado
-                    </div>
-                )
-            }
+  const onCancelOption = () => {
+    navigate(
+      `/budget?option=constructionItems&user=${btoa(user)}&idStage=${
+        stageSelected.idStage
+      }&idConstruction=${constructionSelected.idConstruction}`
+    );
+  };
 
+  const handleKeyDownEnter = async (event) => {
+    if (event.key === "Enter") {
+      if (!adminItem.show) {
+        await onSearchItems();
+      }
+    }
+  };
+  useEventListener("keydown", handleKeyDownEnter);
 
-            {
-                showNewItem && (
-                    <div
-                        className="modal show"
-                        style={{ display: 'block', position: 'initial' }}
-                    >
-                        <NewItem
-                            unistsArray={unistsArray}
-                            setShowNewItem={setShowNewItem}
-                            onSaveItem={onSaveItem}
-                        />
-                    </div>
-                )
-            }
-            {
-                itemArray && itemArray.length > 0 && (
-                    <div>
-                        <br/>
-                         <div className="subtitle">
-                                <span>LISTADO DE ITEMS GENERALES</span>
-                            </div>
-                      
-                         <div>
-                            <button
-                                type="button"
-                                className="primary"
-                                value="Agregar Items"
-                                onClick={() => onAddItems()}
-                            >
-                               {"Agregar Items"} 
-                            </button> &nbsp;
-                            {/* <button
-                                type="button"
-                                className="secondary"
-                                onClick={() => { setShowNewItem(false);navigate(`/budget?option=constructionItems`) }}
-                            >
-                                {"Cancelar"}
-                            </button> */}
-                        </div>
-                        <br/>
-                        <ItemTable
-                            itemArray={itemArray}
-                            onSelectItem={onSelectItem}
-                            onEditItem={onEditItem}
-                        />
-                        <br />
-                       
-                    </div>
-                )
-            }
-
+  return (
+    <div>
+    
+      <div>
+        <br />
+        <div className="header-title">
+          <span>OPCIONES DE ITEMS</span>
         </div>
-    )
-}
-export default Items
+
+        <AdminOptions
+          value={item}
+          setValue={setItem}
+          onSearch={onSearchItems}
+          onNewOption={onNewItem}
+          labelOption="Crear Nuevo Item"
+          onCancelOption={onCancelOption}
+        />
+      </div>
+      {noData && <div>La busqueda no arrojo resultado</div>}
+
+      {<div hidden={adminItem && adminItem.show}>{messageResultOperation}</div>}
+
+      {adminItem && adminItem.show && (
+        <div
+          className="modal show"
+          style={{ display: "block", position: "initial" }}
+        >
+          <AdminItem
+            adminItem={adminItem}
+            messageResultOperation={messageResultOperation}
+            setAdminItem={setAdminItem}
+            onSaveItem={onSaveItem}
+          />
+        </div>
+      )}
+      {itemArray && itemArray.length > 0 && (
+        <div>
+          <br />
+          <div className="subtitle">
+            <span>LISTADO DE ITEMS GENERALES</span>
+          </div>
+
+          <div>
+            <button
+              type="button"
+              className="primary"
+              value="Agregar Items"
+              onClick={() => onAddItems()}
+            >
+              {"Agregar Items"}
+            </button>{" "}
+            &nbsp;
+          </div>
+          <br />
+          <ItemTable
+            itemArray={itemArray}
+            onSelectItem={onSelectItem}
+            onEditItem={onEditItem}
+          />
+          <br />
+        </div>
+      )}
+    </div>
+  );
+};
+export default Items;

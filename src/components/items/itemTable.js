@@ -38,7 +38,7 @@ const ItemTable = ({ itemArray, onSelectItem,onEditItem }) => {
                 </td>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
                   <i
-                    className="fas fa-edit icon-view-detail"
+                    className="fas fa-pencil-alt icon-view-detail"
                     onClick={() => onEditItem(index)}
                   />
                 </td>
