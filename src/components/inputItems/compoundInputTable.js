@@ -37,9 +37,7 @@ const CompoundInputTable = ({
                     onClick={() => onCompoundRemoveInput(index)}
                   />
                 </td>
-                {/* <td className={index % 2 === 0 ? "gray" : ""}>
-                                               {`${x.idChapter.toString()}${x.idSubchapter.toString()}` }
-                                           </td> */}
+              
 
                 <td className={index % 2 === 0 ? "dark center" : "center"}>{x.cod}</td>
 

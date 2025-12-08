@@ -1,4 +1,4 @@
-const ConstructionTable = ({ constructionsArray, onViewStage,onEditContruction }) => {
+const ChaptersTable = ({ chapterArray,onEditChapter }) => {
   return (
     <div>
       <table className="table construction-table">
@@ -6,31 +6,22 @@ const ConstructionTable = ({ constructionsArray, onViewStage,onEditContruction }
           <tr>
             <th>CODIGO</th>
             <th>NOMBRE</th>
-            <th>Area</th>
-            <th>VER</th>
             <th>EDITAR</th>
           </tr>
         </thead>
         <tbody>
-          {constructionsArray.map((x, index) => {
+          {chapterArray.map((x, index) => {
             return (
               <tr key={index.toString()}>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
                   {x.cod}
                 </td>
                 <td className={index % 2 === 0 ? "dark" : ""}>{x.name}</td>
-                <td className={index % 2 === 0 ? "dark right" : "right"}>{x.area}</td>
-
-                <td className={index % 2 === 0 ? "dark center" : "center"}>
-                  <i
-                    className="fas fa-external-link-alt icon-view-detail"
-                    onClick={() => onViewStage(x.idConstruction)}
-                  />
-                </td>
+            
                  <td className={index % 2 === 0 ? "dark center" : "center"}>
                   <i
                     className="fas fa-pencil-alt icon-view-detail"
-                    onClick={() => onEditContruction(index)}
+                    onClick={() => onEditChapter(index)}
                   />
                 </td>
               </tr>
@@ -42,4 +33,4 @@ const ConstructionTable = ({ constructionsArray, onViewStage,onEditContruction }
   );
 };
 
-export default ConstructionTable;
+export default ChaptersTable;

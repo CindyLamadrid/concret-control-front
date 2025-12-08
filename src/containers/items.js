@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import {  useState, useContext } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { ConstructionContext } from "../context/constructionContext";
@@ -156,15 +156,13 @@ const Items = ({}) => {
         x.value = 0;
         return apu;
       });
-      // setContructionItemsArray (defaultItems)
-      //
+  
       const stageItems = [...defaultItems];
       const idItems = selectedItems.map((input) => input.idItem).join(", ");
       stageItems.idItems = idItems;
-      console.log("stageItems===", stageItems);
+  
       createStageItems(stageItems);
-     
-      // setShowOption('contructionItems')
+
     }
   };
 

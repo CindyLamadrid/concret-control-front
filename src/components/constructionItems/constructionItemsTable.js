@@ -23,7 +23,7 @@ const ConstructionItemsTable = ({
   };
 
   useEffect(() => {
-    console.log("apuArray===", constructionItemsArray);
+   
   }, [constructionItemsArray]);
   return (
     <div>

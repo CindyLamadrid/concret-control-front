@@ -62,7 +62,7 @@ const createArrayData=(array)=>{
         )
      }
    });
-   console.log(items);
+
    return items
 }
 

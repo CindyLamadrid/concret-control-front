@@ -8,7 +8,7 @@ const Settings=({})=>{
     useEffect(
         ()=>{
           setUser(atob(searchParams.get('user')))
-          console.log("searchParams.get('idConstruction')",searchParams.get('idConstruction'));
+     
           if(searchParams.get('idConstruction'))
           setConstructionSelected({idConstruction:searchParams.get('idConstruction')})
 

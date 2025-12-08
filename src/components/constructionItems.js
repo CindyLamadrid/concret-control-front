@@ -107,8 +107,7 @@ const ConstructionItems = ({
 
   const onRemoveItem = (index) => {
     const item = { ...constructionItemsArray[index] };
-    console.log("remove==", item);
-    // removeInputItem(inputItem)
+
     setModalConfiguration({
       show: true,
       buttonArray: [
@@ -189,6 +188,11 @@ const ConstructionItems = ({
 
   return (
     <div>
+     
+          <div className="header-title">
+              <span>LISTADO DE ITEMS POR CAPITULO</span>
+              <span className="subheader-title"> &nbsp;&nbsp;&nbsp;{constructionItemsArray.length}{" "} Item(s)</span>
+          </div>
       <div>
         <Back onBack={onBack} className="right back" />
          {" "}  {" "}

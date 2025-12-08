@@ -12,7 +12,8 @@ const CompoundInputs = ({
   compoundSelected,
   setInputType,
   setShowOption,
-  setCompoundSelected
+  setCompoundSelected,
+  getItemInputs
 }) => {
       const navigate = useNavigate ();
   const { user, stageSelected, constructionSelected } =
@@ -131,7 +132,11 @@ const CompoundInputs = ({
         }
       );
 
-      if (result && result.data) getCompoundInputs(compoundSelected.idInput);
+      if (result && result.data) 
+        {
+          getCompoundInputs(compoundSelected.idInput)
+          getItemInputs(itemSelected.idItem, true)
+        }
     } catch (error) {
       setCompoundInputArray([]);
       setNoData(true);
@@ -140,7 +145,6 @@ const CompoundInputs = ({
   };
 
   const onSaveInformation = (index) => {
-    console.log("index===", index);
     const compoundItem = { ...compoundInputsArray[index] };
     updateCompoundInput(compoundItem);
   };
@@ -181,7 +185,6 @@ const CompoundInputs = ({
 
   const onCompoundRemoveInput = (index) => {
     const compoundItem = { ...compoundInputsArray[index] };
-    console.log("remove==", compoundItem);
     // removeInputItem(inputItem)
     setModalConfiguration({
       show: true,
@@ -204,7 +207,6 @@ const CompoundInputs = ({
   };
 
   useEffect(() => {
-    console.log("compoundSelected===",compoundSelected);
     if (compoundSelected.idInput) {
       getCompoundInputs(compoundSelected.idInput);
       if(compoundSelected && !compoundSelected.name)
@@ -213,7 +215,6 @@ const CompoundInputs = ({
   }, [compoundSelected.idInput]);
 
     const onFocusInput=(index)=>{
-    console.log("focus")
      const newCompoundInputsArray = [...compoundInputsArray];
      newCompoundInputsArray[index].editing = true
      setCompoundInputArray(...[newCompoundInputsArray]);
@@ -242,6 +243,11 @@ const CompoundInputs = ({
           item={modalConfiguration.item}
         />
       )}
+       <div className="header-title">
+              <span>LISTADO DE INSUMOS COMPUESTOS</span>
+              <span className="subheader-title"> &nbsp;&nbsp;&nbsp;{compoundInputsArray.length}{" "} Insumo(s)</span>
+          </div>
+      <div ></div>
       {
         <div>
           <Back onBack={onBack} className="right back" />

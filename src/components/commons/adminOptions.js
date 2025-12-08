@@ -1,6 +1,7 @@
 const AdminOptions = ({
   value,
   setValue,
+  hideCancelOption,
   onSearch,
   onNewOption,
   labelOption,
@@ -32,6 +33,7 @@ const AdminOptions = ({
         type="button"
         className="secondary"
         onClick={() => onCancelOption()}
+        hidden={hideCancelOption}
       >
         {" "}
         <i className="fas fa-times-circle icon-view-detail" /> {"Cancelar"}

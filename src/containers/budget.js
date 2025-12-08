@@ -2,7 +2,7 @@ import { useState,useContext, useEffect} from 'react';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { ConstructionContext } from "../context/constructionContext";
-import Chapter from '../components/chapters'
+import Chapter from '../components/chaptersHeader'
 import ConstructionItems from '../components/constructionItems'
 import InputItem from '../components/inputItem'
 import Header from '../components/commons/resume'
@@ -21,10 +21,11 @@ const Budget = ({  }) => {
    const [itemSelected, setItemSelected] = useState({idItem:searchParams.get('idItem')?searchParams.get('idItem'):''})
    const [compoundSelected,setCompoundSelected]= useState({idInput:searchParams.get('idCompoundSelected')?searchParams.get('idCompoundSelected'):''} )
    const [inputType,setInputType] = useState('')
+   const [itemInputsArray, setItemInputsArray] = useState([]);
 
    
-    const onConstructionItems = async () => {
-      console.log("fill===");
+    const onConstructionItems = async (refreshItemSelected) => {
+    
         axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/stage-items`, {
            idStage: stageSelected.idStage ,
            idSubchapter: subchapterSelected
@@ -32,6 +33,11 @@ const Budget = ({  }) => {
             (result) => {
                 if (result && result.data && result.data.length > 0) {
                     setConstructionItemsArray(result.data)
+                     if (refreshItemSelected)   
+                     {
+                        const item = result.data.filter((x)=>x.idItem.toString()===itemSelected.idItem.toString())
+                        setItemSelected(item[0])
+                     }  
                    
                 } else {
                     setConstructionItemsArray([])
@@ -45,22 +51,53 @@ const Budget = ({  }) => {
                 console.error('Error fetching onConstructionItems:', error);
             }
         )
+   }
+
+   const getItemInputs = async (id,refreshInputSelected) => {
+    try {
+      const result = await axios.get(
+        `${process.env.REACT_APP_BUDGET_URL_API}/item-inputs`,
+        {
+          params: {idStage: stageSelected.idStage, idItem: id },
+        }
+      );
+      if (result && result.data && result.data.length > 0) {
+        setItemInputsArray(result.data);
+
+        if(refreshInputSelected)
+        {
+          const compound = result.data.filter(x=>x.idInput.toString()===compoundSelected.idInput.toString())
+          setCompoundSelected(compound[0])
+        }
+       
+      } else {
+        setItemInputsArray([]);
+       
+      }
+    } catch (error) {
+      setItemInputsArray([]);
+      console.error("Error fetching onSearchInput:", error);
     }
+  };
+
+   const getItems=(refreshItemSelected)=>{
+        if ((showOption==="constructionItems" || showOption === 'inputItems')
+            && chapterSelected>0 && subchapterSelected>0 && stageSelected.idStage )
+               onConstructionItems(refreshItemSelected)
+        
+   }
 
    useEffect(
    ()=>{
-         console.log("stageSelected===",stageSelected);
-         console.log("chapterSelected change",chapterSelected);
-         if ((showOption==="constructionItems" || showOption === 'inputItems')
-            && chapterSelected>0 && subchapterSelected>0 && stageSelected.idStage )
-               onConstructionItems()
+        
+        getItems(false);
       },[subchapterSelected,stageSelected]
     )
 
    
     useEffect(
       ()=>{
-         console.log("entrooo",constructionItemsArray);
+       
          if (idItem && constructionItemsArray && constructionItemsArray.length>0){
                const item = constructionItemsArray.filter((x)=>x.idItem.toString()===idItem.toString())
                if(item && item.length>0)
@@ -72,7 +109,7 @@ const Budget = ({  }) => {
 
       useEffect(
         () => {
-            console.log("budget===");
+          
             const chapterValues = localStorage.getItem("chapterValues")
             
             if(chapterValues )
@@ -80,13 +117,13 @@ const Budget = ({  }) => {
                 const values =JSON.parse(chapterValues)
                 const newChapterSelected =  parseInt(values.chapterSelected)
                 const newSubchapterSelected =parseInt(values.subchapterSelected)
-                console.log("entro chapterValues===",chapterValues);
+              
                 setChapterSelected(newChapterSelected)
                 setSubchapterSelected(newSubchapterSelected)
                 
             }else
             {
-                 console.log("entro chapterValues1===");
+              
                  setChapterSelected(0)
                  setSubchapterSelected(0)
                  
@@ -97,7 +134,7 @@ const Budget = ({  }) => {
     )
 
 
-   console.log("showOption===",showOption);
+  
    return (
       <div >
          {showOption === 'constructionItems' && (
@@ -136,9 +173,13 @@ const Budget = ({  }) => {
                constructionItemsArray={constructionItemsArray}
                itemSelected={itemSelected}
                setShowOption={setShowOption}
+               setItemInputsArray={setItemInputsArray}
                setItemSelected={setItemSelected}
                setInputType={setInputType}
                setCompoundSelected={setCompoundSelected}
+               getItems={getItems}
+               getItemInputs={getItemInputs}
+               itemInputsArray={itemInputsArray}
 
             />
          }
@@ -150,6 +191,7 @@ const Budget = ({  }) => {
             setInputType={setInputType}
             setShowOption={setShowOption}
             setCompoundSelected={setCompoundSelected}
+            getItemInputs={getItemInputs}
             
             />
          }

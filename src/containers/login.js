@@ -13,11 +13,8 @@ const Login = () => {
    const[message,setMessage] = useState("")
 
   const onLogin=async()=>{
-
-    console.log("userInput",userInput)
-    console.log("password",password)
-
-    if(!userInput || !password)
+    
+  if(!userInput || !password)
     {
        setMessage("Usuario y Contraseña obligatorios")
        return

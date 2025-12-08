@@ -1,5 +1,5 @@
 export const onHandlerNumber = (event) => {
-    console.log(event.key)
+
     if (!/[0-9]/.test(event.key) &&
         event.key !== 'Backspace' &&
         event.key !== 'Delete' &&
@@ -13,7 +13,7 @@ export const onHandlerNumber = (event) => {
 }
 
 export const onHandlerDecimal = (event) => {
-    console.log(event)
+
  if (['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End'].includes(event.key)) {
             return true; // Allow the key
         }

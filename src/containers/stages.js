@@ -55,7 +55,7 @@ const Stages = ({}) => {
     const stage = constructionStagesArray.filter(
       (x) => x.idStage.toString() === idStage.toString()
     );
-    console.log("stage==", stage);
+   
     if (stage && stage.length > 0) 
     {
       setStageSelected(stage[0]);

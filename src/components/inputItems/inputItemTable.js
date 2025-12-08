@@ -47,7 +47,6 @@ const InputItemTable = ({
                     className="fas fa-external-link-alt icon-view-detail"
                     onClick={() => {
                       setShowOption("compoundInputs");
-                      console.log("compoundSelected",x);
                       setCompoundSelected(x);
                     }}
                     hidden={!x.compound}

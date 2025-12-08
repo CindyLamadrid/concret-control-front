@@ -60,7 +60,7 @@ const Inputs = ({}) => {
 
   const onSaveCompoundInput = async (inputs) => {
     try {
-      console.log("compoundSelected===", idCompoundSelected);
+ 
       const result = await axios.post(
         `${process.env.REACT_APP_BUDGET_URL_API}/create-compound-input`,
         {
@@ -120,7 +120,7 @@ const Inputs = ({}) => {
             "El insumo ya existe para el item seleccionado"
           );
         } else {
-          console.log("navigate");
+     
           const params = createSearchParams({
             user: btoa(user),
             idItem,
@@ -206,7 +206,7 @@ const Inputs = ({}) => {
     if (index > -1) {
       const newInputsArray = [...inputsArray];
       newInputsArray[index].selected = !inputsArray[index].selected;
-      console.log("newInputArray", newInputsArray);
+
       setInputsArray(...[newInputsArray]);
     }
   };

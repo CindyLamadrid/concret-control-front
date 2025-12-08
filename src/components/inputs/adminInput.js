@@ -100,7 +100,7 @@ const AdminInput = ({
 
   useEffect(
     ()=>{
-      console.log(adminInput.action,adminInput.input)
+
       if(adminInput.action==="edit")
       {
          setName(adminInput.input.name)

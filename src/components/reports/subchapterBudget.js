@@ -32,7 +32,7 @@ const SubchapterBudget = ({reportOption,setReportOption}) => {
     const newTab = window.open("", "_blank");
     newTab.document.write(report);
     newTab.document.close(); 
-    console.log("reportOption===",reportOption);
+
     if(reportOption.type==="pdf")
     {
         setTimeout(() => {

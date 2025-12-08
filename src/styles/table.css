@@ -1,7 +1,7 @@
 .table{
   
     thead th{
-      background-color: whitesmoke;
+      background-color: white;
       color: #0F5258;
       font-size: 8pt;
       font-weight: 500;
@@ -33,7 +33,7 @@
 }
 
 .construction-table{
-  width: 40%;
+  width: 60%;
 }
 
 .construction-items-table{
@@ -54,7 +54,7 @@
  
 }
 .dark{
-  background-color: lightgray;
+  background-color: rgb(231, 231, 231)!important;
 }
 
 .pending-changes{

@@ -6,6 +6,7 @@ const Resume = ({
   itemSelected,
   inputSelected,
 }) => {
+
   return (
     <div className="resume">
       <div className="left">

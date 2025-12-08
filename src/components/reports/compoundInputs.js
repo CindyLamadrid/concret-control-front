@@ -58,7 +58,7 @@ const CompoundInputs = ({reportOption,setReportOption}) => {
           )
        }
      });
-     console.log(inputsMain);
+
      return inputsMain
   }
 

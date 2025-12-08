@@ -19,9 +19,10 @@ import Items from "./containers/items";
 import Inputs from "./containers/inputs";
 import Reports from "./containers/reports";
 import Footer from "./containers/footer";
-import Header from "./containers/header";
 import Login from "./containers/login"
 import AdminUsers from "./containers/users"
+import Chapters from "./components/chapters";
+import Subchapters from "./components/subchapters";
 
 function App() {
   const [reportOption,setReportOption] = useState('')
@@ -29,7 +30,6 @@ function App() {
  
   useEffect(()=>{
     const userLogged = localStorage.getItem("user")
-    console.log("userLogged",userLogged);
     setUser(userLogged)
   },[])
 
@@ -37,23 +37,27 @@ function App() {
     <ConstructionProvider>
       <BrowserRouter>
         <div>
-         <Header />
+        
          <Settings/>
           <div className="row no-margin">
           
-            <div className="col-2 no-margin" >
+            <div className="no-margin">
               <Menu setReportOption={setReportOption}/>
             </div>
            
               <Routes>
                 <Route exact path="/login" element={<Login />} />
                 
-                  <Route exact path="/home" element={<div className="col-10"><Constructions /></div>} />
-                  <Route exact path="/budget" element={<div className="col-10"><Budget /></div>} />
-                  <Route exact path="/stages" element={<div className="col-10"><Stages /></div>} />
-                  <Route exact path="/search-items" element={<div className="col-10"><Items /></div>} />
-                  <Route exact path="/search-inputs" element={<div className="col-10"><Inputs /></div>} />
-                  <Route exact path="/users" element={<div className="col-10"><AdminUsers /></div>} />
+                  <Route exact path="/home" element={<div className="component"><Constructions /></div>} />
+                  <Route exact path="/budget" element={<div className="component"><Budget /></div>} />
+                  <Route exact path="/stages" element={<div className="component"><Stages /></div>} />
+                  <Route exact path="/search-items" element={<div className="component"><Items /></div>} />
+                  <Route exact path="/search-inputs" element={<div className="component"><Inputs /></div>} />
+                  <Route exact path="/users" element={<div className="component"><AdminUsers /></div>} />
+                  <Route exact path="/chapters" element={<div className="component"><Chapters /></div>} />
+                  <Route exact path="/subchapters" element={<div className="component"><Subchapters /></div>} />
+                   
+                  
                 {/* <Route exact path="/reports" element={<Reports />} /> */}
                 <Route path="*" element={<Navigate to="/login" replace />} />
                 

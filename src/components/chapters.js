@@ -1,144 +1,135 @@
-import { useState, useEffect } from "react";
-import ChapterSelect from "./commons/select";
-import SubchapterSelect from "./commons/select";
+import { useEffect, useState,useContext } from "react";
 import axios from "axios";
+import ChaptersTable from "./chapters/chaptersTable";
+import AdminOptions from "./commons/adminOptions";
+import AdminChapter from "./chapters/adminChapter";
+import { ConstructionContext } from "../context/constructionContext";
 
-const Chapters = ({
-  chapterSelected,
-  setChapterSelected,
-  subchapterSelected,
-  setSubchapterSelected,
-  setShowOption,
-}) => {
+const Chapters = ({}) => {
   const [chapterArray, setChapterArray] = useState([]);
-  const [allSubchapterArray, setAllSubchapterArray] = useState([]);
-  const [subchapterArray, setSubchapterArray] = useState([]);
-  const [loadedChapter, setLoadedChapter] = useState(false);
-  const [loadedSubchapter, setLoadedSubchapter] = useState(false);
+  const [chapter, setChapter] = useState("");
+  const [messageResultOperation, setMessageResultOperation] = useState("");
 
-  const getchapters = (newChapterSelected) => {
+    const { user } =
+      useContext(ConstructionContext);
+
+  const [adminChapter, setAdminChapter] = useState({
+    show: false,
+    chapter: "",
+    action: "",
+  });
+  const getchapters = () => {
     axios
-      .get(`${process.env.REACT_APP_BUDGET_URL_API}/chapters`)
+      .get(`${process.env.REACT_APP_BUDGET_URL_API}/chapters-name-cod`,
+         { 
+             params: { 
+           nameCod:chapter
+         }
+       }
+      )
       .then((response) => {
         setChapterArray(response.data);
-        if (response.data.length > 0)
-          setChapterSelected(newChapterSelected || response.data[0].idChapter);
-        setLoadedChapter(true);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
   };
 
-  const getSubchapters = () => {
-    axios
-      .get(`${process.env.REACT_APP_BUDGET_URL_API}/subchapters`)
-      .then((response) => {
-        setAllSubchapterArray(response.data);
-        setLoadedSubchapter(true);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  };
-  useEffect(() => {
-    if (chapterSelected >= 0) {
-      getchapters(chapterSelected);
-      getSubchapters();
+  const onEditChapter = (index) => {
+    setMessageResultOperation("");
+    if (index > -1) {
+      const chapter = chapterArray[index];
+      setAdminChapter({ show: true, chapter, action: "edit" });
     }
-  }, [chapterSelected]);
+  };
 
-  const selectSubchapter = () => {
-    if (chapterSelected && JSON.stringify(chapterSelected) !== "{}") {
-      const subchapters = allSubchapterArray.filter(
-        (x) => x.idChapter === parseInt(chapterSelected, 10)
+  const onAddChapter = () => {
+    setAdminChapter({ show: true, chapter: "", action: "new" });
+  };
+
+  const onSaveChapter = async(name,action) => {
+      try {
+      const result = await axios.post(
+        `${process.env.REACT_APP_BUDGET_URL_API}/${
+         action === "edit" ?  "update-chapter":"create-chapter"}`,
+        {
+          idChapter:action === "edit" ? parseInt(adminChapter.chapter.idChapter) : 0,
+          name,
+          user,
+        }
       );
-
-      if (subchapters.length > 0) {
-        setSubchapterArray(subchapters);
-        setSubchapterSelected(
-          subchapterSelected || subchapters[0].idSubchapter
-        );
-
-        console.log(
-          "subchapters===,subchapterSelected",
-          subchapters[0].idSubchapter
-        );
-        localStorage.setItem(
-          "chapterValues",
-          JSON.stringify({
-            chapterSelected,
-            subchapterSelected:
-              subchapterSelected || subchapters[0].idSubchapter,
-          })
-        );
-        //if (showOption !== "searchInputs" && showOption !== "compoundInputs")
-        //    setShowOption("contructionItems")
+      if (result && result.data && result.data.length > 0) {
+        const response = result.data[0];
+       
+        if (response.chapter === 0) {
+          setMessageResultOperation(
+            "El project ya existe con el mismo nombre ingresado"
+          );
+        } else {
+         
+          setAdminChapter({ show: false, chapter: "", action: "" });
+          await getchapters();
+        }
       }
+    } catch (error) {
+     
+      // setNoData(true);
+      console.error("Error fetching onSaveChapter:", error);
     }
   };
+
+  const onSearchChapter = () => {
+    getchapters();
+  };
+
+  const onCancelOption = () => {};
 
   useEffect(() => {
-    if (loadedChapter && loadedSubchapter) {
-      selectSubchapter();
-    }
-  }, [chapterSelected, loadedChapter, loadedSubchapter]);
-
-  const onChangeChapter = (value) => {
-    if (value) {
-      console.log("fill2");
-      setChapterSelected(parseInt(value, 10));
-      setSubchapterSelected(0);
-      localStorage.setItem(
-        "chapterValues",
-        JSON.stringify({
-          chapterSelected: parseInt(value, 10),
-          subchapterSelected: 0,
-        })
-      );
-    }
-  };
-
-  const onChangeSubchapter = (value) => {
-    if (value) {
-      setSubchapterSelected(parseInt(value, 10));
-      //if (showOption !== 'searchItems') {
-      setShowOption("constructionItems");
-      localStorage.setItem(
-        "chapterValues",
-        JSON.stringify({
-          chapterSelected,
-          subchapterSelected: parseInt(value, 10),
-        })
-      );
-      //}
-    }
-  };
-
+    
+  }, []);
   return (
-    <div className="row">
-    
-      <div className="col-3">
-        <ChapterSelect
-          id="idChapter"
-          name="name"
-          selectedValue={chapterSelected}
-          setSelectedValue={onChangeChapter}
-          array={chapterArray}
+    <div>
+      <div className="header-title">
+        <span>LISTADO DE CAPITULOS</span>
+        <span className="subheader-title">
+          {" "}
+          &nbsp;&nbsp;&nbsp;{chapterArray.length} capitulo(s)
+        </span>
+      </div>
+      {adminChapter && adminChapter.show && (
+        <div
+          className="modal show"
+          style={{ display: "block", position: "initial" }}
+        >
+          <AdminChapter
+            adminChapter={adminChapter}
+            setAdminChapter={setAdminChapter}
+            messageResultOperation={messageResultOperation}
+            onSaveChapter={onSaveChapter}
+          />
+        </div>
+      )}
+
+      <div>
+        <AdminOptions
+          value={chapter}
+          setValue={setChapter}
+          onSearch={onSearchChapter}
+          onNewOption={onAddChapter}
+          onCancelOption={onCancelOption}
+          hideCancelOption
+          labelOption="Crear Nuevo Capitulo"
         />
       </div>
-    
-      <div className="col-3">
-        <SubchapterSelect
-          id="idSubchapter"
-          name="name"
-          selectedValue={subchapterSelected}
-          setSelectedValue={onChangeSubchapter}
-          array={subchapterArray}
+      <br />
+      {chapterArray && chapterArray.length > 0 && (
+        <ChaptersTable
+          chapterArray={chapterArray}
+          onEditChapter={onEditChapter}
         />
-      </div>
-      <div className="col-6"></div>
+      )}
     </div>
   );
 };
+
 export default Chapters;

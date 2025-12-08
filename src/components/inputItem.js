@@ -12,17 +12,21 @@ import AdminInput from "./inputs/adminInput"
 
 const InputItem = ({
   itemSelected,
+  itemInputsArray,
   constructionItemsArray,
+  setItemInputsArray,
   setShowOption,
   setItemSelected,
   setInputType,
   setCompoundSelected,
+  getItems,
+  getItemInputs,
 }) => {
   const navigate = useNavigate();
   const { user, stageSelected, constructionSelected } =
     useContext(ConstructionContext);
 
-  const [itemInputsArray, setItemInputsArray] = useState([]);
+
   const [noData, setNoData] = useState(false);
   const [modalConfiguration, setModalConfiguration] = useState({
     show: false,
@@ -37,43 +41,60 @@ const InputItem = ({
     action: "",
   });
 
-  const getItemInputs = async (id) => {
-    setMessageResultOperation("")
-    try {
-      const result = await axios.get(
-        `${process.env.REACT_APP_BUDGET_URL_API}/item-inputs`,
-        {
-          params: {idStage: stageSelected.idStage, idItem: id },
-        }
-      );
-      if (result && result.data && result.data.length > 0) {
-        setItemInputsArray(result.data);
-        setNoData(false);
-      } else {
-        setItemInputsArray([]);
-        setNoData(true);
-      }
-    } catch (error) {
-      setItemInputsArray([]);
-      setNoData(true);
-      console.error("Error fetching onSearchInput:", error);
-    }
-  };
+  // const getItemInputs = async (id) => {
+   // setMessageResultOperation("")
+   
+    // try {
+    //   const result = await axios.get(
+    //     `${process.env.REACT_APP_BUDGET_URL_API}/item-inputs`,
+    //     {
+    //       params: {idStage: stageSelected.idStage, idItem: id },
+    //     }
+    //   );
+    //   if (result && result.data && result.data.length > 0) {
+    //     setItemInputsArray(result.data);
+    //     setNoData(false);
+    //   } else {
+    //     setItemInputsArray([]);
+    //     setNoData(true);
+    //   }
+    // } catch (error) {
+    //   setItemInputsArray([]);
+    //   setNoData(true);
+    //   console.error("Error fetching onSearchInput:", error);
+    // }
+  //};
 
   const onRefresh = () => {
+    setMessageResultOperation("")
     getItemInputs(itemSelected.idItem);
   };
 
   useEffect(() => {
     if (itemSelected.idItem && stageSelected.idStage) {
+       setMessageResultOperation("")
       getItemInputs(itemSelected.idItem);
      
     }
   }, [itemSelected.idItem,stageSelected]);
 
+  useEffect(
+    ()=>{
+
+      if(itemInputsArray && itemInputsArray.length===0)
+      {
+         setNoData(true);
+      }else
+      {
+        setNoData(false);
+      }
+
+    },[itemInputsArray]
+  )
+
   const onChangeQuantity = (event, index, type) => {
     const newItemInputsArray = [...itemInputsArray];
-    console.log("type====", type);
+  
 
     switch (type) {
       case "quantity":
@@ -129,7 +150,12 @@ const InputItem = ({
         }
       );
 
-      if (result && result.data) getItemInputs(itemSelected.idItem);
+      if (result && result.data) 
+        {
+          getItemInputs(itemSelected.idItem);
+          getItems(true); 
+          
+        }
     } catch (error) {
       setItemInputsArray([]);
       setNoData(true);
@@ -163,7 +189,7 @@ const InputItem = ({
   };
 
   const onSaveInformation = (index) => {
-    console.log("index===", index);
+   
     const inputItem = { ...itemInputsArray[index] };
     updateInputItem(inputItem);
   };
@@ -177,7 +203,7 @@ const InputItem = ({
 
   const onRemoveInputItem = (index) => {
     const inputItem = { ...itemInputsArray[index] };
-    console.log("remove==", inputItem);
+
     // removeInputItem(inputItem)
     setModalConfiguration({
       show: true,
@@ -198,7 +224,7 @@ const InputItem = ({
       item: inputItem,
     });
   };
-  console.log("itemSelected", itemSelected);
+
   const onChangeItem = (value) => {
     if (value) {
       const newItem = constructionItemsArray.filter(
@@ -211,6 +237,7 @@ const InputItem = ({
 
   const onBack = () => {
     setShowOption("constructionItems");
+    
   };
 
   const onAddCompoundItems = () => {
@@ -228,7 +255,7 @@ const InputItem = ({
   };
 
   const onFocusInput=(index)=>{
-    console.log("focus")
+
      const newItemInputsArray = [...itemInputsArray];
      newItemInputsArray[index].editing = true
      setItemInputsArray(...[newItemInputsArray]);
@@ -322,7 +349,11 @@ const InputItem = ({
           array={constructionItemsArray}
         />
       </div>
-<br/>
+
+ <div className="header-title">
+              <span>LISTADO DE INSUMOS</span>
+              <span className="subheader-title"> &nbsp;&nbsp;&nbsp;{itemInputsArray.length}{" "} Insumo(s)</span>
+          </div>
       <div >
          <Back onBack={onBack} className="" />
             {" "}
