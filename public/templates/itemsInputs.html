@@ -88,6 +88,12 @@
       body{
          font-family: "Century Gothic";
       }
+      .w-10{
+        width: 10%;
+      }
+      .w-30{
+        width: 30%;
+      }
      
     </style>
   </head>
@@ -121,19 +127,20 @@
      
       <br/>
        {{#items}}
+       <div class="left subtitle-2"><b>{{chapterReport}}</b></div>
        <div class="left subtitle-2"> A.P.U: {{itemCod}} - {{itemName}}</div>
       <div class="center">
         <table class="table">
           <thead>
             <tr>
-              <th class="center">CODIGO</th>
-              <th class="center">DESCRIPCION</th>
-              <th class="center">UNIDAD</th>
-              <th class="center">CANTIDAD</th>
-              <th class="center">FACTOR</th>
-              <th class="center">VALOR</th>
-              <th class="center">TOTAL</th>
-              <th class="center">CANT. T</th>
+              <th class="center w-10">CODIGO</th>
+              <th class="center w-30">DESCRIPCION</th>
+              <th class="center w-10">UNIDAD</th>
+              <th class="center w-10">CANTIDAD</th>
+              <th class="center w-10">FACTOR</th>
+              <th class="center w-10">VALOR</th>
+              <th class="center w-10">TOTAL</th>
+              <th class="center w-10">CANT. T</th>
             </tr>
           </thead>
           <tbody>

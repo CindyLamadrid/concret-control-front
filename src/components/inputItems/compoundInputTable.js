@@ -9,6 +9,7 @@ const CompoundInputTable = ({
   onRefresh,
   onFocusInput,
   onBlurInput,
+  onEditInput
 }) => {
   return (
     <div>
@@ -25,6 +26,7 @@ const CompoundInputTable = ({
             <th className="w-10">VALOR/UN</th>
             <th className="w-5">GUARDAR</th>
             <th className="w-13">TOTAL</th>
+             <th className="w-5">EDITAR</th>
           </tr>
         </thead>
         <tbody>
@@ -112,6 +114,12 @@ const CompoundInputTable = ({
                 <td className={index % 2 === 0 ? "dark right" : "right"}>
                   {`${common.getMoneyFomat(x.totalInput)}`}
                 </td>
+                <td className={index % 2 === 0 ? "dark center" : "center"}>
+                  <i
+                    className="fas fa-pencil-alt icon-view-detail"
+                      onClick={() => onEditInput(index)}
+                  />
+                </td>
               </tr>
             );
           })}
@@ -123,6 +131,7 @@ const CompoundInputTable = ({
                   common.getTotals(compoundInputsArray, "totalInput").toFixed(2)
                 )}
               </td>
+              <td></td>
             </tr>
           )}
         </tbody>

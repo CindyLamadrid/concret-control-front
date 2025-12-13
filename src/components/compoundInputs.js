@@ -6,6 +6,7 @@ import Back from "./commons/back";
 import Header from "./commons/resume";
 import Modal from './commons/modal';
 import CompoundInputTable from "./inputItems/compoundInputTable";
+import AdminInput from "./inputs/adminInput"
 
 const CompoundInputs = ({
   itemSelected,
@@ -20,10 +21,17 @@ const CompoundInputs = ({
     useContext(ConstructionContext);
   const [compoundInputsArray, setCompoundInputArray] = useState([]);
   const [noData, setNoData] = useState(false);
+  const [messageResultOperation, setMessageResultOperation] = useState("");
   const [modalConfiguration, setModalConfiguration] = useState({
     show: false,
     buttonArray: [],
   });
+    const [adminInput, setAdminInput] = useState({
+    show: false,
+    input: "",
+    action: "",
+  });
+
   const onBack = () => {
     setShowOption("inputItems");
   };
@@ -206,6 +214,48 @@ const CompoundInputs = ({
     });
   };
 
+   const onSaveInput = async (
+    unitSelected,
+    inputTypeSelected,
+    name,
+    unitValue,
+    compound,
+    categorySelected,
+    action
+  ) => {
+    try {
+      const result = await axios.post(
+        `${process.env.REACT_APP_BUDGET_URL_API}/update-input`,
+        {
+          idInput: action === "edit" ? parseInt(adminInput.input.idInput) : 0,
+          idUnit: unitSelected,
+          idInputType: inputTypeSelected,
+          idCategory: categorySelected,
+          name: name,
+          compound: compound,
+          unitValue: unitValue,
+          user,
+        }
+      );
+
+      if (result && result.data && result.data.length > 0) {
+        const response = result.data[0];
+        if (response.input === 0) {
+          setMessageResultOperation(
+            "El insumo ya existe con el mismo nombre ingresado"
+          );
+        } else {
+          setAdminInput({ show: false, input: "", action: "" });
+          if (adminInput.action === "edit") await getCompoundInputs(compoundSelected.idInput);
+        }
+      }
+    } catch (error) {
+      
+      console.error("Error fetching onSaveInput:", error);
+    }
+  };
+  
+
   useEffect(() => {
     if (compoundSelected.idInput) {
       getCompoundInputs(compoundSelected.idInput);
@@ -225,6 +275,19 @@ const CompoundInputs = ({
      newCompoundInputsArray[index].editing = false
      setCompoundInputArray(...[newCompoundInputsArray]);
   }
+
+    const onEditInput = (index) => {
+    if (index > -1) {
+      const input = compoundInputsArray[index];
+
+      setAdminInput({ show: true, input, action: "edit" });
+    }
+  };
+
+  const onCloseAdminInput = () => {
+    setAdminInput({ show: false, input: "", action: "" });
+    setMessageResultOperation("");
+  };
 
   return (
     <div>
@@ -261,6 +324,21 @@ const CompoundInputs = ({
           </button>
         </div>
       }
+       {adminInput && adminInput.show && (
+              <div
+                className="modal show"
+                style={{ display: "block", position: "initial" }}
+              >
+                <AdminInput
+                  messageResultOperation={messageResultOperation}
+                  setAdminInput={setAdminInput}
+                  onSaveInput={onSaveInput}
+                  inputType=""
+                  adminInput={adminInput}
+                  onCloseAdminInput={onCloseAdminInput}
+                />
+              </div>
+            )}
       <br />
       {compoundInputsArray && compoundInputsArray.length > 0 && (
         <CompoundInputTable
@@ -272,6 +350,7 @@ const CompoundInputs = ({
           setShowOption={setShowOption}
           onFocusInput={onFocusInput} 
           onBlurInput={onBlurInput}
+           onEditInput={onEditInput}
           // setCompoundSelected={setCompoundSelected}
         />
       )}

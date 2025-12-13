@@ -53,7 +53,7 @@ const InputItemTable = ({
                   />
                 </td>
                 <td className={index % 2 === 0 ? "dark" : ""}>
-                  {`${x.idChapter.toString()}${x.idSubchapter.toString()}`}
+                  {`${x.idChapter.toString()}${x.codSubchapter.toString()}`}
                 </td>
 
                 <td className={index % 2 === 0 ? "dark" : ""}>{x.cod}</td>

@@ -28,8 +28,21 @@ const createArrayData=(array)=>{
    
    array.forEach(i => {
      const exists = items.findIndex(x=> x.idItem===i.idItem)
+    
      if(exists ===-1)
      {
+      
+       let showSubchapter =  true;
+        console.log("i.subChapter===",i.chapter);
+        console.log("items===",items);
+      
+       if (items.length>0 && i.chapter=== items[items.length-1].chapter )
+       {
+        
+         console.log("items[items.length-1].subChapter===",items[items.length-1].subChapter);
+          showSubchapter =  false;
+       }
+
         const inputs = array.filter(x=>x.idItem===i.idItem).map(
             (y)=>
             {
@@ -57,7 +70,10 @@ const createArrayData=(array)=>{
                 quantityItem:i.quantityItem,
                 inputs ,
                 totalValue: commom.getMoneyFomat(commom.getTotals(inputs,"value") ),
-                total: commom.getMoneyFomat(commom.getTotals(inputs,"value") * i.quantityItem)
+                total: commom.getMoneyFomat(commom.getTotals(inputs,"value") * i.quantityItem),
+                chapter :i.chapter,
+                chapterReport: showSubchapter? `CAPITULO: ${i.chapterCod} - ${i.chapter}`:'',
+              
             }
         )
      }

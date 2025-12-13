@@ -1,13 +1,14 @@
-const SubchaptersTable = ({ subchapterArray,onEditSubchapter }) => {
+const SubchaptersTable = ({ subchapterArray,onEditSubchapter,onRemoveSubchapter }) => {
   return (
     <div>
       <table className="table construction-table">
         <thead>
           <tr>
-            <th>CODIGO</th>
-            <th>NOMBRE</th>
-            <th>CAPITULO</th>
-            <th>EDITAR</th>
+            <th className="w-10">CODIGO</th>
+            <th className="w-50">NOMBRE</th>
+            <th className="w-30">CAPITULO</th>
+            <th className="w-5">EDITAR</th>
+            <th className="w-5">ELIMINAR</th>
           </tr>
         </thead>
         <tbody>
@@ -24,6 +25,12 @@ const SubchaptersTable = ({ subchapterArray,onEditSubchapter }) => {
                   <i
                     className="fas fa-pencil-alt icon-view-detail"
                     onClick={() => onEditSubchapter(index)}
+                  />
+                </td>
+                <td className={index % 2 === 0 ? "dark center" : "center"}>
+                  <i
+                    class="far fa-trash-alt icon-view-detail"
+                    onClick={() => onRemoveSubchapter(index)}
                   />
                 </td>
               </tr>

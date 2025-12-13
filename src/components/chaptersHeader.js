@@ -42,6 +42,7 @@ const Chapters = ({
       });
   };
   useEffect(() => {
+    
     if (chapterSelected >= 0) {
       getchapters(chapterSelected);
       getSubchapters();
@@ -49,19 +50,19 @@ const Chapters = ({
   }, [chapterSelected]);
 
   const selectSubchapter = () => {
+    console.log("selectSubchapter===",chapterSelected)
     if (chapterSelected && JSON.stringify(chapterSelected) !== "{}") {
       const subchapters = allSubchapterArray.filter(
         (x) => x.idChapter === parseInt(chapterSelected, 10)
       );
-
+      setSubchapterArray(subchapters);
+    console.log("subchapters===",subchapters)
       if (subchapters.length > 0) {
-        setSubchapterArray(subchapters);
+        
         setSubchapterSelected(
           subchapterSelected || subchapters[0].idSubchapter
         );
-
-   
-        localStorage.setItem(
+         localStorage.setItem(
           "chapterValues",
           JSON.stringify({
             chapterSelected,
@@ -69,13 +70,28 @@ const Chapters = ({
               subchapterSelected || subchapters[0].idSubchapter,
           })
         );
-       
+
+      }else{
+        setSubchapterSelected("")
+         localStorage.setItem(
+          "chapterValues",
+          JSON.stringify({
+            chapterSelected,
+            subchapterSelected:
+              0,
+          })
+        );
       }
+       
+       
+      
     }
   };
 
   useEffect(() => {
+    
     if (loadedChapter && loadedSubchapter) {
+      
       selectSubchapter();
     }
   }, [chapterSelected, loadedChapter, loadedSubchapter]);
@@ -128,7 +144,7 @@ const Chapters = ({
         <SubchapterSelect
           id="idSubchapter"
           name="name"
-          selectedValue={subchapterSelected}
+          selectedValue={subchapterArray && subchapterArray.length>0?subchapterSelected:-1}
           setSelectedValue={onChangeSubchapter}
           array={subchapterArray}
         />
