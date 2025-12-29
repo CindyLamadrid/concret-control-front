@@ -18,8 +18,10 @@ const Budget = ({  }) => {
    const [chapterSelected, setChapterSelected] = useState(-1)
    const [subchapterSelected, setSubchapterSelected] = useState(-1)
    const [constructionItemsArray, setConstructionItemsArray] = useState([])
-   const [itemSelected, setItemSelected] = useState({idItem:searchParams.get('idItem')?searchParams.get('idItem'):''})
+   // const [itemSelected, setItemSelected] = useState({idItem:searchParams.get('idItem')?searchParams.get('idItem'):'', })
+   const [itemSelected, setItemSelected]= useState({idConstructionStageItem:searchParams.get('idConstructionStageItem')?searchParams.get('idConstructionStageItem'):'', })
    const [compoundSelected,setCompoundSelected]= useState({idInput:searchParams.get('idCompoundSelected')?searchParams.get('idCompoundSelected'):''} )
+   const [budgetType] = useState(searchParams.get('budgetType'))
    const [inputType,setInputType] = useState('')
    const [itemInputsArray, setItemInputsArray] = useState([]);
 
@@ -28,7 +30,8 @@ const Budget = ({  }) => {
     
         axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/stage-items`, {
            idStage: stageSelected.idStage ,
-           idSubchapter: subchapterSelected
+           idSubchapter: subchapterSelected,
+           type: budgetType
         }).then(
             (result) => {
                 if (result && result.data && result.data.length > 0) {
@@ -41,7 +44,6 @@ const Budget = ({  }) => {
                    
                 } else {
                     setConstructionItemsArray([])
-                  
                 }
             }
         ).catch(
@@ -58,7 +60,7 @@ const Budget = ({  }) => {
       const result = await axios.get(
         `${process.env.REACT_APP_BUDGET_URL_API}/item-inputs`,
         {
-          params: {idStage: stageSelected.idStage, idItem: id },
+          params: {idConstructionStageItem: id },
         }
       );
       if (result && result.data && result.data.length > 0) {
@@ -161,6 +163,7 @@ const Budget = ({  }) => {
          {showOption === 'constructionItems' && (
             <ConstructionItems
                idSubchapter={subchapterSelected}
+               budgetType={budgetType}
                setShowOption={setShowOption}
                setItemSelected={setItemSelected}
                constructionItemsArray={constructionItemsArray}
@@ -171,6 +174,7 @@ const Budget = ({  }) => {
          {showOption === 'inputItems' &&
             <InputItem
                constructionItemsArray={constructionItemsArray}
+               budgetType={budgetType}
                itemSelected={itemSelected}
                setShowOption={setShowOption}
                setItemInputsArray={setItemInputsArray}
@@ -186,6 +190,7 @@ const Budget = ({  }) => {
          {showOption === 'compoundInputs' &&
             <CompoundInputs
             itemSelected={itemSelected}
+            budgetType={budgetType}
             compoundSelected={compoundSelected}
             subchapterSelected={subchapterSelected}
             setInputType={setInputType}

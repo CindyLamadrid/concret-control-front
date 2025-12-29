@@ -10,6 +10,7 @@ import AdminInput from "./inputs/adminInput"
 
 const CompoundInputs = ({
   itemSelected,
+  budgetType,
   compoundSelected,
   setInputType,
   setShowOption,
@@ -343,6 +344,7 @@ const CompoundInputs = ({
       {compoundInputsArray && compoundInputsArray.length > 0 && (
         <CompoundInputTable
           compoundInputsArray={compoundInputsArray}
+          budgetType={budgetType}
           onChangeQuantity={onChangeQuantity}
           onSaveInformation={onSaveInformation}
           onRefresh={onRefresh}

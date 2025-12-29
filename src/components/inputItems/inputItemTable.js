@@ -3,6 +3,7 @@ const common = require("../utils/common");
 
 const InputItemTable = ({
   itemInputsArray,
+  budgetType,
   onChangeQuantity,
   onSaveInformation,
   onRefresh,
@@ -74,6 +75,7 @@ const InputItemTable = ({
                     onChange={(event) =>
                       onChangeQuantity(event, index, "quantity")
                     }
+                    disabled ={x.budgetStatus==="C" && budgetType==="I"}
                   />
                 </td>
                 <td className={index % 2 === 0 ? "dark w-5 right" : "w-5 right"}>
@@ -88,6 +90,7 @@ const InputItemTable = ({
                     onChange={(event) =>
                       onChangeQuantity(event, index, "waste")
                     }
+                    disabled={x.compound || (x.budgetStatus==="C" && budgetType==="I")}
                   />
                 </td>
                 <td className={index % 2 === 0 ? "dark right" : "right"}>
@@ -98,12 +101,13 @@ const InputItemTable = ({
                     }`}
                     value={x.unitValue ? common.getMoneyFomat(x.unitValue.toString(),x.editing) : "0"}
                     onKeyDown={(event) => handlers.onHandlerDecimal(event)}
-                    disabled={x.compound}
+                    disabled={x.compound || (x.budgetStatus==="C" && budgetType==="I")}
                     onFocus={()=>onFocusInput(index)}
                     onBlur={()=>onBlurInput(index)}
                     onChange={(event) =>
                       onChangeQuantity(event, index, "unitValue")
                     }
+                  
                   />
                 </td>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>

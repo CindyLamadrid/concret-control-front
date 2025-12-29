@@ -13,7 +13,7 @@ const InputTable = ({
         <thead>
           <tr>
             {/* <th className="w-5">ELIMINAR</th> */}
-            <th className="w-5">SELECCIONAR</th>
+            <th className="w-5" hidden={showCompoundInputs}>SELECCIONAR</th>
             <th className="w-5" hidden={showCompoundInputs}>A.P.U</th>
             <th className="w-10">CODIGO</th>
             <th className="w-40">DESCRIPCION</th>
@@ -26,10 +26,11 @@ const InputTable = ({
           {inputsArray.map((x, index) => {
             return (
               <tr key={index.toString()}>
-                <td className={index % 2 === 0 ? "dark center" : "center"}>
+                <td className={index % 2 === 0 ? "dark center" : "center"}  hidden={showCompoundInputs}>
                   <input
                     type="checkbox"
                     checked={x.selected}
+                   
                     onChange={() => onSelectInput(index)}
                   />
                 </td>
@@ -44,7 +45,7 @@ const InputTable = ({
                 </td>
 
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
-                  {x.idInput}
+                  {x.cod}
                 </td>
                 <td className={index % 2 === 0 ? "dark left" : "left"}>
                   {x.name}

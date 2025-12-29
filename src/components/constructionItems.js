@@ -9,6 +9,7 @@ import Modal from "./commons/modal";
 
 const ConstructionItems = ({
   idSubchapter,
+  budgetType,
   setShowOption,
   setItemSelected,
   constructionItemsArray,
@@ -22,6 +23,7 @@ const ConstructionItems = ({
   const [noData, setNoData] = useState(false);
   const [messageResultOperation, setMessageResultOperation] = useState("");
   const [adminItem ,setAdminItem]=useState({ show: false, input: "", action: "" });
+
   const [modalConfiguration, setModalConfiguration] = useState({
     show: false,
     buttonArray: [],
@@ -43,7 +45,7 @@ const ConstructionItems = ({
       const result = await axios.post(
         `${process.env.REACT_APP_BUDGET_URL_API}/update-stage-item`,
         {
-          idConstructionStage: item.idConstructionStage,
+          idConstructionStageItem: item.idConstructionStageItem,
           quantity: item.quantity,
           user,
         }
@@ -130,14 +132,11 @@ const ConstructionItems = ({
 
   const onAddItems = () => {
     navigate(`/search-items?idSubchapter=${idSubchapter.toString()}&user=${btoa(user)}&idStage=${stageSelected.idStage}&idConstruction=${constructionSelected.idConstruction}`);
-
-    //setShowOption('searchItems')
   };
 
     const onEditItem = (index) => {
     if (index > -1) {
       const item = constructionItemsArray[index];
-
       setAdminItem({ show: true, item, action: "edit" });
     }
   };
@@ -235,6 +234,7 @@ const ConstructionItems = ({
       {constructionItemsArray && constructionItemsArray.length > 0 && (
         <ConstructionItemsTable
           constructionItemsArray={constructionItemsArray}
+          budgetType={budgetType}
           onChangeQuantity={onChangeQuantity}
           setShowOption={setShowOption}
           setItemSelected={setItemSelected}

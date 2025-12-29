@@ -4,11 +4,12 @@ const ConstructionTable = ({ constructionsArray, onViewStage,onEditContruction }
       <table className="table construction-table">
         <thead>
           <tr>
-            <th>CODIGO</th>
-            <th>NOMBRE</th>
-            <th>Area</th>
-            <th>VER</th>
-            <th>EDITAR</th>
+            <th className="w-10">CODIGO</th>
+            <th className="w-70">NOMBRE</th>
+            <th className="w-10">Area</th>
+            <th className="w-5">VER</th>
+            <th className="w-5">EDITAR</th>
+           
           </tr>
         </thead>
         <tbody>
@@ -33,6 +34,7 @@ const ConstructionTable = ({ constructionsArray, onViewStage,onEditContruction }
                     onClick={() => onEditContruction(index)}
                   />
                 </td>
+                
               </tr>
             );
           })}

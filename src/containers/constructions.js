@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate, createSearchParams } from "react-router-dom";
 import { ConstructionContext } from "../context/constructionContext";
 import ConstructionTable from "../components/constructions/constructionTable";
-import AdminContruction from "../components/constructionItems/adminConstruction";
+import AdminContruction from "../components/constructions/adminConstruction";
 
 const Constructions = ({}) => {
   const navigate = useNavigate();
@@ -86,7 +86,7 @@ const Constructions = ({}) => {
        
         if (response.construction === 0) {
           setMessageResultOperation(
-            "El project ya existe con el mismo nombre ingresado"
+            "El proyecto ya existe con el mismo nombre ingresado"
           );
         } else {
          

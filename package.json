@@ -7,6 +7,7 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "env-cmd": "^11.0.0",
     "hogan.js": "^3.0.2",
     "html2pdf.js": "^0.12.1",
     "react": "^19.2.0",
@@ -20,7 +21,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build:prod": "env-cmd -f .env.prod react-scripts build"
   },
   "eslintConfig": {
     "extends": [

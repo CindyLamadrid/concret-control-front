@@ -12,6 +12,7 @@ import AdminInput from "./inputs/adminInput"
 
 const InputItem = ({
   itemSelected,
+  budgetType,
   itemInputsArray,
   constructionItemsArray,
   setItemInputsArray,
@@ -41,42 +42,20 @@ const InputItem = ({
     action: "",
   });
 
-  // const getItemInputs = async (id) => {
-   // setMessageResultOperation("")
-   
-    // try {
-    //   const result = await axios.get(
-    //     `${process.env.REACT_APP_BUDGET_URL_API}/item-inputs`,
-    //     {
-    //       params: {idStage: stageSelected.idStage, idItem: id },
-    //     }
-    //   );
-    //   if (result && result.data && result.data.length > 0) {
-    //     setItemInputsArray(result.data);
-    //     setNoData(false);
-    //   } else {
-    //     setItemInputsArray([]);
-    //     setNoData(true);
-    //   }
-    // } catch (error) {
-    //   setItemInputsArray([]);
-    //   setNoData(true);
-    //   console.error("Error fetching onSearchInput:", error);
-    // }
-  //};
+  
 
   const onRefresh = () => {
     setMessageResultOperation("")
-    getItemInputs(itemSelected.idItem);
+    getItemInputs(itemSelected.idConstructionStageItem);
   };
 
   useEffect(() => {
-    if (itemSelected.idItem && stageSelected.idStage) {
+    if (itemSelected.idConstructionStageItem) {
        setMessageResultOperation("")
-      getItemInputs(itemSelected.idItem);
+      getItemInputs(itemSelected.idConstructionStageItem);
      
     }
-  }, [itemSelected.idItem,stageSelected]);
+  }, [itemSelected.idConstructionStageItem]);
 
   useEffect(
     ()=>{
@@ -152,7 +131,7 @@ const InputItem = ({
 
       if (result && result.data) 
         {
-          getItemInputs(itemSelected.idItem);
+          getItemInputs(itemSelected.idConstructionStageItem);
           getItems(true); 
           
         }
@@ -169,18 +148,18 @@ const InputItem = ({
       buttonArray: [],
     });
 
+    console.log("inputItem===",inputItem);
     try {
       const result = await axios.post(
         `${process.env.REACT_APP_BUDGET_URL_API}/remove-item-input`,
         {
-          idStage:stageSelected.idStage,
-          idItem: inputItem.idItem,
+          idConstructionStageItem:inputItem.idConstructionStageItem,
           idInput: inputItem.idInput,
           user,
         }
       );
 
-      if (result && result.data) getItemInputs(itemSelected.idItem);
+      if (result && result.data) getItemInputs(itemSelected.idConstructionStageItem);
     } catch (error) {
       setItemInputsArray([]);
       setNoData(true);
@@ -240,12 +219,14 @@ const InputItem = ({
     
   };
 
-  const onAddCompoundItems = () => {
+  const onAddInputItem= () => {
     setInputType("");
     setCompoundSelected("");
+    console.log("itemSelected===",itemSelected);
 
     const params = createSearchParams({
-      idItem: itemSelected.idItem,
+      // idItem: itemSelected.idItem,
+      idConstructionStageItem: itemSelected.idConstructionStageItem,
       inputType: "",
       idCompoundSelected: "",
     });
@@ -312,7 +293,7 @@ const InputItem = ({
           );
         } else {
           setAdminInput({ show: false, input: "", action: "" });
-          if (adminInput.action === "edit") await getItemInputs(itemSelected.idItem);
+          if (adminInput.action === "edit") await getItemInputs(itemSelected.idConstructionStageItem);
         }
       }
     } catch (error) {
@@ -360,7 +341,7 @@ const InputItem = ({
         <button
           type="button"
           className="primary"
-          onClick={() => onAddCompoundItems()}
+          onClick={() => onAddInputItem()}
         >
           {"Agregar Insumo"}
         </button>
@@ -386,6 +367,7 @@ const InputItem = ({
       {itemInputsArray && itemInputsArray.length > 0 && (
         <InputItemTable
           itemInputsArray={itemInputsArray}
+          budgetType={budgetType}
           onChangeQuantity={onChangeQuantity}
           onSaveInformation={onSaveInformation}
           onRefresh={onRefresh}

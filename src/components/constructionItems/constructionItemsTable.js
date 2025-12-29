@@ -4,6 +4,7 @@ const commom = require("../utils/common");
 
 const ConstructionItemsTable = ({
   constructionItemsArray,
+  budgetType,
   onChangeQuantity,
   setShowOption,
   setItemSelected,
@@ -82,6 +83,7 @@ const ConstructionItemsTable = ({
                     value={x.quantity ? x.quantity.toString() : "0"}
                     onKeyDown={(event) => handlers.onHandlerDecimal(event)}
                     onChange={(event) => onChangeQuantity(event, index)}
+                    disabled ={x.budgetStatus==="C" && budgetType==="I"}
                   />
                 </td>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>

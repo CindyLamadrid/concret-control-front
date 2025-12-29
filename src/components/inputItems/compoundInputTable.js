@@ -3,6 +3,7 @@ const common = require("../utils/common");
 
 const CompoundInputTable = ({
   compoundInputsArray,
+  budgetType,
   onChangeQuantity,
   onCompoundRemoveInput,
   onSaveInformation,
@@ -58,6 +59,7 @@ const CompoundInputTable = ({
                     onChange={(event) =>
                       onChangeQuantity(event, index, "quantity")
                     }
+                    disabled={x.compound || (x.budgetStatus==="C" && budgetType==="I")}
                   />
                 </td>
                 <td className={index % 2 === 0 ? "dark w-5 right" : "w-5 right"}>
@@ -71,6 +73,7 @@ const CompoundInputTable = ({
                     onChange={(event) =>
                       onChangeQuantity(event, index, "waste")
                     }
+                    disabled={x.compound || (x.budgetStatus==="C" && budgetType==="I")}
                   />
                 </td>
                 <td className={index % 2 === 0 ? "dark right" : "right"}>
@@ -93,6 +96,7 @@ const CompoundInputTable = ({
                     onChange={(event) =>
                       onChangeQuantity(event, index, "unitValue")
                     }
+                    disabled={x.compound || (x.budgetStatus==="C" && budgetType==="I")}
                   />
                 </td>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>

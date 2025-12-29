@@ -17,6 +17,7 @@ const Inputs = ({}) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const idItem = searchParams.get("idItem");
+  const idConstructionStageItem= searchParams.get("idConstructionStageItem");
   const inputType = searchParams.get("inputType");
   const idCompoundSelected = searchParams.get("idCompoundSelected");
   const [inputsArray, setInputsArray] = useState([]);
@@ -60,7 +61,7 @@ const Inputs = ({}) => {
 
   const onSaveCompoundInput = async (inputs) => {
     try {
- 
+
       const result = await axios.post(
         `${process.env.REACT_APP_BUDGET_URL_API}/create-compound-input`,
         {
@@ -82,6 +83,7 @@ const Inputs = ({}) => {
         } else {
           const params = createSearchParams({
             idItem,
+            idConstructionStageItem,
             option: "compoundInputs",
             idCompoundSelected,
             user: btoa(user),
@@ -103,9 +105,10 @@ const Inputs = ({}) => {
       const result = await axios.post(
         `${process.env.REACT_APP_BUDGET_URL_API}/create-item-input`,
         {
-          idStage: stageSelected.idStage,
+          // idStage: stageSelected.idStage,
           idInput: items,
-          idItem,
+          // idItem,
+          idConstructionStageItem,
           user,
         }
       );
@@ -115,17 +118,18 @@ const Inputs = ({}) => {
         const created = result.data[0];
 
         if (created.itemInput === 0) {
-        
+
           setMessageResultOperation(
             "El insumo ya existe para el item seleccionado"
           );
         } else {
-     
+
           const params = createSearchParams({
             user: btoa(user),
+            idConstructionStageItem,
             idItem,
             option: "inputItems",
-            idStage: stageSelected.idStage,
+            // idStage: stageSelected.idStage,
             idConstruction: constructionSelected.idConstruction,
           });
           navigate(`/budget?${params.toString()}`);
@@ -140,20 +144,21 @@ const Inputs = ({}) => {
 
   const onNewInput = () => {
     setMessageResultOperation("");
-  
+
     setAdminInput({ show: true, input: "", action: "new" });
     setNoData(false);
   };
 
-  const onAddInput = () => {
+  const onAddCompountInput = () => {
     const selectedItems = inputsArray.filter((x) => x.selected);
 
     if (selectedItems && selectedItems.length > 0) {
       const idInputs = selectedItems
         .map((input) => parseInt(input.idInput))
         .join(", ");
+        console.log("inputType===",inputType);
       if (inputType !== "compound") onSaveInputItem(idInputs);
-      else onSaveCompoundInput(idInputs);
+       else onSaveCompoundInput(idInputs);
     }
   };
 
@@ -217,7 +222,8 @@ const Inputs = ({}) => {
       user: btoa(user),
       idItem,
       option: "inputItems",
-      idStage: stageSelected.idStage,
+      // idStage: stageSelected.idStage,
+      idConstructionStageItem,
       idConstruction: constructionSelected.idConstruction,
     });
     navigate(`/budget?${params.toString()}`);
@@ -327,17 +333,20 @@ const Inputs = ({}) => {
                 onClick={() => {onSearchInput(); setShowCompoundInputs(false)}}
               >
                 {"Atrás"}
-              </button> 
+              </button>
             )}
-            {showCompoundInputs ? " ":""}
-            <button
+            {! showCompoundInputs && (
+
+               <button
               type="button"
               className="primary"
-              onClick={() => onAddInput()}
+              onClick={() => onAddCompountInput()}
             >
               {"Agregar Insumo"}
             </button>
-            
+            )}
+           
+
           </div>
           <br />
           <InputTable
