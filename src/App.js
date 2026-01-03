@@ -23,6 +23,7 @@ import Login from "./containers/login"
 import AdminUsers from "./containers/users"
 import Chapters from "./components/chapters";
 import Subchapters from "./components/subchapters";
+import Control from "./containers/control"
 
 function App() {
   const [reportOption,setReportOption] = useState('')
@@ -56,6 +57,7 @@ function App() {
                   <Route exact path="/users" element={<div className="component"><AdminUsers /></div>} />
                   <Route exact path="/chapters" element={<div className="component"><Chapters /></div>} />
                   <Route exact path="/subchapters" element={<div className="component"><Subchapters /></div>} />
+                  <Route exact path="/control" element={<div className="component"><Control /></div>} />
                    
                   
                 {/* <Route exact path="/reports" element={<Reports />} /> */}

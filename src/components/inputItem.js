@@ -220,7 +220,7 @@ const InputItem = ({
   };
 
   const onAddInputItem= () => {
-    setInputType("");
+    //setInputType("");
     setCompoundSelected("");
     console.log("itemSelected===",itemSelected);
 
@@ -230,7 +230,7 @@ const InputItem = ({
       inputType: "",
       idCompoundSelected: "",
     });
-    navigate(`/search-inputs?${params.toString()}&user=${btoa(user)}&idStage=${stageSelected.idStage}&idConstruction=${constructionSelected.idConstruction}`);
+    navigate(`/search-inputs?${params.toString()}&user=${btoa(user)}&idStage=${stageSelected.idStage}&idConstruction=${constructionSelected.idConstruction}&budgetType=${budgetType}`);
 
     // setShowOption('searchInputs')
   };

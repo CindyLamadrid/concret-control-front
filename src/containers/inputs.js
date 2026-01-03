@@ -19,6 +19,7 @@ const Inputs = ({}) => {
   const idItem = searchParams.get("idItem");
   const idConstructionStageItem= searchParams.get("idConstructionStageItem");
   const inputType = searchParams.get("inputType");
+  const budgetType = searchParams.get("budgetType");
   const idCompoundSelected = searchParams.get("idCompoundSelected");
   const [inputsArray, setInputsArray] = useState([]);
   const [noData, setNoData] = useState(false);
@@ -89,6 +90,7 @@ const Inputs = ({}) => {
             user: btoa(user),
             idStage: stageSelected.idStage,
             idConstruction: constructionSelected.idConstruction,
+            budgetType
           });
           navigate(`/budget?${params.toString()}`);
         }
@@ -131,6 +133,7 @@ const Inputs = ({}) => {
             option: "inputItems",
             // idStage: stageSelected.idStage,
             idConstruction: constructionSelected.idConstruction,
+            budgetType
           });
           navigate(`/budget?${params.toString()}`);
         }
@@ -225,6 +228,7 @@ const Inputs = ({}) => {
       // idStage: stageSelected.idStage,
       idConstructionStageItem,
       idConstruction: constructionSelected.idConstruction,
+      budgetType
     });
     navigate(`/budget?${params.toString()}`);
   };

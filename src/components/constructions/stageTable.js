@@ -30,10 +30,13 @@ const StagesTable = ({ onChangeTypeBudget, constructionStagesArray, onViewStageI
                   >
                   
                         <option key="1" value="I">
-                          Inicial
+                          P. Inicial
                         </option>
-                         <option key="2" value="U">
-                          Modificado
+                        <option key="2" value="U">
+                          P. Modificado
+                        </option>
+                        <option key="3" value="CC">
+                          C. Costos
                         </option>
                     
                   </select>

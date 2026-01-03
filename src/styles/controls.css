@@ -65,3 +65,9 @@
 .checkbox{
    margin-top: 5px;
 }
+
+.link{
+    border-bottom: solid 1px blue ;
+    cursor: pointer;
+    color: blue;
+}

@@ -45,7 +45,7 @@ const generateReport=(reportArray)=>{
     try {
       axios
         .get(`${process.env.REACT_APP_BUDGET_URL_API}/inputs-budget`, {
-          params: { idStage: stageSelected.idStage },
+          params: { idStage: stageSelected.idStage,type: stageSelected.budgetType },
         })
         .then((result) => {
           if (result && result.data && result.data.length > 0) {

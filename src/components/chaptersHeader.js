@@ -42,7 +42,7 @@ const Chapters = ({
       });
   };
   useEffect(() => {
-    
+    console.log("chapter use effect");
     if (chapterSelected >= 0) {
       getchapters(chapterSelected);
       getSubchapters();
@@ -50,15 +50,16 @@ const Chapters = ({
   }, [chapterSelected]);
 
   const selectSubchapter = () => {
-    console.log("selectSubchapter===",chapterSelected)
+    console.log("selectSubchapter===",chapterSelected);
     if (chapterSelected && JSON.stringify(chapterSelected) !== "{}") {
       const subchapters = allSubchapterArray.filter(
         (x) => x.idChapter === parseInt(chapterSelected, 10)
       );
-      setSubchapterArray(subchapters);
-    console.log("subchapters===",subchapters)
-      if (subchapters.length > 0) {
+
         
+      setSubchapterArray(subchapters);
+      if (subchapters.length > 0) {
+      
         setSubchapterSelected(
           subchapterSelected || subchapters[0].idSubchapter
         );
@@ -72,7 +73,7 @@ const Chapters = ({
         );
 
       }else{
-        setSubchapterSelected("")
+        setSubchapterSelected(0)
          localStorage.setItem(
           "chapterValues",
           JSON.stringify({

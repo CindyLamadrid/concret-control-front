@@ -85,7 +85,7 @@ const generateReport=()=>{
     try {
       axios
         .get(`${process.env.REACT_APP_BUDGET_URL_API}/input-compound-budget`, {
-          params: { idStage: stageSelected.idStage },
+          params: { idStage: stageSelected.idStage,type: stageSelected.budgetType },
         })
         .then((result) => {
           if (result && result.data && result.data.length > 0) {

@@ -7,6 +7,7 @@ import AdminItem from './items/adminItem'
 import Back from "./commons/back";
 import Modal from "./commons/modal";
 
+
 const ConstructionItems = ({
   idSubchapter,
   budgetType,
@@ -15,6 +16,7 @@ const ConstructionItems = ({
   constructionItemsArray,
   setConstructionItemsArray,
   onConstructionItems,
+
 }) => {
   const navigate = useNavigate();
   const { user, constructionSelected, stageSelected } =
@@ -131,7 +133,7 @@ const ConstructionItems = ({
   };
 
   const onAddItems = () => {
-    navigate(`/search-items?idSubchapter=${idSubchapter.toString()}&user=${btoa(user)}&idStage=${stageSelected.idStage}&idConstruction=${constructionSelected.idConstruction}`);
+    navigate(`/search-items?idSubchapter=${idSubchapter.toString()}&user=${btoa(user)}&idStage=${stageSelected.idStage}&idConstruction=${constructionSelected.idConstruction}&budgetType=${budgetType}`);
   };
 
     const onEditItem = (index) => {

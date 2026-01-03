@@ -12,7 +12,7 @@ const CompoundInputs = ({
   itemSelected,
   budgetType,
   compoundSelected,
-  setInputType,
+  // setInputType,
   setShowOption,
   setCompoundSelected,
   getItemInputs
@@ -38,9 +38,7 @@ const CompoundInputs = ({
   };
 
   const onAddInputItems = () => {
-    setInputType("compound");
-   
-
+    // setInputType("compound");
     const params = createSearchParams({idItem:itemSelected.idItem,inputType:'compound',idCompoundSelected:compoundSelected.idInput});
     navigate(`/search-inputs?${params.toString()}&user=${btoa(user)}&idStage=${stageSelected.idStage}&idConstruction=${constructionSelected.idConstruction}`);
   };

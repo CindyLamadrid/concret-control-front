@@ -5,35 +5,35 @@ import Budget from "./budget"
 
 const Container = ({ user }) => {
     const [showBudget, setShowBudget] = useState(false)
-    const [stageSelected, setStageSelected] = useState(0)
-    const [defaultStage, setDefaultStage] = useState(0)
-    const [constructionSelected, setConstructionSelected] = useState(0)
+    // const [stageSelected, setStageSelected] = useState(0)
+    // const [defaultStage, setDefaultStage] = useState(0)
+    // const [constructionSelected, setConstructionSelected] = useState(0)
 
-    const onShowInit = () => {
-        setShowBudget(false)
-        setDefaultStage(true)
-    }
+    // const onShowInit = () => {
+    //     setShowBudget(false)
+    //     setDefaultStage(true)
+    // }
     return (
         <div>
             {
                 !showBudget && (
                     <Constructions
-                        setShowBudget={setShowBudget}
-                        setStageSelected={setStageSelected}
-                        setDefaultStage={setDefaultStage}
-                        defaultStage={defaultStage}
-                        setConstructionSelected={setConstructionSelected}
-                        constructionSelected={constructionSelected}
+                        // setShowBudget={setShowBudget}
+                        // setStageSelected={setStageSelected}
+                        // setDefaultStage={setDefaultStage}
+                        // defaultStage={defaultStage}
+                        // setConstructionSelected={setConstructionSelected}
+                        // constructionSelected={constructionSelected}
                     />
                 )
             }
             {
                 showBudget && (
                     <Budget user={user}
-                        defaultOption="constructionItems"
-                        constructionSelected={constructionSelected}
-                        onShowInit={onShowInit}
-                        stageSelected={stageSelected}
+                        // defaultOption="constructionItems"
+                        // constructionSelected={constructionSelected}
+                        // onShowInit={onShowInit}
+                        // stageSelected={stageSelected}
 
                     />
 

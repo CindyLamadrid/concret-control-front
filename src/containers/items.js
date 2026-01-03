@@ -14,6 +14,7 @@ const Items = ({}) => {
   const idStage = stageSelected.idStage;
   const [searchParams] = useSearchParams();
   const idSubchapter = searchParams.get("idSubchapter");
+  const [budgetType] =searchParams.get("budgetType");
   const [item, setItem] = useState("");
   const [messageResultOperation, setMessageResultOperation] = useState("");
   const [itemArray, setItemArray] = useState([]);
@@ -111,6 +112,7 @@ const Items = ({}) => {
           idStage: idStage,
           idItem: stageItems.idItems,
           user,
+          type: budgetType
         }
       );
        if (result && result.data && result.data.length > 0) {
@@ -127,7 +129,7 @@ const Items = ({}) => {
          navigate(
         `/budget?option=constructionItems&user=${btoa(user)}&idStage=${
           stageSelected.idStage
-        }&idConstruction=${constructionSelected.idConstruction}`
+        }&idConstruction=${constructionSelected.idConstruction}&budgetType=${budgetType}`
       );
         } 
     }
@@ -170,7 +172,7 @@ const Items = ({}) => {
     navigate(
       `/budget?option=constructionItems&user=${btoa(user)}&idStage=${
         stageSelected.idStage
-      }&idConstruction=${constructionSelected.idConstruction}`
+      }&idConstruction=${constructionSelected.idConstruction}&budgetType=${budgetType}`
     );
   };
 

@@ -11,7 +11,7 @@ const Settings=({})=>{
      
           if(searchParams.get('idConstruction'))
           setConstructionSelected({idConstruction:searchParams.get('idConstruction')})
-
+       
           if(searchParams.get('idStage'))
           setStageSelected({idStage:searchParams.get('idStage')})
         },[]

@@ -25,7 +25,6 @@ const Stages = ({}) => {
     action: "",
   });
 
-
   const getConstructionStages = () => {
     axios
       .get(`${process.env.REACT_APP_BUDGET_URL_API}/construction-stages`, {
@@ -60,18 +59,39 @@ const Stages = ({}) => {
       setConstructionSelected(construction[0]);
   };
 
-  const onViewStageItems = (idStage,budgetType) => {
+  const viewBudget = (stage, budgetType) => {
+    navigate(
+      `/budget?option=constructionItems&user=${btoa(user)}&idStage=${
+        stage[0].idStage
+      }&idConstruction=${
+        constructionSelected.idConstruction
+      }&budgetType=${budgetType}`
+    );
+  };
+
+  const viewCostControl = (stage) => {
+    navigate(
+      `/control?option=constructionItems&user=${btoa(user)}&idStage=${
+        stage[0].idStage
+      }&idConstruction=${constructionSelected.idConstruction}`
+    );
+  };
+
+  const onViewStageItems = (idStage, optionSelected) => {
     const stage = constructionStagesArray.filter(
       (x) => x.idStage.toString() === idStage.toString()
     );
-
     if (stage && stage.length > 0) {
       setStageSelected(stage[0]);
-      navigate(
-        `/budget?option=constructionItems&user=${btoa(user)}&idStage=${
-          stage[0].idStage
-        }&idConstruction=${constructionSelected.idConstruction}&budgetType=${budgetType}`
-      );
+      console.log("optionSelected===", optionSelected);
+      switch (optionSelected) {
+        case "CC":
+          viewCostControl(stage);
+          break;
+        default:
+          viewBudget(stage, optionSelected);
+          break;
+      }
     }
   };
 
@@ -122,46 +142,43 @@ const Stages = ({}) => {
     }
   };
 
-  const onChangeTypeBudget=(index,budgetType)=>{
-   
-        if (index > -1) {
-          const stage = {...constructionStagesArray[index]};
-          stage.budgetType= budgetType
-          const newConstructionStagesArray = [...constructionStagesArray];
-          newConstructionStagesArray[index] = stage
-          setConstructionStagesArray(newConstructionStagesArray)
-    }
-
-  }
-
-  const onCloseBudget=async(index)=>{
+  const onChangeTypeBudget = (index, optionSelected) => {
     if (index > -1) {
-      const stage = {...constructionStagesArray[index]};
-      try {
-      const result = await axios.post(
-        `${process.env.REACT_APP_BUDGET_URL_API}/close-budget-stage`,
-        {
-          idStage: stage.idStage,
-          user,
-        }
-      );
-      if (result && result.data && result.data.length > 0) {
-        const response = result.data[0];
+      const stage = { ...constructionStagesArray[index] };
+      stage.budgetType = optionSelected;
+      const newConstructionStagesArray = [...constructionStagesArray];
+      newConstructionStagesArray[index] = stage;
+      setConstructionStagesArray(newConstructionStagesArray);
+    }
+  };
 
-        if (response.result === "success") {
-          await getConstructionStages();
-          // setMessageResultOperation(
-          //   "La etapa ya existe con el mismo nombre ingresado"
-          // );
-        } 
+  const onCloseBudget = async (index) => {
+    if (index > -1) {
+      const stage = { ...constructionStagesArray[index] };
+      try {
+        const result = await axios.post(
+          `${process.env.REACT_APP_BUDGET_URL_API}/close-budget-stage`,
+          {
+            idStage: stage.idStage,
+            user,
+          }
+        );
+        if (result && result.data && result.data.length > 0) {
+          const response = result.data[0];
+
+          if (response.result === "success") {
+            await getConstructionStages();
+            // setMessageResultOperation(
+            //   "La etapa ya existe con el mismo nombre ingresado"
+            // );
+          }
+        }
+      } catch (error) {
+        // setNoData(true);
+        console.error("Error fetching onSearchItems:", error);
       }
-    } catch (error) {
-      // setNoData(true);
-      console.error("Error fetching onSearchItems:", error);
     }
-    
-    }
-  }
+  };
 
   return (
     <div>
@@ -204,7 +221,6 @@ const Stages = ({}) => {
           onEditStage={onEditStage}
           onCloseBudget={onCloseBudget}
           onChangeTypeBudget={onChangeTypeBudget}
-         
         />
       </div>
     </div>

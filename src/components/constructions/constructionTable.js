@@ -5,9 +5,9 @@ const ConstructionTable = ({ constructionsArray, onViewStage,onEditContruction }
         <thead>
           <tr>
             <th className="w-10">CODIGO</th>
-            <th className="w-70">NOMBRE</th>
+            <th className="w-60">NOMBRE</th>
             <th className="w-10">Area</th>
-            <th className="w-5">VER</th>
+            <th className="w-10">VER</th>
             <th className="w-5">EDITAR</th>
            
           </tr>

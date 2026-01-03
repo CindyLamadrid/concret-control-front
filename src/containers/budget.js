@@ -15,18 +15,17 @@ const Budget = ({  }) => {
    const [searchParams] = useSearchParams();
    const idItem = searchParams.get('idItem')
    const [showOption, setShowOption] = useState(searchParams.get('option') ? searchParams.get('option'):  "constructionItems")
-   const [chapterSelected, setChapterSelected] = useState(-1)
-   const [subchapterSelected, setSubchapterSelected] = useState(-1)
-   const [constructionItemsArray, setConstructionItemsArray] = useState([])
-   // const [itemSelected, setItemSelected] = useState({idItem:searchParams.get('idItem')?searchParams.get('idItem'):'', })
    const [itemSelected, setItemSelected]= useState({idConstructionStageItem:searchParams.get('idConstructionStageItem')?searchParams.get('idConstructionStageItem'):'', })
    const [compoundSelected,setCompoundSelected]= useState({idInput:searchParams.get('idCompoundSelected')?searchParams.get('idCompoundSelected'):''} )
    const [budgetType] = useState(searchParams.get('budgetType'))
-   const [inputType,setInputType] = useState('')
+
+   const [chapterSelected, setChapterSelected] = useState(-1)
+   const [subchapterSelected, setSubchapterSelected] = useState(-1)
+   const [constructionItemsArray, setConstructionItemsArray] = useState([])
+   // const [inputType,setInputType] = useState('')
    const [itemInputsArray, setItemInputsArray] = useState([]);
 
-   
-    const onConstructionItems = async (refreshItemSelected) => {
+  const onConstructionItems = async (refreshItemSelected) => {
     
         axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/stage-items`, {
            idStage: stageSelected.idStage ,
@@ -83,6 +82,7 @@ const Budget = ({  }) => {
   };
 
    const getItems=(refreshItemSelected)=>{
+      console.log("getItems===",refreshItemSelected);
         if ((showOption==="constructionItems" || showOption === 'inputItems')
             && chapterSelected>0 && subchapterSelected>0 && stageSelected.idStage )
                onConstructionItems(refreshItemSelected)
@@ -125,13 +125,10 @@ const Budget = ({  }) => {
                 
             }else
             {
-              
                  setChapterSelected(0)
                  setSubchapterSelected(0)
-                 
             }
 
-            
         }, []
     )
 
@@ -179,7 +176,7 @@ const Budget = ({  }) => {
                setShowOption={setShowOption}
                setItemInputsArray={setItemInputsArray}
                setItemSelected={setItemSelected}
-               setInputType={setInputType}
+               //setInputType={setInputType}
                setCompoundSelected={setCompoundSelected}
                getItems={getItems}
                getItemInputs={getItemInputs}
@@ -193,7 +190,7 @@ const Budget = ({  }) => {
             budgetType={budgetType}
             compoundSelected={compoundSelected}
             subchapterSelected={subchapterSelected}
-            setInputType={setInputType}
+            // setInputType={setInputType}
             setShowOption={setShowOption}
             setCompoundSelected={setCompoundSelected}
             getItemInputs={getItemInputs}
