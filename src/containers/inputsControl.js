@@ -1,0 +1,265 @@
+import { useState, useContext } from "react";
+import axios from "axios";
+import {
+  useNavigate,
+  useSearchParams,
+  createSearchParams,
+} from "react-router-dom";
+import AdminOptions from "../components/commons/adminOptions";
+import AdminInput from "../components/inputs/adminInput";
+import InputTable from "../components/inputs/inputTable";
+import Back from "../components/commons/back";
+import { ConstructionContext } from "../context/constructionContext";
+import useEventListener from "../components/utils/useEventListener";
+
+const InputsControl = () => {
+  const { user, stageSelected, constructionSelected } =
+    useContext(ConstructionContext);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const [type] = useState(searchParams.get("type"));
+  const [idSupplier] = useState(searchParams.get("idSupplier"));
+  const [idContract] = useState(searchParams.get("idContract"));
+  const [inputsArray, setInputsArray] = useState([]);
+  const [noData, setNoData] = useState(false);
+  const [input, setInput] = useState("");
+  const [messageResultOperation, setMessageResultOperation] = useState("");
+
+  const [adminInput, setAdminInput] = useState({
+    show: false,
+    input: "",
+    action: "",
+  });
+
+  const onSearchInput = async () => {
+    if (!input) return;
+    setMessageResultOperation("");
+    try {
+      const result = await axios.get(
+        `${process.env.REACT_APP_BUDGET_URL_API}/item-inputs-control-nameCod`,
+        {
+          params: { input },
+        }
+      );
+      if (result && result.data && result.data.length > 0) {
+        let { data } = result;
+        setInputsArray(data);
+        setNoData(false);
+      } else {
+        setInputsArray([]);
+        setNoData(true);
+      }
+    } catch (error) {
+      setInputsArray([]);
+      setNoData(true);
+      console.error("Error fetching onSearchInput:", error);
+    }
+  };
+
+  const onSaveInput = async (unitSelected, name, action) => {
+    try {
+      console.log("adminInput==", adminInput);
+      const result = await axios.post(
+        `${process.env.REACT_APP_BUDGET_URL_API}/${
+          action === "edit" ? "update-input-control" : "create-input-control"
+        }`,
+        {
+          idInput: action === "edit" ? parseInt(adminInput.input.idInput) : 0,
+          idUnit: unitSelected,
+          name: name,
+          user,
+        }
+      );
+
+      if (result && result.data && result.data.length > 0) {
+        const response = result.data[0];
+        if (response.input === 0) {
+          setMessageResultOperation(
+            "El insumo ya existe con el mismo nombre ingresado"
+          );
+        } else {
+          setInputsArray([]);
+          setAdminInput({ show: false, input: "", action: "" });
+          if (adminInput.action === "edit") await onSearchInput();
+        }
+      }
+    } catch (error) {
+      setInputsArray([]);
+      setNoData(true);
+      console.error("Error fetching onSearchItems:", error);
+    }
+  };
+
+  const onNewInput = () => {
+    setMessageResultOperation("");
+
+    setAdminInput({ show: true, input: "", action: "new" });
+    setNoData(false);
+  };
+
+  const onSelectInput = (index) => {
+    if (index > -1) {
+      const newInputsArray = [...inputsArray];
+      newInputsArray[index].selected = !inputsArray[index].selected;
+
+      setInputsArray(...[newInputsArray]);
+    }
+  };
+
+  const onCancelOption = () => {
+    // setShowOption('inputItems')
+    const params = createSearchParams({
+      user: btoa(user),
+      type,
+      idSupplier,
+    });
+    navigate(`/inputs-contract?${params.toString()}`);
+  };
+
+  const onEditInput = (index) => {
+    setMessageResultOperation("");
+    if (index > -1) {
+      const input = inputsArray[index];
+      console.log("input===", input);
+      setAdminInput({ show: true, input, action: "edit" });
+    }
+  };
+
+  const onBack = () => {
+    const params = createSearchParams({
+      user: btoa(user),
+      idSupplier,
+      idContract,
+    });
+    navigate(`/inputs-contract?${params.toString()}`);
+  };
+
+  const onSaveInputContract = async (items) => {
+    try {
+      const result = await axios.post(
+        `${process.env.REACT_APP_BUDGET_URL_API}/create-contract-input`,
+        {
+          idInput: items,
+          idContract,
+          user,
+        }
+      );
+      if (result && result.data && result.data.length > 0) {
+        setNoData(false);
+
+        const created = result.data[0];
+
+        if (created.itemInput === 0) {
+          setMessageResultOperation(
+            "El insumo ya existe para el contrato seleccionado"
+          );
+        } else {
+          const params = createSearchParams({
+            user: btoa(user),
+            idSupplier,
+            idContract,
+          });
+          navigate(`/inputs-contract?${params.toString()}`);
+        }
+      }
+    } catch (error) {
+      setInputsArray([]);
+      setNoData(true);
+      console.error("Error fetching onSearchInput:", error);
+    }
+  };
+
+  const onAddInputsContract = () => {
+    const selectedItems = inputsArray.filter((x) => x.selected);
+
+    if (selectedItems && selectedItems.length > 0) {
+      const idInputs = selectedItems
+        .map((input) => parseInt(input.idInput))
+        .join(", ");
+      onSaveInputContract(idInputs);
+    }
+  };
+
+  const onCloseAdminInput = () => {
+    setAdminInput({ show: false, input: "", action: "" });
+    setMessageResultOperation("");
+  };
+
+  const handleKeyDownEnter = async (event) => {
+    if (event.key === "Enter") {
+      if (!adminInput.show) {
+        await onSearchInput();
+      }
+    }
+  };
+  useEventListener("keydown", handleKeyDownEnter);
+
+  return (
+    <div>
+      <div>
+        <br />
+        <div className="header-title">
+          <span>OPCIONES DE INSUMOS</span>
+        </div>
+        <AdminOptions
+          value={input}
+          setValue={setInput}
+          onSearch={onSearchInput}
+          onNewOption={onNewInput}
+          onCancelOption={onCancelOption}
+          labelOption="Crear Nuevo Insumo"
+        />
+      </div>
+      {noData && <div>La busqueda no arrojo resultado</div>}
+      {
+        <div hidden={adminInput && adminInput.show}>
+          {messageResultOperation}
+        </div>
+      }
+      {adminInput && adminInput.show && (
+        <div
+          className="modal show"
+          style={{ display: "block", position: "initial" }}
+        >
+          <AdminInput
+            messageResultOperation={messageResultOperation}
+            setAdminInput={setAdminInput}
+            onSaveInput={onSaveInput}
+            inputType="control"
+            adminInput={adminInput}
+            onCloseAdminInput={onCloseAdminInput}
+          />
+        </div>
+      )}
+      {inputsArray && inputsArray.length > 0 && (
+        <div>
+          <div className="subtitle">
+            <span>LISTADO DE INSUMOS GENERALES</span>
+          </div>
+
+          <div>
+            <Back onBack={onBack} className="" />{" "}
+            <button
+              type="button"
+              className="primary"
+              onClick={() => onAddInputsContract()}
+            >
+              {"Agregar Insumo"}
+            </button>
+          </div>
+          <br />
+          <InputTable
+            inputsArray={inputsArray}
+            onSelectInput={onSelectInput}
+            onEditInput={onEditInput}
+            onShowCompoundInputs={() => {}}
+            showCompoundInputs={false}
+            inputType="control"
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default InputsControl;

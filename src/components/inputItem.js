@@ -229,6 +229,8 @@ const InputItem = ({
       idConstructionStageItem: itemSelected.idConstructionStageItem,
       inputType: "",
       idCompoundSelected: "",
+      idItem: itemSelected.idItem,
+      budgetType
     });
     navigate(`/search-inputs?${params.toString()}&user=${btoa(user)}&idStage=${stageSelected.idStage}&idConstruction=${constructionSelected.idConstruction}&budgetType=${budgetType}`);
 

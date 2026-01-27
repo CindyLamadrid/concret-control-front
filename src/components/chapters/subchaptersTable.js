@@ -1,7 +1,7 @@
 const SubchaptersTable = ({ subchapterArray,onEditSubchapter,onRemoveSubchapter }) => {
   return (
     <div>
-      <table className="table construction-table">
+      <table className="table w-70">
         <thead>
           <tr>
             <th className="w-10">CODIGO</th>

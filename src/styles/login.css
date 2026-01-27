@@ -1,16 +1,16 @@
 .login {
-  background: url(/public/assets/login2.jpg);
+  background: url(/public/assets/login6.png);
   background-repeat: no-repeat;
   background-origin: content-box;
   background-position: left top;
 
-  background-size: cover;
+  background-size:cover;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
 
   background-attachment: fixed;
-  height: 97.5vh;
+  height: 100vh;
 
   input[type="text"] {
     appearance: none;
@@ -24,7 +24,7 @@
     margin-bottom: 20px;
     padding: 0 0 5px;
     width: 100%;
-    color: black;
+    color: white;
   }
 
   input[type="password"] {
@@ -39,19 +39,22 @@
     margin-bottom: 20px;
     padding: 0 0 5px;
     width: 100%;
-    color: black;
+    color: white;
   }
 }
 
 .login-container {
   text-align: center;
-  margin-top: 20%;
+  margin-top: 5%;
+ left: 20%;
 }
 
 .form-container {
-  background: #00000014;
+  background: #c4c0c014;
   border-radius: 20px;
   box-shadow: 1px 1px 2px 1px #0000004a;
   padding: 30px;
-  width: 40%;
+  width: 30%;
+  margin-left: 15%;
+  margin-top: 15%;
 }

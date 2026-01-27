@@ -27,9 +27,21 @@
   font-size: 9pt;
 }
 
+.w-2{
+  width: 2%;
+}
+
+.w-3{
+  width: 3%;
+}
+
 .w-5 {
   width: 5%;
 }
+.w-8{
+  width: 8%;
+}
+
 .w-7 {
   width: 7%;
 }
@@ -72,16 +84,28 @@
   width: 65%;
 }
 
+.w-70{
+  width: 70%;
+}
 
 .w-75 {
   width: 75%;
 }
+
+.w-78 {
+  width: 78%;
+}
+
 
 .w-80 {
   width: 80%;
 }
 .w-90 {
   width: 90%;
+}
+
+.w-95 {
+  width: 95%;
 }
 
 .w-100 {
@@ -120,6 +144,11 @@ html,
   
 }
 
+.container-xl-modals{
+  max-height: 500px;
+  overflow-y: auto;
+}
+
 @media only screen and (max-width: 480px) {
   body {
     width: 275% !important;
@@ -149,4 +178,8 @@ html,
   z-index: 0;
   max-height: 80vh;
   overflow-y: auto;
+}
+
+.display-inline-block{
+  display: inline-block;
 }

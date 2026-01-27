@@ -6,12 +6,11 @@ const ConstructionItemsTable = ({
   constructionItemsArray,
   budgetType,
   onChangeQuantity,
-  setShowOption,
-  setItemSelected,
   onSaveInformation,
   onRefresh,
   onRemoveItem,
   onEditItem,
+  onShowInputsItem
 }) => {
   const getTotalsSubChapter = () => {
     let total = 0;
@@ -59,8 +58,7 @@ const ConstructionItemsTable = ({
                   <i
                     className="fas fa-external-link-alt icon-view-detail"
                     onClick={() => {
-                      setShowOption("inputItems");
-                      setItemSelected(x);
+                      onShowInputsItem(index)
                     }}
                   />
                 </td>
@@ -86,12 +84,14 @@ const ConstructionItemsTable = ({
                     disabled ={x.budgetStatus==="C" && budgetType==="I"}
                   />
                 </td>
-                <td className={index % 2 === 0 ? "dark center" : "center"}>
+                <td className={index % 2 === 0 ? "dark center" : "center"} >
                   <i
                     className="far fa-save icon-view-detail"
                     onClick={() => {
-                      onSaveInformation(index);
+                      if(!(x.budgetStatus==="C" && budgetType==="I")) onSaveInformation(index)
+                  
                     }}
+                   
                   />
                   &nbsp;
                   <i

@@ -6,19 +6,16 @@ const InputTable = ({
   onSelectInput,
   onEditInput,
   onShowCompoundInputs,
-  inputType=''
 }) => {
   return (
     <div>
       <table className="table w-60">
         <thead>
           <tr>
-            {/* <th className="w-5">ELIMINAR</th> */}
-            <th className="w-5" hidden={showCompoundInputs}>SELECCIONAR</th>
-            <th className="w-5" hidden={showCompoundInputs || inputType==="control"}>A.P.U</th>
+            <th className="w-5" >SELECCIONAR</th>
             <th className="w-10">CODIGO</th>
             <th className="w-40">DESCRIPCION</th>
-            <th className="w-10" hidden={inputType==="control"}>UNIDAD</th>
+            <th className="w-10">UNIDAD</th>
             <th className="w-20">VALOR</th>
             <th className="w-5">EDITAR</th>
           </tr>
@@ -27,21 +24,12 @@ const InputTable = ({
           {inputsArray.map((x, index) => {
             return (
               <tr key={index.toString()}>
-                <td className={index % 2 === 0 ? "dark center" : "center"}  hidden={showCompoundInputs}>
+                <td className={index % 2 === 0 ? "dark center" : "center"}>
                   <input
-                    type="radio"
-                    name="inputRadio"
+                    type="checkbox"
                     checked={x.selected}
+                   
                     onChange={() => onSelectInput(index)}
-                  />
-                </td>
-                <td className={index % 2 === 0 ? "dark center" : "center"} hidden={showCompoundInputs || inputType==="control"}>
-                  <i
-                    class="fas fa-external-link-alt icon-view-detail"
-                    onClick={()=>{
-                      onShowCompoundInputs(x.idInput)
-                    }}
-                    hidden={!x.compound}
                   />
                 </td>
 
@@ -54,7 +42,7 @@ const InputTable = ({
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
                   {x.unit}
                 </td>
-                <td className={index % 2 === 0 ? "dark right" : "right"} hidden={inputType==="control"}>
+                <td className={index % 2 === 0 ? "dark right" : "right"}>
                   {common.getMoneyFomat(x.unitValue)}
                 </td>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>

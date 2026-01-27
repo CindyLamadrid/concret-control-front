@@ -19,7 +19,8 @@ const ItemTable = ({ itemArray, onSelectItem,onEditItem }) => {
               <tr key={index.toString()}>
                 <td className={index % 2 === 0 ? "dark" : ""}>
                   <input
-                    type="checkbox"
+                    type="radio"
+                    name="item"
                     className="checkbox"
                     checked={x.selected}
                     onChange={() => onSelectItem(index)}

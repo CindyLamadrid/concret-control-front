@@ -38,4 +38,11 @@ export const onHandlerDecimal = (event) => {
         return false;
 }
 
+
+
+export const  onHandlerEmail=(email) =>{
+   return /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email);
+}
+
+
 export default onHandlerNumber

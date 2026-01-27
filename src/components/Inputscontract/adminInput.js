@@ -5,7 +5,7 @@ import UnitSelect from "../commons/select";
 
 const handlers = require("../utils/handlers");
 
-const AdminInput = ({
+const AdminContractInput = ({
   onSaveInput,
   inputType,
   adminInput,
@@ -156,7 +156,7 @@ const AdminInput = ({
             />
           </div>
         </div>
-        <div className="row" hidden={inputType==="control"}>
+        <div className="row">
           <div className="col-4 right label">
             <span>Tipo de Insumo</span>
           </div>
@@ -169,7 +169,7 @@ const AdminInput = ({
               array={inputTypesArray}
             />
           </div>
-          <div className="row" hidden={inputType==="control"}>
+          <div className="row">
             <div className="col-4 right label">
               <span>Categoria</span>
             </div>
@@ -184,20 +184,7 @@ const AdminInput = ({
             </div>
           </div>
         </div>
-       
-        <div className="row" hidden={inputType === "compound" || adminInput.action==="edit" || inputType==="control"}>
-          <div className="col-4 right label">
-            <span>Compuesto?</span>
-          </div>
-          <div className="col-8">
-            <input
-              className="left"
-              type="checkbox"
-              checked={compound}
-              onChange={() => setCompound(!compound)}
-            />
-          </div>
-        </div>
+
         <br />
         <div className="right">
           <button
@@ -212,13 +199,6 @@ const AdminInput = ({
             type="button"
             disabled={!name}
             onClick={() => {
-            inputType ==="control" ?
-             onSaveInput(
-                unitSelected,
-                name,
-                adminInput.action,
-              ):
-
               onSaveInput(
                 unitSelected,
                 inputTypeSelected,
@@ -236,4 +216,4 @@ const AdminInput = ({
   );
 };
 
-export default AdminInput;
+export default AdminContractInput;

@@ -15,11 +15,14 @@
           padding-left: 2px;
           padding-top: 1px;
           padding-bottom: 1px;
+          border: solid 1px lightgray;
+          font-size: 9pt;;
           input[type=text]{
             width: 80%;
             border-radius: 4px  ;
              border: 1px lightgray solid;
             height: 20px;
+            font-size: 9pt;
            
           }
           i{
@@ -32,9 +35,7 @@
   color: #0F5258;
 }
 
-.construction-table{
-  width: 70%;
-}
+
 
 .construction-items-table{
   width: 80%;
@@ -58,6 +59,6 @@
 }
 
 .pending-changes{
-    color: red;
+    color: red!important;
     font-weight: 500;
 }

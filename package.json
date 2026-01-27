@@ -10,11 +10,16 @@
     "env-cmd": "^11.0.0",
     "hogan.js": "^3.0.2",
     "html2pdf.js": "^0.12.1",
+    "install": "^0.13.0",
+    "npm": "^11.7.0",
     "react": "^19.2.0",
     "react-bootstrap": "^2.10.10",
+    "react-date-picker": "^12.0.1",
+    "react-datetime-picker": "^7.0.1",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.9.6",
     "react-scripts": "5.0.1",
+    "react-select": "^5.10.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { useNavigate,createSearchParams  } from 'react-router-dom';
+import { useNavigate,createSearchParams,useSearchParams  } from 'react-router-dom';
 import axios from "axios";
 import { ConstructionContext } from "../context/constructionContext";
 import Back from "./commons/back";
@@ -17,9 +17,11 @@ const CompoundInputs = ({
   setCompoundSelected,
   getItemInputs
 }) => {
-      const navigate = useNavigate ();
+  const navigate = useNavigate ();
   const { user, stageSelected, constructionSelected } =
     useContext(ConstructionContext);
+  const [searchParams] = useSearchParams();
+  const idConstructionStageItem= searchParams.get("idConstructionStageItem");
   const [compoundInputsArray, setCompoundInputArray] = useState([]);
   const [noData, setNoData] = useState(false);
   const [messageResultOperation, setMessageResultOperation] = useState("");
@@ -39,8 +41,14 @@ const CompoundInputs = ({
 
   const onAddInputItems = () => {
     // setInputType("compound");
-    const params = createSearchParams({idItem:itemSelected.idItem,inputType:'compound',idCompoundSelected:compoundSelected.idInput});
-    navigate(`/search-inputs?${params.toString()}&user=${btoa(user)}&idStage=${stageSelected.idStage}&idConstruction=${constructionSelected.idConstruction}`);
+    const params = createSearchParams({
+      idItem:itemSelected.idItem
+      ,inputType:'compound'
+      ,idCompoundSelected:compoundSelected.idInput
+      ,idConstructionStageItem:itemSelected.idConstructionStageItem
+      , idConstruction: constructionSelected.idConstruction
+      ,budgetType});
+    navigate(`/search-inputs?${params.toString()}&user=${btoa(user)}`);
   };
 
   const getCompoundInputs = async (id) => {

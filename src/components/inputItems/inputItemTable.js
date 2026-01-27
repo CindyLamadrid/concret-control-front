@@ -16,7 +16,7 @@ const InputItemTable = ({
 }) => {
   return (
     <div>
-      <table className="table w-90">
+      <table className="table w-95">
         <thead>
           <tr>
             <th className="w-5">ELIMINAR</th>
@@ -90,7 +90,7 @@ const InputItemTable = ({
                     onChange={(event) =>
                       onChangeQuantity(event, index, "waste")
                     }
-                    disabled={x.compound || (x.budgetStatus==="C" && budgetType==="I")}
+                    // disabled={x.compound || (x.budgetStatus==="C" && budgetType==="I")}
                   />
                 </td>
                 <td className={index % 2 === 0 ? "dark right" : "right"}>
@@ -114,8 +114,10 @@ const InputItemTable = ({
                   <i
                     className="far fa-save icon-view-detail"
                     onClick={() => {
-                      onSaveInformation(index);
+                        if(!(x.budgetStatus==="C" && budgetType==="I"))
+                         onSaveInformation(index);
                     }}
+                     
                   />
                   &nbsp;
                   <i

@@ -103,7 +103,8 @@ const CompoundInputTable = ({
                   <i
                     className="far fa-save icon-view-detail"
                     onClick={() => {
-                      onSaveInformation(index);
+                        if(!(x.budgetStatus==="C" && budgetType==="I"))
+                         onSaveInformation(index);
                     }}
                   />
                   &nbsp;

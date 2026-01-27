@@ -181,6 +181,27 @@ const ConstructionItems = ({
    
   };
 
+  const onShowInputsItem=(index)=>{
+      setShowOption("inputItems");
+     
+      if (index > -1) {
+      const item = constructionItemsArray[index];
+      setItemSelected(item);
+     
+      //  const params = createSearchParams({
+      //       user: btoa(user),
+      //       idConstructionStageItem:item.idConstructionStageItem,
+      //       idItem:item.idItem,
+      //       option: "inputItems",
+      //       // idStage: stageSelected.idStage,
+      //       idConstruction: constructionSelected.idConstruction,
+      //       budgetType
+      //     });
+      //    navigate(`/budget?${params.toString()}`);
+    }               
+   
+  }
+
   useEffect(() => {
     if (constructionItemsArray && constructionItemsArray.length > 0)
       setNoData(false);
@@ -238,12 +259,11 @@ const ConstructionItems = ({
           constructionItemsArray={constructionItemsArray}
           budgetType={budgetType}
           onChangeQuantity={onChangeQuantity}
-          setShowOption={setShowOption}
-          setItemSelected={setItemSelected}
           onSaveInformation={onSaveInformation}
           onRefresh={onRefresh}
           onRemoveItem={onRemoveItem}
           onEditItem={onEditItem}
+          onShowInputsItem={onShowInputsItem}
         />
       )}
       {noData && <div>La busqueda no arrojo resultado</div>}

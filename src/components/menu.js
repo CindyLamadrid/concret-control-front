@@ -29,6 +29,7 @@ const Menu = ({ setReportOption }) => {
     setConstructionSelected("");
     setUser("");
   };
+
   return (
     <div className="no-margin menu-container"  hidden={!user}>
       <div className="row h-100">
@@ -45,7 +46,7 @@ const Menu = ({ setReportOption }) => {
                 >
                   Projectos
                 </Nav.Link>
-               {stageSelected && stageSelected.idStage ? (
+               {stageSelected && stageSelected.idStage && stageSelected.budgetType!="CC"? (
                 <NavDropdown
                   title="Reportes"
                   className="menu-option select-option"
@@ -154,6 +155,9 @@ const Menu = ({ setReportOption }) => {
                   </DropdownButton>
                 </NavDropdown>
                 ):""}
+
+           
+                
                  <NavDropdown
                   title="Administrar"
                   className="menu-option select-option"
@@ -176,6 +180,66 @@ const Menu = ({ setReportOption }) => {
                   >
                     Subcapitulos
                   </Dropdown.Item>
+                  <Dropdown.Item
+                   
+                    className="submenu-option"
+                    onClick={() => {
+                    navigate(`/suppliers?user=${btoa(user)}`);
+                  }}
+                  >
+                    Proveedores
+                  </Dropdown.Item>
+                  {/* <Dropdown.Item
+                   
+                    className="submenu-option"
+                    onClick={() => {
+                    navigate(`/contracts?user=${btoa(user)}`);
+                  }}
+                  >
+                    Contratos
+                    
+                  </Dropdown.Item> */}
+                    <DropdownButton
+                    title="Contratos"
+                    className="submenu-option"
+                    key="end"
+                    drop="end"
+                  >
+                    <Dropdown.Item
+                      className="submenu-option"
+                      onClick={() => {
+                        
+                         navigate(`/contracts?user=${btoa(user)}&type=L`);
+                      }}
+                    >
+                      {" "}
+                       Mano de Obra
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      className="submenu-option"
+                      onClick={() => {
+                         navigate(`/contracts?user=${btoa(user)}&type=S`);
+                      }}
+                    >
+                      Servicios
+                    </Dropdown.Item>
+                      <Dropdown.Item
+                      className="submenu-option"
+                      onClick={() => {
+                         navigate(`/contracts?user=${btoa(user)}&type=M`);
+                      }}
+                    >
+                      Suministros de Materiales
+                    </Dropdown.Item>
+                     <Dropdown.Item
+                      className="submenu-option"
+                      onClick={() => {
+                         navigate(`/contracts?user=${btoa(user)}&type=C`);
+                      }}
+                    >
+                      Construcción
+                    </Dropdown.Item>
+                  </DropdownButton>
                    <NavDropdown.Divider />
 
                    <Dropdown.Item

@@ -24,6 +24,10 @@ import AdminUsers from "./containers/users"
 import Chapters from "./components/chapters";
 import Subchapters from "./components/subchapters";
 import Control from "./containers/control"
+import Suppliers from "./containers/suppliers"
+import Contracts from "./containers/contracts"
+import InputsContract from "./containers/inputsContract"
+import InputsControl from "./containers/inputsControl"
 
 function App() {
   const [reportOption,setReportOption] = useState('')
@@ -58,8 +62,10 @@ function App() {
                   <Route exact path="/chapters" element={<div className="component"><Chapters /></div>} />
                   <Route exact path="/subchapters" element={<div className="component"><Subchapters /></div>} />
                   <Route exact path="/control" element={<div className="component"><Control /></div>} />
-                   
-                  
+                  <Route exact path="/suppliers" element={<div className="component"><Suppliers /></div>} />
+                  <Route exact path="/contracts" element={<div className="component"><Contracts /></div>} /> 
+                  <Route exact path="inputs-contract" element={<div className="component"><InputsContract /></div>} /> 
+                  <Route exact path="inputs-control" element={<div className="component"><InputsControl /></div>} /> 
                 {/* <Route exact path="/reports" element={<Reports />} /> */}
                 <Route path="*" element={<Navigate to="/login" replace />} />
                 

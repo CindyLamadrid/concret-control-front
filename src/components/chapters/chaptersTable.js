@@ -1,7 +1,7 @@
 const ChaptersTable = ({ chapterArray,onEditChapter }) => {
   return (
     <div>
-      <table className="table construction-table">
+      <table className="table w-70">
         <thead>
           <tr>
             <th>CODIGO</th>

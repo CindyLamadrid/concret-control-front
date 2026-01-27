@@ -83,7 +83,7 @@ const Budget = ({  }) => {
 
    const getItems=(refreshItemSelected)=>{
       console.log("getItems===",refreshItemSelected);
-        if ((showOption==="constructionItems" || showOption === 'inputItems')
+        if ((showOption==="constructionItems" || showOption === 'inputItems' || showOption === 'compoundInputs')
             && chapterSelected>0 && subchapterSelected>0 && stageSelected.idStage )
                onConstructionItems(refreshItemSelected)
         
@@ -113,6 +113,7 @@ const Budget = ({  }) => {
         () => {
           
             const chapterValues = localStorage.getItem("chapterValues")
+            console.log("chapterValues===",chapterValues);
             
             if(chapterValues )
             {
@@ -186,6 +187,7 @@ const Budget = ({  }) => {
          }
          {showOption === 'compoundInputs' &&
             <CompoundInputs
+           
             itemSelected={itemSelected}
             budgetType={budgetType}
             compoundSelected={compoundSelected}
@@ -194,6 +196,7 @@ const Budget = ({  }) => {
             setShowOption={setShowOption}
             setCompoundSelected={setCompoundSelected}
             getItemInputs={getItemInputs}
+
             
             />
          }

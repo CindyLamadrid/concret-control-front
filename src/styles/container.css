@@ -1,7 +1,7 @@
 .header-title {
   font-size: 11pt;
-  margin-top: 2%;
-  margin-bottom: 2%;
+  margin-top: 0.5%;
+  margin-bottom: 0.5%;
   font-weight: 700 !important;
   color: #0f5258;
   border-left: 6px solid #06a796;
@@ -15,6 +15,13 @@
   font-size: 11pt;
   margin-top: 2%;
   margin-bottom: 2%;
+  font-weight: 700 !important;
+  color: #004d40;
+  padding-left: 10px;
+}
+
+.subtitle-admin {
+  font-size: 10pt;
   font-weight: 700 !important;
   color: #004d40;
   padding-left: 10px;
@@ -60,13 +67,13 @@
 }
 
 .container_chapters {
-  margin-top: 15px;
+  margin-top: 5px;
   margin-bottom: 5px;
 }
 .resume {
   color: #0f5258;
-  font-size: 10pt;
-  margin-top: 1%;
+  font-size: 9pt;
+  margin-top: 0.5%;
   .text {
     color: gray !important;
     font-weight: 600;
@@ -76,6 +83,10 @@
 .label {
   font-size: 10pt;
   font-weight: 500;
+}
+
+.label-detail {
+  font-size: 10pt;
 }
 
 .user {
@@ -135,6 +146,11 @@
 .container-select {
   padding-top: 2px;
   padding-bottom: 2px;
+}
+
+.subcontainer-admin-options {
+  padding-top: 1.5px!important;
+  padding-bottom: 1.5px!important;
 }
 
 .printOnly {

@@ -159,7 +159,7 @@ const Inputs = ({}) => {
       const idInputs = selectedItems
         .map((input) => parseInt(input.idInput))
         .join(", ");
-        console.log("inputType===",inputType);
+       
       if (inputType !== "compound") onSaveInputItem(idInputs);
        else onSaveCompoundInput(idInputs);
     }
@@ -212,25 +212,47 @@ const Inputs = ({}) => {
 
   const onSelectInput = (index) => {
     if (index > -1) {
-      const newInputsArray = [...inputsArray];
-      newInputsArray[index].selected = !inputsArray[index].selected;
+      const newInputsArray = inputsArray.map(
+        (x) =>{x.selected=false
 
-      setInputsArray(...[newInputsArray]);
+          return x
+        }
+      );
+      const input =  newInputsArray[index]
+      input.selected = !input.selected ;
+      newInputsArray[index] = input
+      setInputsArray(newInputsArray);
     }
   };
 
   const onCancelOption = () => {
     // setShowOption('inputItems')
-    const params = createSearchParams({
-      user: btoa(user),
-      idItem,
-      option: "inputItems",
-      // idStage: stageSelected.idStage,
-      idConstructionStageItem,
-      idConstruction: constructionSelected.idConstruction,
-      budgetType
-    });
-    navigate(`/budget?${params.toString()}`);
+    console.log("showCompoundInputs===",idCompoundSelected)
+    if(!idCompoundSelected)
+    {
+        const params = createSearchParams({
+        user: btoa(user),
+        idItem,
+        option: "inputItems",
+        // idStage: stageSelected.idStage,
+        idConstructionStageItem,
+        idConstruction: constructionSelected.idConstruction,
+        budgetType
+      });
+      navigate(`/budget?${params.toString()}`);
+    }else{
+      
+       const params = createSearchParams({
+        user: btoa(user),
+        idItem,
+        option: "compoundInputs",
+        idConstruction: constructionSelected.idConstruction,
+        idConstructionStageItem,
+        idConstruction: constructionSelected.idConstruction,
+        budgetType
+      });
+      navigate(`/budget?${params.toString()}`);
+    }
   };
 
   const onEditInput = (index) => {
