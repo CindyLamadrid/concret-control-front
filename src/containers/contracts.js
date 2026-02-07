@@ -7,7 +7,7 @@ import AdminContract from "../components/contracts/adminContracts";
 import ContractTable from "../components/contracts/contractTable";
 
 const Contracts = () => {
-  const { user } =
+  const { user,stageSelected } =
         useContext(ConstructionContext);
   const navigate = useNavigate();
   const [supplier, setSupplier] = useState("");
@@ -25,6 +25,7 @@ const Contracts = () => {
   const [idSupplier] = useState(searchParams.get('idSupplier'));
 
 
+
   const onSearchContracts = async(id) => {
    console.log("search");
      if (!supplier && !id) return;
@@ -33,7 +34,7 @@ const Contracts = () => {
       const result = await axios.get(
         `${process.env.REACT_APP_BUDGET_URL_API}/contracts-supplier`,
         {
-          params: { idSupplier: parseInt(id || supplier.value ,10), type},
+          params: { idStage: stageSelected.idStage ,idSupplier: parseInt(id || supplier.value ,10), type},
         }
       );
       if (result && result.data && result.data.length > 0) {
@@ -84,6 +85,7 @@ const Contracts = () => {
       
       contract.user = user
       contract.type= type;
+      contract.idStage = stageSelected.idStage
       const result = await axios.post(
         `${process.env.REACT_APP_BUDGET_URL_API}/${
           action === "edit" ? "update-contract" : "create-contract"

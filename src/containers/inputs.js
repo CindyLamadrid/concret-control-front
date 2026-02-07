@@ -107,9 +107,7 @@ const Inputs = ({}) => {
       const result = await axios.post(
         `${process.env.REACT_APP_BUDGET_URL_API}/create-item-input`,
         {
-          // idStage: stageSelected.idStage,
           idInput: items,
-          // idItem,
           idConstructionStageItem,
           user,
         }

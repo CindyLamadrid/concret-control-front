@@ -8,10 +8,12 @@ export const ConstructionProvider = ({children}) => {
   const [stageSelected, setStageSelected] = useState(0);
   const [constructionSelected, setConstructionSelected] = useState(0);
   const [defaultStage, setDefaultStage] = useState(0) // review
+ 
 
   // Make the context object:
   const constructionValue = {
     user,
+   
     defaultStage,
     stageSelected,
     constructionSelected,
@@ -19,11 +21,16 @@ export const ConstructionProvider = ({children}) => {
     setStageSelected,
     setConstructionSelected,
     setDefaultStage
+ 
   };
 
   useEffect(
         () => {
+          if(user)
+          {
             localStorage.setItem('user',user)
+          }
+         
         }, [user]
   )
 

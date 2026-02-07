@@ -27,7 +27,7 @@ const Menu = ({ setReportOption }) => {
     navigate("login");
     setStageSelected("");
     setConstructionSelected("");
-    setUser("");
+    setUser("")
   };
 
   return (
@@ -44,7 +44,7 @@ const Menu = ({ setReportOption }) => {
                   className="menu-option link-option"
                   onClick={() => onShowHome()}
                 >
-                  Projectos
+                 <b>Projectos</b> 
                 </Nav.Link>
                {stageSelected && stageSelected.idStage && stageSelected.budgetType!="CC"? (
                 <NavDropdown
@@ -199,6 +199,7 @@ const Menu = ({ setReportOption }) => {
                     Contratos
                     
                   </Dropdown.Item> */}
+                  {stageSelected && stageSelected.idStage ?(
                     <DropdownButton
                     title="Contratos"
                     className="submenu-option"
@@ -209,7 +210,7 @@ const Menu = ({ setReportOption }) => {
                       className="submenu-option"
                       onClick={() => {
                         
-                         navigate(`/contracts?user=${btoa(user)}&type=L`);
+                         navigate(`/contracts?user=${btoa(user)}&type=L&idStage=${stageSelected.idStage}`);
                       }}
                     >
                       {" "}
@@ -239,7 +240,7 @@ const Menu = ({ setReportOption }) => {
                     >
                       Construcción
                     </Dropdown.Item>
-                  </DropdownButton>
+                  </DropdownButton>):""}
                    <NavDropdown.Divider />
 
                    <Dropdown.Item
@@ -262,7 +263,7 @@ const Menu = ({ setReportOption }) => {
             <span className="container-header-icon center">
               <i className="fas fa-user right header-icon center" />
             </span>
-            <span>{user}</span>{" "}
+            <span> <b>{user}</b></span>{" "}
             <span className="container-close-header-icon close center">
               <i
                 className="fas fa-lock right close-header-icon"

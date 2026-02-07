@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import {
   useNavigate,
@@ -9,12 +9,12 @@ import AdminOptions from "../components/commons/adminOptions";
 import AdminInput from "../components/inputs/adminInput";
 import InputTable from "../components/inputs/inputTable";
 import Back from "../components/commons/back";
+import ChapterSelect from "../components/commons/select";
 import { ConstructionContext } from "../context/constructionContext";
 import useEventListener from "../components/utils/useEventListener";
 
 const InputsControl = () => {
-  const { user, stageSelected, constructionSelected } =
-    useContext(ConstructionContext);
+  const { user,stageSelected } = useContext(ConstructionContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [type] = useState(searchParams.get("type"));
@@ -24,6 +24,11 @@ const InputsControl = () => {
   const [noData, setNoData] = useState(false);
   const [input, setInput] = useState("");
   const [messageResultOperation, setMessageResultOperation] = useState("");
+  const [chapters, setChapters] = useState([]);
+  const [inputs,setInputs] = useState([]);
+  const [chapterSubChater, setChapterSubChater] = useState("");
+  const [chapterSelected,setChapterSelected]=useState("")
+  const [inputSelected,setInputSelected]=useState("")
 
   const [adminInput, setAdminInput] = useState({
     show: false,
@@ -32,14 +37,16 @@ const InputsControl = () => {
   });
 
   const onSearchInput = async () => {
+    setChapterSelected("")
     if (!input) return;
     setMessageResultOperation("");
     try {
-      const result = await axios.get(
+      const result = await axios.get
+      (
         `${process.env.REACT_APP_BUDGET_URL_API}/item-inputs-control-nameCod`,
         {
           params: { input },
-        }
+        },
       );
       if (result && result.data && result.data.length > 0) {
         let { data } = result;
@@ -68,14 +75,14 @@ const InputsControl = () => {
           idUnit: unitSelected,
           name: name,
           user,
-        }
+        },
       );
 
       if (result && result.data && result.data.length > 0) {
         const response = result.data[0];
         if (response.input === 0) {
           setMessageResultOperation(
-            "El insumo ya existe con el mismo nombre ingresado"
+            "El insumo ya existe con el mismo nombre ingresado",
           );
         } else {
           setInputsArray([]);
@@ -142,7 +149,7 @@ const InputsControl = () => {
           idInput: items,
           idContract,
           user,
-        }
+        },
       );
       if (result && result.data && result.data.length > 0) {
         setNoData(false);
@@ -151,7 +158,7 @@ const InputsControl = () => {
 
         if (created.itemInput === 0) {
           setMessageResultOperation(
-            "El insumo ya existe para el contrato seleccionado"
+            "El insumo ya existe para el contrato seleccionado",
           );
         } else {
           const params = createSearchParams({
@@ -192,7 +199,67 @@ const InputsControl = () => {
       }
     }
   };
+
+  const getChaptersSubchapters = async () => {
+    try {
+      axios
+        .get(
+          `${process.env.REACT_APP_BUDGET_URL_API}/get-chapters-subchapters`,
+        )
+        .then((result) => {
+          setChapters(result.data);
+          if(result.data.length>0)
+          setChapterSelected(result.data[0])
+        });
+    } catch (error) {
+      console.error("Error fetching getChaptersSubchapters:", error);
+    }
+  };
+
+    const getChapterInputs = async () => {
+    try {
+      axios
+        .post(
+          `${process.env.REACT_APP_BUDGET_URL_API}/chapter-inputs`,
+          {
+            idStage: stageSelected.idStage,
+            idChapter : chapterSelected.idChapter,
+            idSubchapter: chapterSelected.idSubchapter
+          }
+        )
+        .then((result) => {
+          setInputs(result.data);
+        });
+    } catch (error) {
+      console.error("Error fetching getChaptersSubchapters:", error);
+    }
+  };
+
   useEventListener("keydown", handleKeyDownEnter);
+
+  useEffect(() => {
+    getChaptersSubchapters();
+  }, []);
+
+  
+  useEffect(() => {
+    if(chapterSelected &&JSON.stringify(chapterSelected)!=="{")
+    getChapterInputs()
+  }, [chapterSelected]);
+
+  const onSelectChapter=(value)=>{
+    const chapterSelected = chapters.filter(
+      (x) =>
+        x.cod===value
+      
+    )
+    console.log("chapterSelected",chapterSelected);
+
+    if(chapterSelected && chapterSelected.length>0){
+       setChapterSelected(chapterSelected[0])
+    }
+    setChapterSubChater(value)
+  }
 
   return (
     <div>
@@ -256,6 +323,35 @@ const InputsControl = () => {
             showCompoundInputs={false}
             inputType="control"
           />
+          <br />
+          <div className="row">
+            <div className="col-2">Capitulo y Subcapitulo</div>
+            <div className="col-10">
+              <div className="w-40">
+                <ChapterSelect
+                  id="cod"
+                  name="chapterSubchapter"
+                  array={chapters}
+                  selectedValue={chapterSubChater}
+                  setSelectedValue={onSelectChapter}
+                />
+              </div>
+            </div>
+          </div>
+             <div className="row">
+            <div className="col-2">Inputs</div>
+            <div className="col-10">
+              <div className="w-40">
+                <ChapterSelect
+                  id="cod"
+                  name="name"
+                  array={inputs}
+                  selectedValue={inputSelected}
+                  setSelectedValue={setInputSelected}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

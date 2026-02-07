@@ -3,13 +3,15 @@ import { useContext, useEffect, useState} from 'react';
 import { useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs-react";
 import { ConstructionContext } from "../context/constructionContext";
+import Logo from "../images/concretoVivo.png";
+
 
 const Login = () => {
   const navigate = useNavigate();
    const  {setUser,setConstructionSelected,setStageSelected}=
       useContext(ConstructionContext);
-   const[userInput,setUserInput] = useState("fabian.lopera")
-   const[password,setPassword] = useState("santi123")
+   const[userInput,setUserInput] = useState("")
+   const[password,setPassword] = useState("")
    const[message,setMessage] = useState("")
 
   const onLogin=async()=>{
@@ -35,7 +37,10 @@ const Login = () => {
         const response = bcrypt.compareSync(password, currentPassword);
         if(response)
         {
+          localStorage.setItem("user",userInput)
+          localStorage.setItem("password",btoa(password))
           setUser(userInput)
+        
           navigate(`/home?user=${btoa(userInput)}`);
         }else
         {
@@ -48,9 +53,16 @@ const Login = () => {
 
   useEffect(
     ()=>{
-      setUser("")
+      let pass = localStorage.getItem("password")
+      if(pass){
+        pass = atob(pass)
+      }
+      console.log(localStorage.getItem("user"));
+      setUserInput(localStorage.getItem("user") )
+      setPassword(pass || "")
       setConstructionSelected("")
       setStageSelected("")
+      setUser("")
     },[]
   )
 
@@ -61,20 +73,25 @@ const Login = () => {
           <div className="col-12">
             <div className="login-container"></div>
             <div className="form-container">
+              <div>  <img src={Logo} className="logo-login"/></div>
+            
                <div className="mandatory center">
                 <b>{
                   message 
                 }</b><br/>
               </div>
+
               <div>
-                <input type="text" placeholder="Usuario" value={userInput} onChange={(event)=>{setUserInput(event.target.value)}} />
+               <span className="label">Usuario</span>
+                <input type="text"  value={userInput} onChange={(event)=>{setUserInput(event.target.value)}} />
               </div>
               <div>
-                <input type="password" placeholder="Contraseña" value={password} onChange={(event)=>{setPassword(event.target.value)}} />
+                 <span className="label">Contraseña</span>
+                <input type="password"  value={password} onChange={(event)=>{setPassword(event.target.value)}} />
               </div>
                <div className="center">
-                <button className="primary" onClick={()=>onLogin()}>
-                  Ingresar
+                <button className="primary button-login" onClick={()=>onLogin()}>
+                  INICIAR SESSIÓN
                 </button>
               </div>
              

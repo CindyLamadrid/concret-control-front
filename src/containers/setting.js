@@ -7,7 +7,8 @@ const Settings=({})=>{
     const {setUser,setConstructionSelected ,setStageSelected} = useContext(ConstructionContext);
     useEffect(
         ()=>{
-          setUser(atob(searchParams.get('user')))
+           if(searchParams.get('user'))
+            setUser(atob(searchParams.get('user')))
      
           if(searchParams.get('idConstruction'))
           setConstructionSelected({idConstruction:searchParams.get('idConstruction')})

@@ -50,12 +50,12 @@
 
 .footer {
   /* background-color: #446e57;  */
-  background-color: #0f5258;
+  background-color: darkgray;
   font-size: 10pt;
   margin-top: 2%;
   margin-bottom: 2%;
   font-weight: 700 !important;
-  color: white;
+  color: black;
   height: 50px;
   margin-bottom: 0px;
   margin-top: 0px;
