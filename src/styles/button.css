@@ -20,3 +20,10 @@
     margin-top: 0.5%;
     font-weight: 500;
 }
+
+.link{
+    background-color: transparent;
+    color: blue;
+    border: none;
+    font-size: small;
+}

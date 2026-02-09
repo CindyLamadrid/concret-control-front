@@ -12,17 +12,18 @@ const ContractInputsTable = ({
 }) => {
   return (
     <div>
-      <table className="table w-70">
+      <table className="table w-98">
         <thead>
           <tr>
             <th className="w-5">ELIMINAR</th>
             <th className="w-5">CODIGO</th>
-            <th className="w-30 ">INSUMO</th>
-            <th className="w-10">UNIDAD</th>
+            <th className="w-20">INSUMO</th>
+            <th className="w-30">CAPITULO - SUBCAPITULO</th>
+            <th className="w-5">UNIDAD</th>
             <th className="w-10">CANTIDAD</th>
             <th className="w-10">VALOR/UN</th>
             <th className="w-5">GUARDAR</th>
-            <th className="w-13">TOTAL</th>
+            <th className="w-10">TOTAL</th>
           </tr>
         </thead>
         <tbody>
@@ -41,6 +42,9 @@ const ContractInputsTable = ({
                 </td>
                 <td className={index % 2 === 0 ? "dark left" : "left"}>
                   {x.name}
+                </td>
+                 <td className={index % 2 === 0 ? "dark left" : "left"}>
+                  {`${x.chapter} - ${x.subchapter}`}
                 </td>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
                   {x.unit}
@@ -102,7 +106,7 @@ const ContractInputsTable = ({
           })}
           {contractInputsArray && contractInputsArray.length > 0 && (
             <tr>
-              <td colspan={7}></td>
+              <td colspan={8}></td>
               <td className="right">
                 {common.getMoneyFomat(
                   common.getTotals(contractInputsArray, "totalInput"),

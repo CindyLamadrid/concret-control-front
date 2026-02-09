@@ -34,7 +34,7 @@ const AdminContract = ({
       `${process.env.REACT_APP_BUDGET_URL_API}/supplier-name-id`,
       {
         params: { supplier: supplierIdentification },
-      }
+      },
     );
     if (result && result.data && result.data.length > 0) {
       let { data } = result;
@@ -57,9 +57,8 @@ const AdminContract = ({
       amortization,
       taxes,
       advance,
-      idSupplier : supplier.idSupplier
-    }
-    
+      idSupplier: supplier.idSupplier,
+    };
   };
 
   const onChangeSupplierSelected = (index) => {
@@ -151,7 +150,15 @@ const AdminContract = ({
           </div>
 
           <div hidden={!supplier} className="w-80">
-            <div className="subtitle-admin">Proveedor</div>
+            <div className="subtitle-admin">
+              <button
+                className="link"
+                type="button"
+                onClick={() => setSupplier("")}
+              >
+                {"Cambiar provedor"}
+              </button>
+            </div>
             <div className="row subcontainer-admin-options">
               <div className="col-2 left label">
                 <span>Nombre</span>
@@ -197,7 +204,11 @@ const AdminContract = ({
               </div>
               <div className="col-4">
                 <div className="w-78 left">
-                  <DatePicker onChange={setInitialDate} value={initialDate} dateFormat="dd/MM/yyyy"/>
+                  <DatePicker
+                    onChange={setInitialDate}
+                    value={initialDate}
+                    dateFormat="dd/MM/yyyy"
+                  />
                 </div>
                 <div className="mandatory left" hidden={initialDate}>
                   <i className="fas fa-exclamation-circle" />
@@ -209,7 +220,11 @@ const AdminContract = ({
               </div>
               <div className="col-4">
                 <div className="w-78">
-                  <DatePicker onChange={setFinalDate} value={finalDate} dateFormat="dd/MM/yyyy"/>
+                  <DatePicker
+                    onChange={setFinalDate}
+                    value={finalDate}
+                    dateFormat="dd/MM/yyyy"
+                  />
                 </div>
                 <div className="mandatory " hidden={finalDate}>
                   <i className="fas fa-exclamation-circle" />
@@ -242,7 +257,7 @@ const AdminContract = ({
                     className="input-modal w-80"
                     type="text"
                     value={utility}
-                     maxLength={3}
+                    maxLength={3}
                     onKeyDown={(event) => handlers.onHandlerDecimal(event)}
                     onChange={(event) => setUtility(event.target.value)}
                   />
@@ -260,7 +275,7 @@ const AdminContract = ({
                     className="input-modal w-80"
                     type="text"
                     value={administration}
-                     maxLength={3}
+                    maxLength={3}
                     onKeyDown={(event) => handlers.onHandlerDecimal(event)}
                     onChange={(event) => setAdministration(event.target.value)}
                   />
@@ -275,8 +290,8 @@ const AdminContract = ({
                     className="input-modal w-80"
                     type="text"
                     value={events}
-                     maxLength={3}
-                     onKeyDown={(event) => handlers.onHandlerDecimal(event)}
+                    maxLength={3}
+                    onKeyDown={(event) => handlers.onHandlerDecimal(event)}
                     onChange={(event) => setEvents(event.target.value)}
                   />
                 </div>
@@ -295,8 +310,8 @@ const AdminContract = ({
                     className="input-modal w-80"
                     type="text"
                     value={detained}
-                     maxLength={3}
-                     onKeyDown={(event) => handlers.onHandlerDecimal(event)}
+                    maxLength={3}
+                    onKeyDown={(event) => handlers.onHandlerDecimal(event)}
                     onChange={(event) => setDetained(event.target.value)}
                   />
                 </div>
@@ -330,7 +345,7 @@ const AdminContract = ({
                     className="input-modal w-80"
                     type="text"
                     maxLength={3}
-                     onKeyDown={(event) => handlers.onHandlerDecimal(event)}
+                    onKeyDown={(event) => handlers.onHandlerDecimal(event)}
                     value={amortization}
                     onChange={(event) => setAmortization(event.target.value)}
                   />
@@ -365,7 +380,7 @@ const AdminContract = ({
                     type="text"
                     maxLength={3}
                     value={advance}
-                     onKeyDown={(event) => handlers.onHandlerDecimal(event)}
+                    onKeyDown={(event) => handlers.onHandlerDecimal(event)}
                     onChange={(event) => setAdvance(event.target.value)}
                   />
                 </div>
@@ -373,30 +388,29 @@ const AdminContract = ({
             </div>
             <br />
             <br />
-            
           </div>
           <div className="right">
-              <button
-                className="secondary"
-                type="button"
-                onClick={() => onCloseAdminContract()}
-              >
-                {"Cerrar"}
-              </button>
-              &nbsp;&nbsp;
-              <button
-                className="primary"
-                hidden={!supplier}
-                disabled={!initialDate || !finalDate || !supplier}
-                onClick={() => {
-                  onSaveContract(getContractProperties(), adminContract.action);
-                }}
-              >
-                {adminContract.action === "edit"
-                  ? "Guardar Contrato"
-                  : "Crear Contrato"}
-              </button>
-            </div>
+            <button
+              className="secondary"
+              type="button"
+              onClick={() => onCloseAdminContract()}
+            >
+              {"Cerrar"}
+            </button>
+            &nbsp;&nbsp;
+            <button
+              className="primary"
+              hidden={!supplier}
+              disabled={!initialDate || !finalDate || !supplier}
+              onClick={() => {
+                onSaveContract(getContractProperties(), adminContract.action);
+              }}
+            >
+              {adminContract.action === "edit"
+                ? "Guardar Contrato"
+                : "Crear Contrato"}
+            </button>
+          </div>
         </div>
       </Modal.Body>
     </Modal.Dialog>

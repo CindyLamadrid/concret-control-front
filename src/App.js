@@ -1,5 +1,5 @@
 import {useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate,useLocation } from "react-router-dom";
 
 import "./App.css";
 import "./styles/menu.css";
@@ -29,7 +29,22 @@ import Contracts from "./containers/contracts"
 import InputsContract from "./containers/inputsContract"
 import InputsControl from "./containers/inputsControl"
 
+function RouteLogger() {
+  const location = useLocation();
+
+  useEffect(() => {
+    console.log("📍 PATH:", location.pathname);
+    console.log("🔎 SEARCH:", location.search);
+    console.log("🧩 FULL:", location.pathname + location.search);
+    console.log("🧠 KEY:", location.key);
+  }, [location]);
+
+  return null;
+}
+
 function App() {
+ 
+
   const [reportOption,setReportOption] = useState('')
   const [user,setUser] = useState('')
  
@@ -38,12 +53,15 @@ function App() {
     setUser(userLogged)
   },[])
 
+ 
+
   return (
     <ConstructionProvider>
       <BrowserRouter>
         <div>
         
          <Settings/>
+         <RouteLogger />
           <div className="row no-margin">
           
             <div className="no-margin">
@@ -52,6 +70,7 @@ function App() {
            
               <Routes>
                   <Route exact path="/login" element={<Login />} />
+                  <Route exact path="/"  element={<Login />} />
                 
                   <Route exact path="/home" element={<div className="component"><Constructions /></div>} />
                   <Route exact path="/budget" element={<div className="component"><Budget /></div>} />
@@ -63,7 +82,7 @@ function App() {
                   <Route exact path="/subchapters" element={<div className="component"><Subchapters /></div>} />
                   <Route exact path="/control" element={<div className="component"><Control /></div>} />
                   <Route exact path="/suppliers" element={<div className="component"><Suppliers /></div>} />
-                  <Route exact path="/contracts" element={<div className="component"><Contracts /></div>} /> 
+                  <Route exact path="/contracts" element={<div className="component"><Contracts  /></div>} /> 
                   <Route exact path="inputs-contract" element={<div className="component"><InputsContract /></div>} /> 
                   <Route exact path="inputs-control" element={<div className="component"><InputsControl /></div>} /> 
                 {/* <Route exact path="/reports" element={<Reports />} /> */}

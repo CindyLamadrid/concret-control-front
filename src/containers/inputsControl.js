@@ -37,7 +37,7 @@ const InputsControl = () => {
   });
 
   const onSearchInput = async () => {
-    setChapterSelected("")
+  //  setChapterSelected("")
     if (!input) return;
     setMessageResultOperation("");
     try {
@@ -105,11 +105,18 @@ const InputsControl = () => {
   };
 
   const onSelectInput = (index) => {
+   
     if (index > -1) {
-      const newInputsArray = [...inputsArray];
-      newInputsArray[index].selected = !inputsArray[index].selected;
+          const newInputsArray = inputsArray.map(
+        (x) =>{x.selected=false
 
-      setInputsArray(...[newInputsArray]);
+          return x
+        }
+      );
+      const input =  newInputsArray[index]
+      input.selected = !input.selected ;
+      newInputsArray[index] = input
+      setInputsArray(newInputsArray);
     }
   };
 
@@ -119,6 +126,7 @@ const InputsControl = () => {
       user: btoa(user),
       type,
       idSupplier,
+      idContract
     });
     navigate(`/inputs-contract?${params.toString()}`);
   };
@@ -143,11 +151,14 @@ const InputsControl = () => {
 
   const onSaveInputContract = async (items) => {
     try {
+       console.log("chapterSelected",chapterSelected);
       const result = await axios.post(
         `${process.env.REACT_APP_BUDGET_URL_API}/create-contract-input`,
         {
           idInput: items,
           idContract,
+          idChapter: chapterSelected.idChapter,
+          idSubchapter :chapterSelected.idSubchapter,
           user,
         },
       );
@@ -208,8 +219,13 @@ const InputsControl = () => {
         )
         .then((result) => {
           setChapters(result.data);
+          console.log("getChaptersSubchapters===",result.data)
           if(result.data.length>0)
-          setChapterSelected(result.data[0])
+          {
+             console.log("getChaptersSubchaptersV1===",result.data[0])
+              setChapterSelected(result.data[0])
+          }
+        
         });
     } catch (error) {
       console.error("Error fetching getChaptersSubchapters:", error);
@@ -217,6 +233,7 @@ const InputsControl = () => {
   };
 
     const getChapterInputs = async () => {
+     
     try {
       axios
         .post(
@@ -314,17 +331,9 @@ const InputsControl = () => {
               {"Agregar Insumo"}
             </button>
           </div>
+
           <br />
-          <InputTable
-            inputsArray={inputsArray}
-            onSelectInput={onSelectInput}
-            onEditInput={onEditInput}
-            onShowCompoundInputs={() => {}}
-            showCompoundInputs={false}
-            inputType="control"
-          />
-          <br />
-          <div className="row">
+            <div className="row">
             <div className="col-2">Capitulo y Subcapitulo</div>
             <div className="col-10">
               <div className="w-40">
@@ -352,6 +361,14 @@ const InputsControl = () => {
               </div>
             </div>
           </div>
+          <InputTable
+            inputsArray={inputsArray}
+            onSelectInput={onSelectInput}
+            onEditInput={onEditInput}
+            onShowCompoundInputs={() => {}}
+            showCompoundInputs={false}
+            inputType="control"
+          />
         </div>
       )}
     </div>

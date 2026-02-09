@@ -37,7 +37,7 @@ const SupplierTable = ({
             return (
               <tr key={index.toString()}>
                 {screen === "contract" && (
-                  <td className={index % 2 === 0 ? "dark left" : "left"}>
+                  <td className={index % 2 === 0 ? "dark center" : "center"}>
                     <input
                       type="radio"
                       name="supplier" 

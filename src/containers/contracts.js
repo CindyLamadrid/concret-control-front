@@ -21,7 +21,7 @@ const Contracts = () => {
   const [suppliersArray,setSuppliersArray] = useState([]);
   const [noData, setNoData] = useState(false);
   const [searchParams] = useSearchParams();
-  const [type] = useState(searchParams.get('type'));
+  const [type,setType] = useState(searchParams.get('type'));
   const [idSupplier] = useState(searchParams.get('idSupplier'));
 
 
@@ -154,10 +154,25 @@ const Contracts = () => {
 
   useEffect(
     ()=>{
-      console.log("charge===")
+    
      getSuppliers()
     },[]
   )
+
+  
+   useEffect(() => {
+    console.log("searchParams==",searchParams);
+   
+    const newType = searchParams.get("type");
+     console.log("newType==",newType);
+    if(type!==newType)
+    {
+      setType(newType)
+       setContractsArray([])
+    }
+
+
+  }, [searchParams]);
 
   return (
     <div>
@@ -186,7 +201,7 @@ const Contracts = () => {
 
       {adminContract.show && (
         <div
-          className="modal show modal-lg"
+          className="modal show modal-xl"
           style={{ display: "block", position: "initial" }}
         >
           <AdminContract
