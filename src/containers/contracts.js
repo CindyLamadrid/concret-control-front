@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { useSearchParams,createSearchParams ,useNavigate} from 'react-router-dom';
-import axios from "axios";
+import axios from "../config/axiosConfig";
 import { ConstructionContext } from "../context/constructionContext";
 import AdminOptions from "../components/commons/adminSelectOptions";
 import AdminContract from "../components/contracts/adminContracts";

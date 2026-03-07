@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../config/axiosConfig";
 import {  useContext, useState ,useEffect} from "react";
 import Hogan from "hogan.js";
 import { ConstructionContext } from "../../context/constructionContext";

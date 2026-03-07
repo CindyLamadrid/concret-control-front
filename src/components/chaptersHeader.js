@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import ChapterSelect from "./commons/select";
 import SubchapterSelect from "./commons/select";
-import axios from "axios";
+import axios from "../config/axiosConfig";
 
 const Chapters = ({
   chapterSelected,

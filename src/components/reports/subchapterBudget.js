@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../config/axiosConfig";
 import {  useContext, useState ,useEffect,useRef} from "react";
 import html2pdf from 'html2pdf.js';
 import Hogan from "hogan.js";

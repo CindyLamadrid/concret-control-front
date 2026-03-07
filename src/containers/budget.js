@@ -1,6 +1,6 @@
 import { useState,useContext, useEffect} from 'react';
 import { useSearchParams } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../config/axiosConfig';
 import { ConstructionContext } from "../context/constructionContext";
 import Chapter from '../components/chaptersHeader'
 import ConstructionItems from '../components/constructionItems'

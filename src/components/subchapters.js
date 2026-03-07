@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import axios from "axios";
+import axios from "../config/axiosConfig";
 import SubchaptersTable from "./chapters/subchaptersTable";
 import AdminOptions from "./commons/adminOptions";
 import AdminSubchapter from "./chapters/adminSubchapter";

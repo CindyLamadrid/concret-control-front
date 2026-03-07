@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import axios from "axios";
+import axios from "../config/axiosConfig";
 import { useNavigate } from "react-router-dom";
 import { ConstructionContext } from "../context/constructionContext";
 import StageTable from "../components/constructions/stageTable";

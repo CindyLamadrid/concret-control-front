@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import axios from "axios";
+import axios from "../config/axiosConfig";
 import { useNavigate, createSearchParams } from "react-router-dom";
 import { ConstructionContext } from "../context/constructionContext";
 import ConstructionTable from "../components/constructions/constructionTable";
@@ -18,9 +18,13 @@ const Constructions = ({}) => {
   });
 
   const getConstructions = () => {
+    const token= localStorage.getItem("token")
     axios
-      .get(`${process.env.REACT_APP_BUDGET_URL_API}/constructions`)
-      .then((result) => {
+      .get(`${process.env.REACT_APP_BUDGET_URL_API}/constructions`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((result) => {
         if (result && result.data) {
           setConstructionsArray(result.data);
         } else {

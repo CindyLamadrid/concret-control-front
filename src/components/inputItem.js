@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate, createSearchParams } from "react-router-dom";
 import { ConstructionContext } from "../context/constructionContext";
-import axios from "axios";
+import axios from "../config/axiosConfig";
 import ItemsSelect from "./commons/select";
 import InputItemTable from "./inputItems/inputItemTable";
 import Back from "./commons/back";

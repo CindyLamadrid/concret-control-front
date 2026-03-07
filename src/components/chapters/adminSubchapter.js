@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
-import axios from "axios";
+import axios from "../../config/axiosConfig";
 import ChapterSelect from "../commons/select";
 const handlers = require("../utils/handlers");
 

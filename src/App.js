@@ -86,7 +86,7 @@ function App() {
                   <Route exact path="inputs-contract" element={<div className="component"><InputsContract /></div>} /> 
                   <Route exact path="inputs-control" element={<div className="component"><InputsControl /></div>} /> 
                 {/* <Route exact path="/reports" element={<Reports />} /> */}
-                <Route path="*" element={<Navigate to="/login" replace />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
                 
               </Routes>
            

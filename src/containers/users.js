@@ -1,5 +1,5 @@
 import { useState ,useContext} from "react";
-import axios from "axios";
+import axios from "../config/axiosConfig";
 import { ConstructionContext } from "../context/constructionContext";
 import NewUser from "../components/users/newUser";
 import bcrypt from "bcryptjs-react";

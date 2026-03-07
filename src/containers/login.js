@@ -26,26 +26,21 @@ const Login = () => {
     const result = await axios.get(
         `${process.env.REACT_APP_SECURITY_URL_API}/user`,
         {  params: { 
-          userName:userInput
+          userName:userInput,
+          password
         }
         }
       );
+      console.log("result===",result);
 
-      if (result && result.data && result.data.length>0){
-        const currentPassword = result.data[0].password
-       
-        const response = bcrypt.compareSync(password, currentPassword);
-        if(response)
-        {
+      if (result && result.data && result.data &&  result.data.token){
           localStorage.setItem("user",userInput)
           localStorage.setItem("password",btoa(password))
+          localStorage.setItem('token', result.data.token);
           setUser(userInput)
         
           navigate(`/home?user=${btoa(userInput)}`);
-        }else
-        {
-          setMessage("Usuario o Contraseña incorrecta")
-        }
+    
       }else{
            setMessage("Usuario o Contraseña incorrecta")
         }

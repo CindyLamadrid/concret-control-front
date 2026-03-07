@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import axios from "../config/axiosConfig";
 import AdminSupplier from "../components/suppliers/adminSupplier";
 import AdminOptions from "../components/commons/adminOptions";
 import SupplierTable from "../components/suppliers/supplierTable";

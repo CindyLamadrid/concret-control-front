@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../../config/axiosConfig";
 import Modal from "react-bootstrap/Modal";
 import Select from "../commons/select";
 

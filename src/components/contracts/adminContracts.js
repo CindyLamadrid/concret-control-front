@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../../config/axiosConfig";
 import Modal from "react-bootstrap/Modal";
 import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";

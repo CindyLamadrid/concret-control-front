@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { ConstructionContext } from "../context/constructionContext";
-import axios from "axios";
+import axios from "../config/axiosConfig";
 import {
   useNavigate,
   useSearchParams

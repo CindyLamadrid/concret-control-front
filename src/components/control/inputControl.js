@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../config/axiosConfig";
 import { useEffect, useState,useContext } from "react";
 import { ConstructionContext } from "../../context/constructionContext";
 import InputControlTable from "./inputControlTable";

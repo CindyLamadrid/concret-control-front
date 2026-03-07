@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import axios from "axios";
+import axios from "../config/axiosConfig";
 import {
   useNavigate,
   useSearchParams,

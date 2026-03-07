@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate,createSearchParams,useSearchParams  } from 'react-router-dom';
-import axios from "axios";
+import axios from "../config/axiosConfig";
 import { ConstructionContext } from "../context/constructionContext";
 import Back from "./commons/back";
 import Header from "./commons/resume";
