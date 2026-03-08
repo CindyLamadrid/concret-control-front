@@ -1,0 +1,104 @@
+@import './variables';
+@import './mixins';
+
+.table {
+  @include table-responsive;
+
+  thead th {
+    background-color: $white;
+    color: $primary-color;
+    font-size: $font-size-small;
+    font-weight: 500;
+    text-align: center;
+
+    @include respond-to(mobile) {
+      font-size: 7pt;
+      padding: 5px 2px;
+    }
+  }
+
+  tbody td {
+    font-size: $font-size-normal;
+    border-bottom: 1px $lightgray solid;
+    padding-right: 2px;
+    padding-left: 2px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    border: solid 1px $lightgray;
+
+    @include respond-to(mobile) {
+      font-size: $font-size-small;
+      padding: 5px;
+    }
+
+    input[type="text"] {
+      width: 80%;
+      border-radius: $border-radius-sm;
+      border: 1px $lightgray solid;
+      height: 20px;
+      font-size: $font-size-normal;
+
+      @include respond-to(mobile) {
+        width: 100%;
+        font-size: $font-size-small;
+      }
+    }
+
+    i {
+      vertical-align: middle;
+    }
+  }
+}
+
+.folder {
+  color: $primary-color;
+}
+
+.construction-items-table {
+  width: 80%;
+
+  @include respond-to(mobile) {
+    width: 100%;
+  }
+
+  @include respond-to(tablet) {
+    width: 90%;
+  }
+}
+
+.icon-view-detail {
+  color: $primary-color;
+  font-size: $font-size-xxlarge;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  @include respond-to(mobile) {
+    font-size: $font-size-medium;
+  }
+}
+
+.icon-view-primary {
+  color: $white;
+  font-size: $font-size-xxlarge;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  @include respond-to(mobile) {
+    font-size: $font-size-medium;
+  }
+}
+
+.dark {
+  background-color: rgb(231, 231, 231)!important;
+}
+
+.pending-changes {
+  color: $red;
+  font-weight: 500;
+}

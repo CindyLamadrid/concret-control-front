@@ -24,7 +24,7 @@ const InputsBudget = ({reportOption,setReportOption}) => {
 
 const generateReport=(reportArray)=>{
   const timezone =  new Date().toLocaleTimeString();
-     fetch("/templates/inputs.html")
+     fetch(`${process.env.PUBLIC_URL}/templates/inputs.html`)
       .then((r) => r.text())
       .then((dataInfo) => {
             const newTemplates = Hogan.compile(dataInfo);

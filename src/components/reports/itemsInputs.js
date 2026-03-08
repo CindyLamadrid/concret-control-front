@@ -83,7 +83,7 @@ const createArrayData=(array)=>{
 
 const generateReport=(reportArray)=>{
   const timezone =  new Date().toLocaleTimeString();
-     fetch("/templates/itemsInputs.html")
+     fetch(`${process.env.PUBLIC_URL}/templates/itemsInputs.html`)
       .then((r) => r.text())
       .then((dataInfo) => {
             const newTemplates = Hogan.compile(dataInfo);

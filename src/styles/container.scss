@@ -1,0 +1,228 @@
+@import './variables';
+@import './mixins';
+
+.header-title {
+  @include title($font-size-xlarge, $primary-color, 6px solid $secondary-color);
+  margin-top: $spacing-xs;
+  margin-bottom: $spacing-xs;
+
+  @include respond-to(mobile) {
+    font-size: $font-size-medium;
+    padding-left: 5px;
+  }
+}
+
+.close {
+  cursor: pointer;
+}
+
+.subtitle {
+  @include title($font-size-xlarge, $tertiary-color);
+  margin-top: $spacing-md;
+  margin-bottom: $spacing-md;
+  padding-left: 10px;
+
+  @include respond-to(mobile) {
+    font-size: $font-size-medium;
+    margin-top: $spacing-sm;
+    margin-bottom: $spacing-sm;
+  }
+}
+
+.subtitle-admin {
+  @include title($font-size-medium, $tertiary-color);
+  padding-left: 10px;
+
+  @include respond-to(mobile) {
+    font-size: $font-size-normal;
+  }
+}
+
+.subheader-title {
+  color: $secondary-color;
+  font-size: $font-size-small;
+}
+
+.footer {
+  background-color: $primary-color;
+  font-size: $font-size-medium;
+  font-weight: 700;
+  color: $white;
+  height: $footer-height;
+  text-align: center;
+  padding-top: $spacing-sm;
+  padding-right: $spacing-md;
+  position: relative;
+  z-index: 20;
+  margin: 0;
+  width: 100%;
+
+  @include respond-to(mobile) {
+    font-size: $font-size-normal;
+    padding-right: 10px;
+    height: auto;
+    min-height: 40px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+
+.container_chapters {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.resume {
+  color: $primary-color;
+  font-size: $font-size-normal;
+  margin-top: $spacing-xs;
+
+  .text {
+    color: $gray;
+    font-weight: 600;
+  }
+
+  @include respond-to(mobile) {
+    font-size: $font-size-small;
+  }
+}
+
+.label {
+  font-size: $font-size-medium;
+  font-weight: 500;
+
+  @include respond-to(mobile) {
+    font-size: $font-size-normal;
+  }
+}
+
+.label-detail {
+  font-size: $font-size-medium;
+
+  @include respond-to(mobile) {
+    font-size: $font-size-normal;
+  }
+}
+
+.container-user{
+ position: relative;
+  background-color: $secondary-color;
+  height: 100%;
+}
+
+.user {
+  right: 0;
+  position: absolute;
+  top: 30%;
+  color: $white;
+  font-size: $font-size-large;
+  font-weight: 500;
+  background-color: $secondary-color;
+
+  @include respond-to(mobile) {
+    font-size: $font-size-normal;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: auto;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.header-icon {
+  font-size: $font-size-xxlarge;
+  padding-top: 6px;
+
+  @include respond-to(mobile) {
+    font-size: $font-size-medium;
+    padding-top: 3px;
+  }
+}
+
+.container-header-icon {
+  width: 30px;
+  height: 30px;
+  background-color: $tertiary-color;
+  border-radius: $border-radius-circle;
+  display: inline-block;
+  margin-right: 10px;
+  margin-left: 10px;
+
+  @include respond-to(mobile) {
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+}
+
+.close-header-icon {
+  font-size: $font-size-xxlarge;
+  padding-top: 6px;
+
+  @include respond-to(mobile) {
+    font-size: $font-size-medium;
+    padding-top: 3px;
+  }
+}
+
+.container-close-header-icon {
+  width: 30px;
+  height: 30px;
+  background-color: $transparent;
+  border-radius: $border-radius-circle;
+  display: inline-block;
+  margin-right: 10px;
+  margin-left: 20px;
+  border: $white 1px solid;
+
+  @include respond-to(mobile) {
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+    margin-left: 10px;
+  }
+}
+
+.container-items-select {
+  width: 30%;
+
+  @include respond-to(mobile) {
+    width: 100%;
+  }
+
+  @include respond-to(tablet) {
+    width: 50%;
+  }
+}
+
+.container-select {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.subcontainer-admin-options {
+  padding-top: 1.5px;
+  padding-bottom: 1.5px;
+}
+
+.printOnly {
+  display: none;
+}
+
+.logo {
+
+     position: relative;
+     margin: auto;
+     top: 20%;
+     border-bottom-right-radius: 50px;
+     border-top-right-radius: 50px;
+   
+    max-width: 100%;
+
+  @include respond-to(mobile) {
+    margin-left: 0;
+    width: 80px;
+    margin-top: 2px;
+  }
+}

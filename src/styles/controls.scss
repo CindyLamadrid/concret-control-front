@@ -1,0 +1,105 @@
+@import './variables';
+@import './mixins';
+
+.select {
+  @include select-base;
+  width: 98%;
+  padding: 2px;
+  border: 1.5px solid $primary-color;
+
+  @include respond-to(mobile) {
+    width: 100%;
+  }
+}
+
+.select-table {
+  @include select-base;
+  display: inline-block;
+  width: 75%;
+  padding: 0.9px;
+  font-weight: 600;
+  line-height: 1.0;
+  background-color: $transparent;
+  border-radius: 0;
+  border-bottom: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+
+  option {
+    font-weight: 600;
+  }
+
+  @include respond-to(mobile) {
+    width: 100%;
+  }
+}
+
+.input[type="text"] {
+  width: 30%;
+  border-radius: $border-radius-sm;
+  border: 1px $lightgray solid;
+  height: $button-height;
+
+  @include respond-to(mobile) {
+    width: 100%;
+  }
+
+  @include respond-to(tablet) {
+    width: 50%;
+  }
+}
+
+.checkbox {
+  margin-top: 5px;
+}
+
+.link {
+  border-bottom: solid 1px $blue;
+  cursor: pointer;
+  color: $blue;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.react-date-picker {
+  font-size: $font-size-medium;
+
+  @include respond-to(mobile) {
+    font-size: $font-size-normal;
+  }
+}
+
+.react-date-picker__wrapper {
+  border-radius: $border-radius-sm;
+}
+
+.react-date-picker__button {
+  padding: 0 2px;
+}
+
+.react-date-picker__button svg {
+  display: inherit;
+  width: 14px;
+}
+
+.input {
+  @include input-base;
+  padding: 0.1rem;
+}
+
+.input-modal {
+  @include input-base;
+  padding: 0.5rem;
+  border-radius: 2px;
+}
+
+.separator {
+  margin: 0.5rem 0;
+  color: inherit;
+  border: 0;
+  border-top: var(--bs-border-width) solid;
+  opacity: 0.25;
+}

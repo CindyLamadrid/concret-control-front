@@ -1,13 +1,13 @@
 import {useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate,useLocation } from "react-router-dom";
 
-import "./App.css";
-import "./styles/menu.css";
-import "./styles/container.css";
-import "./styles/table.css";
-import "./styles/button.css"
-import "./styles/controls.css"
-import "./styles/login.css"
+import "./App.scss";
+import "./styles/menu.scss";
+import "./styles/container.scss";
+import "./styles/table.scss";
+import "./styles/button.scss"
+import "./styles/controls.scss"
+import "./styles/login.scss"
 // import Container from "./containers/container";
 import Menu from "./components/menu";
 import { ConstructionProvider } from "./context/constructionProvider";

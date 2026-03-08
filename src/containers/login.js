@@ -62,37 +62,44 @@ const Login = () => {
   )
 
   return (
-    <div className="login">
-      <div className="container">
-        <div className="row">
-          <div className="col-12">
-            <div className="login-container"></div>
-            <div className="form-container">
-              <div>  <img src={Logo} className="logo-login"/></div>
-            
-               <div className="mandatory center">
-                <b>{
-                  message 
-                }</b><br/>
+    <div className="login-wrapper">
+      <div className="login">
+        <div className="container">
+          <div className="row">
+            <div className="col-12">
+              <div className="login-container"></div>
+              <div className="form-container">
+                <div>  <img src={Logo} className="logo-login" alt="Logo"/></div>
+              
+                <div className="mandatory center">
+                  <b>{
+                    message 
+                  }</b><br/>
+                </div>
+
+                <div>
+                <span className="label">Usuario</span>
+                  <input type="text"  value={userInput} onChange={(event)=>{setUserInput(event.target.value)}} />
+                </div>
+                <div>
+                    <span className="label">Contraseña</span>
+                  <input type="password"  value={password} onChange={(event)=>{setPassword(event.target.value)}} />
+                </div>
+                <div className="center">
+                  <button className="primary button-login" onClick={()=>onLogin()}>
+                    INICIAR SESSIÓN
+                  </button>
+                </div>
+              
               </div>
 
-              <div>
-               <span className="label">Usuario</span>
-                <input type="text"  value={userInput} onChange={(event)=>{setUserInput(event.target.value)}} />
-              </div>
-              <div>
-                 <span className="label">Contraseña</span>
-                <input type="password"  value={password} onChange={(event)=>{setPassword(event.target.value)}} />
-              </div>
-               <div className="center">
-                <button className="primary button-login" onClick={()=>onLogin()}>
-                  INICIAR SESSIÓN
-                </button>
-              </div>
-             
             </div>
-
           </div>
+        </div>
+      </div>
+      <div className="footer login-footer">
+        <div>
+          CONCRETO VIVO - 2025
         </div>
       </div>
     </div>

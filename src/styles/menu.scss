@@ -1,0 +1,205 @@
+@import './variables';
+@import './mixins';
+
+.menu-container {
+  width: 100%;
+  border-bottom: 2px solid $lightgray;
+  height: $header-height;
+  min-width: 700px;
+  min-height: 90px;
+  background-color: #06a796;
+
+  @include respond-to(mobile) {
+    height: auto;
+    min-height: $header-height;
+  }
+}
+
+.container-logo {
+ 
+  border: solid $white;
+  position: relative;
+  // left: 8%;
+  background-color: $white;
+  min-width: 140px;
+  border-bottom-right-radius: 50px;
+  border-top-right-radius: 50px;
+
+  @include respond-to(mobile) {
+    left: 10px;
+  }
+}
+
+.nav-container {
+  width: 100%;
+  height: 100%;
+  --bs-navbar-padding-y: 0rem;
+  --bs-navbar-brand-padding-y: 0rem;
+  background-color: $secondary-color;
+
+  @include respond-to(mobile) {
+    height: auto;
+    min-height: $header-height;
+  }
+}
+
+.menu-option {
+  background-color: $secondary-color;
+  color: $white;
+  text-align: end;
+  font-size: $font-size-large;
+  font-weight: 500;
+
+  @include respond-to(mobile) {
+    font-size: $font-size-normal;
+    text-align: center;
+    padding: 8px 0;
+  }
+}
+
+.select-option {
+  border-right: 1px solid $white;
+
+  .nav-link {
+    background-color: $secondary-color;
+    color: $white;
+    
+    @include respond-to(mobile) {
+      padding: 10px 15px;
+    }
+  }
+
+  @include respond-to(mobile) {
+    border-right: none;
+    border-bottom: 1px solid $white;
+    width: 100%;
+  }
+}
+
+.submenu-option {
+  background-color: $white;
+  color: $primary-color;
+  font-size: $font-size-normal;
+  text-align: start;
+
+  @include respond-to(mobile) {
+    width: 100%;
+  }
+
+  button {
+    outline: none;
+    background-color: $white;
+    padding-bottom: 4px;
+    padding-top: 4px;
+    color: $black;
+    width: 100%;
+    color: $primary-color;
+    font-size: $font-size-normal;
+    text-align: left;
+    border: none;
+
+    @include respond-to(mobile) {
+      font-size: $font-size-small;
+      padding: 8px 15px;
+    }
+  }
+
+  .dropdown-toggle::after {
+    float: right;
+    margin-top: 8px;
+  }
+}
+
+.menu-collapse {
+  position: absolute;
+  right: 1%;
+
+  @include respond-to(mobile) {
+    position: relative;
+    right: 0;
+    width: 100%;
+    max-height: 70vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
+
+.no-margin {
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.navbar-toggler-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  background-image: var(--bs-navbar-toggler-icon-bg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+}
+
+.navbar-toggler {
+  padding: 4px;
+  font-size: var(--bs-navbar-toggler-font-size);
+  line-height: 1;
+  color: $white;
+  background-color: $transparent;
+  border: var(--bs-border-width) solid var(--bs-navbar-toggler-border-color);
+  border-radius: var(--bs-navbar-toggler-border-radius);
+  transition: var(--bs-navbar-toggler-transition);
+
+  @include respond-to(mobile) {
+    margin: 5px;
+  }
+}
+
+.link-option {
+  color: $white;
+  border-right: solid 1px $white;
+
+  @include respond-to(mobile) {
+    border-right: none;
+    border-bottom: solid 1px $white;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+  }
+}
+
+.navbar-nav {
+  flex-direction: row;
+
+  @include respond-to(mobile) {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+.submenu-main {
+  padding-left: 8px;
+
+  @include respond-to(mobile) {
+    padding-left: 0;
+    width: 100%;
+  }
+}
+
+// Estilos adicionales para dropdown en móvil
+@include respond-to(mobile) {
+  .dropdown-menu {
+    position: static !important;
+    transform: none !important;
+    width: 100%;
+    border: none;
+    box-shadow: none;
+  }
+
+  .navbar-collapse {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+}

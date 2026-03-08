@@ -254,7 +254,7 @@ const Menu = ({ setReportOption }) => {
             </div>
           </Navbar>
         </div>
-        <div className="col-2 no-margin right">
+        <div className="col-2 no-margin right container-user">
           <div className="user">
             <span className="container-header-icon center">
               <i className="fas fa-user right header-icon center" />

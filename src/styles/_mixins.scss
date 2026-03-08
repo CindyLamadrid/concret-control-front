@@ -1,0 +1,166 @@
+// Mixins para responsive design
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == mobile {
+    @media only screen and (max-width: $breakpoint-mobile) {
+      @content;
+    }
+  }
+  @else if $breakpoint == tablet {
+    @media only screen and (min-width: $breakpoint-mobile + 1) and (max-width: $breakpoint-tablet - 1) {
+      @content;
+    }
+  }
+  @else if $breakpoint == desktop {
+    @media only screen and (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop) {
+      @content;
+    }
+  }
+  @else if $breakpoint == large {
+    @media only screen and (min-width: $breakpoint-desktop + 1) {
+      @content;
+    }
+  }
+}
+
+// Mixin para botones
+@mixin button-base($bg-color, $text-color, $border-color) {
+  border-radius: $border-radius-md;
+  border: 2px solid $border-color;
+  height: $button-height;
+  color: $text-color;
+  background-color: $bg-color;
+  font-size: $font-size-medium;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  @include respond-to(mobile) {
+    font-size: $font-size-normal;
+    height: 35px;
+    padding: 5px 10px;
+  }
+}
+
+// Mixin para títulos
+@mixin title($font-size, $color, $border-left: null) {
+  font-size: $font-size;
+  font-weight: 700;
+  color: $color;
+  
+  @if $border-left {
+    border-left: $border-left;
+    padding-left: 8px;
+  }
+
+  @include respond-to(mobile) {
+    font-size: $font-size - 1pt;
+  }
+}
+
+// Mixin para inputs
+@mixin input-base {
+  outline: none;
+  font-size: $font-size-xlarge;
+  font-weight: 400;
+  line-height: 1.0;
+  color: var(--bs-body-color);
+  appearance: none;
+  background-color: var(--bs-body-bg);
+  background-clip: padding-box;
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  border-radius: $border-radius-sm;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+  @include respond-to(mobile) {
+    font-size: $font-size-medium;
+  }
+}
+
+// Mixin para select
+@mixin select-base {
+  --bs-form-select-bg-img: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e);
+  display: block;
+  font-size: $font-size-medium;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--bs-body-color);
+  appearance: none;
+  background-color: var(--bs-body-bg);
+  background-image: var(--bs-form-select-bg-img), var(--bs-form-select-bg-icon, none);
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+  border-radius: $border-radius-sm;
+  transition: border-color 0.15s;
+  outline: none;
+
+  @include respond-to(mobile) {
+    font-size: $font-size-normal;
+  }
+}
+
+// Mixin para flexbox
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// Mixin para container responsive
+@mixin container-responsive {
+  width: 100%;
+  padding-left: $component-padding;
+  padding-right: $component-padding;
+
+  @include respond-to(mobile) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  @include respond-to(tablet) {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+}
+
+// Mixin para tabla responsive
+@mixin table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  
+  @include respond-to(mobile) {
+    display: block;
+    
+    thead {
+      display: none;
+    }
+    
+    tbody, tr, td {
+      display: block;
+      width: 100%;
+    }
+    
+    tr {
+      margin-bottom: 15px;
+      border: 1px solid $lightgray;
+      padding: 10px;
+    }
+    
+    td {
+      text-align: right;
+      padding-left: 50%;
+      position: relative;
+      
+      &:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        font-weight: bold;
+        text-align: left;
+      }
+    }
+  }
+}

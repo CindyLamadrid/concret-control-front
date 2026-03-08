@@ -11,7 +11,7 @@ const CompoundInputs = ({reportOption,setReportOption}) => {
 
   const printReport = (report) => {
     const newTab = window.open("", "_blank");
-    newTab.document.write(report);
+    newTab.document.body.innerHTML= report;
     newTab.document.close(); 
 
     if(reportOption.type==="pdf")
@@ -64,7 +64,7 @@ const CompoundInputs = ({reportOption,setReportOption}) => {
 
 const generateReport=()=>{
   const timezone =  new Date().toLocaleTimeString();
-     fetch("/templates/compoundItems.html")
+     fetch(`${process.env.PUBLIC_URL}/templates/compoundItems.html`)
       .then((r) => r.text())
       .then((dataInfo) => {
             const newTemplates = Hogan.compile(dataInfo);

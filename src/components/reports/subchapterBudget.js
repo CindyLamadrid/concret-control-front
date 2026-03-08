@@ -30,7 +30,7 @@ const SubchapterBudget = ({reportOption,setReportOption}) => {
 
    const printReport = (report) => {
     const newTab = window.open("", "_blank");
-    newTab.document.write(report);
+    newTab.document.body.innerHTML= report;
     newTab.document.close(); 
 
     if(reportOption.type==="pdf")
@@ -39,32 +39,14 @@ const SubchapterBudget = ({reportOption,setReportOption}) => {
         newTab.print();
         }, 1000);
     }
-
-    //const newTab = window.open("", "_blank");
-    //newTab.document.write(pdf(report));
-    //newTab.document.close(); 
-   
-    //    setTimeout(() => {
-    //   newTab.print();
-    // }, 1000);
-    // const pri = document.getElementById("ifmcontentstoprint").contentWindow;
-    // pri.document.open();
-    // pri.document.write(report);
-    // pri.document.close();
-    // pri.focus();
-    // setTimeout(() => {
-    //   pri.print();
-    // }, 1000);
-
-    //const content = contentRef.current;
-
   };
 
 const generateReport=(reportArray)=>{
-  const timezone =  new Date().toLocaleTimeString();
-     fetch("/templates/subchapterBudget.html")
+  
+     fetch(`${process.env.PUBLIC_URL}/templates/subchapterBudget.html`)
       .then((r) => r.text())
       .then((dataInfo) => {
+        console.log("dataInfo==",dataInfo);
             const newTemplates = Hogan.compile(dataInfo);
             const data ={
                list:reportArray,
@@ -74,6 +56,7 @@ const generateReport=(reportArray)=>{
                date:new Date( Date.now()).toDateString()
             }
             const htmlOutput = newTemplates.render(data);
+            console.log("htmlOutput===",htmlOutput);
             printReport(htmlOutput)
            
       })
