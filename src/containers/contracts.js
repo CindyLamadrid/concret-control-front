@@ -188,7 +188,7 @@ const Contracts = () => {
           onSearch={onSearchContracts}
           onNewOption={onNewContract}
           onCancelOption={() => {}}
-          labelOption="Crear Nuevo Contrato "
+          labelOption="Crear Nuevo Contrato"
           hideCancelOption
         />
       </div>
