@@ -1,7 +1,8 @@
 import axios from "../../config/axiosConfig";
-import {  useContext, useState ,useEffect} from "react";
+import { useContext, useState, useEffect } from "react";
 import Hogan from "hogan.js";
 import { ConstructionContext } from "../../context/constructionContext";
+import { exportToExcel } from "../utils/excelExport";
 const commom = require('../utils/common')
  
 const CompoundInputs = ({reportOption,setReportOption}) => {
@@ -81,6 +82,69 @@ const generateReport=()=>{
       })
 }
 
+  const getCompoundInputsExcel = () => {
+    axios
+      .get(`${process.env.REACT_APP_BUDGET_URL_API}/input-compound-budget`, {
+        params: { idStage: stageSelected.idStage, type: stageSelected.budgetType },
+      })
+      .then(async (result) => {
+        if (result && result.data && result.data.length > 0) {
+          const ExcelJS = (await import("exceljs")).default;
+          const { saveAs } = await import("file-saver");
+
+          const wb = new ExcelJS.Workbook();
+          const ws = wb.addWorksheet("Insumos Compuestos");
+
+          const colWidths = [16, 30, 10, 10, 10, 18, 18];
+          colWidths.forEach((w, i) => { ws.getColumn(i + 1).width = w; });
+
+          const HEADER_FILL = { type: "pattern", pattern: "solid", fgColor: { argb: "FFBDD7EE" } };
+          const GROUP_FILL  = { type: "pattern", pattern: "solid", fgColor: { argb: "FFD6E4F0" } };
+          const TOTAL_FILL  = { type: "pattern", pattern: "solid", fgColor: { argb: "FFD0D0D0" } };
+          const moneyFmt = '#,##0.00';
+
+          const groups = createArrayData(result.data);
+
+          groups.forEach((group) => {
+            const grpRow = ws.addRow([`${group.compoundMainCod} - ${group.compoundMain}`]);
+            ws.mergeCells(`A${grpRow.number}:G${grpRow.number}`);
+            grpRow.getCell(1).fill = GROUP_FILL;
+            grpRow.getCell(1).font = { bold: true };
+            grpRow.getCell(1).alignment = { horizontal: "left" };
+
+            const colRow = ws.addRow(["CÓDIGO", "DESCRIPCIÓN", "UNIDAD", "CANTIDAD", "FACTOR", "VALOR", "TOTAL"]);
+            colRow.eachCell((cell) => {
+              cell.fill = HEADER_FILL;
+              cell.font = { bold: true };
+              cell.alignment = { horizontal: "center" };
+            });
+
+            group.inputs.forEach((inp) => {
+              const r = ws.addRow([inp.cod, inp.name, inp.unit, inp.quantity, inp.waste, inp.unitValue, inp.totalInput]);
+              r.getCell(6).numFmt = moneyFmt;
+              r.getCell(7).numFmt = moneyFmt;
+            });
+
+            const totalVal = commom.getTotals(group.inputs, "totalInput");
+            const totRow = ws.addRow(["TOTAL", "", "", "", "", "", totalVal]);
+            totRow.eachCell((cell) => { cell.fill = TOTAL_FILL; });
+            totRow.getCell(1).font = { bold: true };
+            totRow.getCell(7).numFmt = moneyFmt;
+
+            ws.addRow([]);
+          });
+
+          const buffer = await wb.xlsx.writeBuffer();
+          saveAs(new Blob([buffer]), `InsumosCompuestos_${stageSelected.name}.xlsx`);
+        }
+        setReportOption("");
+      })
+      .catch((error) => {
+        console.error("Error fetching excel compoundInputs:", error);
+        setReportOption("");
+      });
+  };
+
   const getCompundInputsBudget = () => {
     try {
       axios
@@ -116,12 +180,13 @@ const generateReport=()=>{
   };
 
   useEffect(() => {
-   if(reportOption && reportOption.name==="compoundInputs")
-    {
-      getCompundInputsBudget()
-      
+    if (reportOption && reportOption.name === "compoundInputs") {
+      if (reportOption.type === "excel") {
+        getCompoundInputsExcel();
+      } else {
+        getCompundInputsBudget();
+      }
     }
-    
   }, [reportOption]);
 
   useEffect(

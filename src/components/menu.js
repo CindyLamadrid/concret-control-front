@@ -49,7 +49,7 @@ const Menu = ({ setReportOption }) => {
                   className="menu-option link-option"
                   onClick={() => onShowHome()}
                 >
-                  <b>Projectos</b>
+                  <b>Proyectos</b>
                 </Nav.Link>
                 {stageSelected &&
                 stageSelected.idStage &&
@@ -81,6 +81,14 @@ const Menu = ({ setReportOption }) => {
                       >
                         <i className="far fa-file-pdf" /> PDF
                       </Dropdown.Item>
+                      <Dropdown.Item
+                        className="submenu-option"
+                        onClick={() => {
+                          setReportOption({ name: "subchapter", type: "excel" });
+                        }}
+                      >
+                        <i className="far fa-file-excel" /> Excel
+                      </Dropdown.Item>
                     </DropdownButton>
 
                     <DropdownButton
@@ -106,6 +114,14 @@ const Menu = ({ setReportOption }) => {
                         }}
                       >
                         <i className="far fa-file-pdf" /> PDF
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        className="submenu-option"
+                        onClick={() => {
+                          setReportOption({ name: "itemsInputs", type: "excel" });
+                        }}
+                      >
+                        <i className="far fa-file-excel" /> Excel
                       </Dropdown.Item>
                     </DropdownButton>
 
@@ -136,6 +152,14 @@ const Menu = ({ setReportOption }) => {
                       >
                         <i className="far fa-file-pdf" /> PDF
                       </Dropdown.Item>
+                      <Dropdown.Item
+                        className="submenu-option"
+                        onClick={() => {
+                          setReportOption({ name: "compoundInputs", type: "excel" });
+                        }}
+                      >
+                        <i className="far fa-file-excel" /> Excel
+                      </Dropdown.Item>
                     </DropdownButton>
                     <DropdownButton
                       title="  Insumos Generales"
@@ -160,6 +184,14 @@ const Menu = ({ setReportOption }) => {
                       >
                         {" "}
                         <i className="far fa-file-pdf" /> PDF
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        className="submenu-option"
+                        onClick={() => {
+                          setReportOption({ name: "inputs", type: "excel" });
+                        }}
+                      >
+                        <i className="far fa-file-excel" /> Excel
                       </Dropdown.Item>
                     </DropdownButton>
                   </NavDropdown>

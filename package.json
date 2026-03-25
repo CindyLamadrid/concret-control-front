@@ -10,6 +10,8 @@
     "@testing-library/user-event": "^13.5.0",
     "bcryptjs-react": "^2.4.6",
     "env-cmd": "^11.0.0",
+    "exceljs": "^4.4.0",
+    "file-saver": "^2.0.5",
     "hogan.js": "^3.0.2",
     "html2pdf.js": "^0.12.1",
     "install": "^0.13.0",
@@ -22,7 +24,8 @@
     "react-router-dom": "^7.9.6",
     "react-scripts": "5.0.1",
     "react-select": "^5.10.2",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "react-scripts start",

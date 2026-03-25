@@ -1,9 +1,8 @@
 import axios from "../../config/axiosConfig";
-import {  useContext, useState ,useEffect,useRef} from "react";
-import html2pdf from 'html2pdf.js';
+import { useContext, useState, useEffect } from "react";
 import Hogan from "hogan.js";
 import { ConstructionContext } from "../../context/constructionContext";
-import Reports from "../../containers/reports";
+import { exportToExcel } from "../utils/excelExport";
 const commom = require('../utils/common')
 
 
@@ -62,6 +61,55 @@ const generateReport=(reportArray)=>{
       })
 }
 
+  const getSubchapterBudgetExcel = () => {
+    axios
+      .get(`${process.env.REACT_APP_BUDGET_URL_API}/subchapter-budget`, {
+        params: { idStage: stageSelected.idStage, type: stageSelected.budgetType },
+      })
+      .then(async (result) => {
+        if (result && result.data && result.data.length > 0) {
+          const ExcelJS = (await import("exceljs")).default;
+          const { saveAs } = await import("file-saver");
+
+          const wb = new ExcelJS.Workbook();
+          const ws = wb.addWorksheet("Capítulos");
+
+          const colWidths = [16, 40, 18];
+          colWidths.forEach((w, i) => { ws.getColumn(i + 1).width = w; });
+
+          const HEADER_FILL = { type: "pattern", pattern: "solid", fgColor: { argb: "FFBDD7EE" } };
+          const TOTAL_FILL  = { type: "pattern", pattern: "solid", fgColor: { argb: "FFD0D0D0" } };
+          const moneyFmt = '#,##0.00';
+
+          const colRow = ws.addRow(["CÓDIGO", "DESCRIPCIÓN", "VALOR"]);
+          colRow.eachCell((cell) => {
+            cell.fill = HEADER_FILL;
+            cell.font = { bold: true };
+            cell.alignment = { horizontal: "center" };
+          });
+
+          result.data.forEach((x) => {
+            const r = ws.addRow([x.cod || "", x.description || "", x.value || 0]);
+            r.getCell(3).numFmt = moneyFmt;
+          });
+
+          const grandTotal = commom.getTotals(result.data, "value");
+          const totRow = ws.addRow(["TOTAL PRESUPUESTO", "", grandTotal]);
+          totRow.eachCell((cell) => { cell.fill = TOTAL_FILL; });
+          totRow.getCell(1).font = { bold: true };
+          totRow.getCell(3).numFmt = moneyFmt;
+
+          const buffer = await wb.xlsx.writeBuffer();
+          saveAs(new Blob([buffer]), `Capitulos_${stageSelected.name}.xlsx`);
+        }
+        setReportOption("");
+      })
+      .catch((error) => {
+        console.error("Error fetching excel subchapterBudget:", error);
+        setReportOption("");
+      });
+  };
+
   const getSubchapterBudget = () => {
     try {
      
@@ -97,12 +145,13 @@ const generateReport=(reportArray)=>{
   };
 
   useEffect(() => {
-    if(reportOption && reportOption.name==="subchapter")
-    {
-      getSubchapterBudget(reportOption.type)
-     
+    if (reportOption && reportOption.name === "subchapter") {
+      if (reportOption.type === "excel") {
+        getSubchapterBudgetExcel();
+      } else {
+        getSubchapterBudget(reportOption.type);
+      }
     }
-    
   }, [reportOption]);
 
   useEffect(
