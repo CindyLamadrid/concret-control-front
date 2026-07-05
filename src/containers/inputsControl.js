@@ -145,6 +145,7 @@ const InputsControl = () => {
       user: btoa(user),
       idSupplier,
       idContract,
+      type
     });
     navigate(`/inputs-contract?${params.toString()}`);
   };
@@ -176,6 +177,7 @@ const InputsControl = () => {
             user: btoa(user),
             idSupplier,
             idContract,
+            type
           });
           navigate(`/inputs-contract?${params.toString()}`);
         }

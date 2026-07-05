@@ -1,34 +1,36 @@
-const OrderTable = ({ orderArray }) => {
+const common = require("../utils/common");
+
+const OrderTable = ({ orderArray, onEditOrder, onViewDetail }) => {
   return (
     <div>
       <table className="table w-100">
         <thead>
           <tr>
-            <th className="w-10">IMPUTACIÓN</th>
-            <th className="w-10">N° CONTRATO</th>
-            <th className="w-10">CÓDIGO INSUMO</th>
-            <th className="w-20">DESCRIPCIÓN</th>
-            <th className="w-5">UNIDAD</th>
-            <th className="w-10">CANTIDAD</th>
-            <th className="w-10">PRECIO</th>
-            <th className="w-10">VALOR</th>
-            <th className="w-5">IVA</th>
-            <th className="w-10">BASE</th>
+            <th className="w-15">PROVEEDOR</th>
+            <th className="w-10">FECHA FACTURA</th>
+            <th className="w-10">N° FACTURA</th>
+            <th className="w-15">FORMA DE PAGO</th>
+            <th className="w-20">CUFE</th>
+            <th className="w-15">ID DOC. ELECTRÓNICO</th>
+            <th className="w-5">VER</th>
+            <th className="w-5">EDITAR</th>
           </tr>
         </thead>
         <tbody>
           {orderArray.map((x, index) => (
             <tr key={index.toString()}>
-              <td className={index % 2 === 0 ? "dark left" : "left"}>{x.imputation}</td>
-              <td className={index % 2 === 0 ? "dark center" : "center"}>{x.contractNumber}</td>
-              <td className={index % 2 === 0 ? "dark center" : "center"}>{x.inputCod}</td>
-              <td className={index % 2 === 0 ? "dark left" : "left"}>{x.description}</td>
-              <td className={index % 2 === 0 ? "dark center" : "center"}>{x.unit}</td>
-              <td className={index % 2 === 0 ? "dark right" : "right"}>{x.quantity}</td>
-              <td className={index % 2 === 0 ? "dark right" : "right"}>{x.price}</td>
-              <td className={index % 2 === 0 ? "dark right" : "right"}>{x.value}</td>
-              <td className={index % 2 === 0 ? "dark right" : "right"}>{x.IVA}</td>
-              <td className={index % 2 === 0 ? "dark right" : "right"}>{x.base}</td>
+              <td className={index % 2 === 0 ? "dark left" : "left"}>{x.supplierName}</td>
+              <td className={index % 2 === 0 ? "dark center" : "center"}>{x.billDate}</td>
+              <td className={index % 2 === 0 ? "dark center" : "center"}>{x.billPrefix}{x.billNumber}</td>
+              <td className={index % 2 === 0 ? "dark left" : "left"}>{x.paymentMethod}</td>
+              <td className={index % 2 === 0 ? "dark left" : "left"}>{x.cufe}</td>
+              <td className={index % 2 === 0 ? "dark left" : "left"}>{x.electronicDocumentId}</td>
+              <td className={index % 2 === 0 ? "dark center" : "center"}>
+                <i className="fas fa-external-link-alt icon-view-detail" onClick={() => onViewDetail && onViewDetail(index)} />
+              </td>
+              <td className={index % 2 === 0 ? "dark center" : "center"}>
+                <i className="fas fa-pencil-alt icon-view-detail" onClick={() => onEditOrder && onEditOrder(index)} />
+              </td>
             </tr>
           ))}
         </tbody>

@@ -29,6 +29,7 @@ import Contracts from "./containers/contracts"
 import InputsContract from "./containers/inputsContract"
 import InputsControl from "./containers/inputsControl"
 import Orders from "./containers/orders"
+import OrderInputs from "./containers/orderInputs"
 
 function RouteLogger() {
   const location = useLocation();
@@ -87,6 +88,7 @@ function App() {
                   <Route exact path="inputs-contract" element={<div className="component"><InputsContract /></div>} /> 
                   <Route exact path="inputs-control" element={<div className="component"><InputsControl /></div>} /> 
                   <Route exact path="/orders" element={<div className="component"><Orders /></div>} /> 
+                  <Route exact path="/order-inputs" element={<div className="component"><OrderInputs /></div>} />
                 {/* <Route exact path="/reports" element={<Reports />} /> */}
                 <Route path="*" element={<Navigate to="/" replace />} />
                 

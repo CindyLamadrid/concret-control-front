@@ -9,6 +9,7 @@ const ContractInputsTable = ({
   onRefresh,
   onFocusInput,
   onBlurInput,
+  onImputation,
 }) => {
   return (
     <div>
@@ -16,11 +17,13 @@ const ContractInputsTable = ({
         <thead>
           <tr>
             <th className="w-5">ELIMINAR</th>
+            <th className="w-10">IMPUTACIÓN</th>
             <th className="w-5">CODIGO</th>
             <th className="w-20">INSUMO</th>
-            <th className="w-30">CAPITULO - SUBCAPITULO</th>
             <th className="w-5">UNIDAD</th>
-            <th className="w-10">CANTIDAD</th>
+            <th className="w-10">CANT. CONTRATADA</th>
+            <th className="w-10">CANT. EJECUTADA</th>
+            <th className="w-10">CANT. DISPONIBLE</th>
             <th className="w-10">VALOR/UN</th>
             <th className="w-5">GUARDAR</th>
             <th className="w-10">TOTAL</th>
@@ -36,6 +39,15 @@ const ContractInputsTable = ({
                     onClick={() => onRemoveInput(index)}
                   />
                 </td>
+                <td className={index % 2 === 0 ? "dark left" : "left"}>
+                  <span
+                    className="link"
+                    style={{ cursor: "pointer", textDecoration: "underline" }}
+                    onClick={() => onImputation && onImputation(index)}
+                  >
+                    {`${x.idStage}-${x.idChapter}-${x.idSubchapter}-${x.idInputBudget}`}
+                  </span>
+                </td>
 
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
                   {x.cod}
@@ -43,35 +55,49 @@ const ContractInputsTable = ({
                 <td className={index % 2 === 0 ? "dark left" : "left"}>
                   {x.name}
                 </td>
-                 <td className={index % 2 === 0 ? "dark left" : "left"}>
-                  {`${x.chapter} - ${x.subchapter}`}
-                </td>
+
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
                   {x.unit}
                 </td>
                 <td className={index % 2 === 0 ? "dark right" : "right"}>
                   <input
                     type="text"
-                    className={`${"input input-table right"} ${
-                      x.quantityChanged ? "pending-changes" : ""
-                    }`}
+                    className={`${"input input-table right"} ${x.quantityChanged ? "pending-changes" : ""
+                      }`}
                     value={x.quantity ? x.quantity.toString() : "0"}
                     onKeyDown={(event) => handlers.onHandlerDecimal(event)}
-                    onChange={(event) => onChangeQuantity(event, index,'quantity')}
+                    onChange={(event) => onChangeQuantity(event, index, 'quantity')}
+                  />
+                </td>
+                 <td className={index % 2 === 0 ? "dark right" : "right"}>
+                  <input
+                    type="text"
+                    className={`${"input input-table right"} ${x.quantityChanged ? "pending-changes" : ""
+                      }`}
+                    value={x.quantityDone ? x.quantityDone.toString() : "0"}
+                  
+                  />
+                </td>
+                 <td className={index % 2 === 0 ? "dark right" : "right"}>
+                  <input
+                    type="text"
+                    className={`${"input input-table right"} ${x.quantityChanged ? "pending-changes" : ""
+                      }`}
+                    value={x.quantityAvailable ? x.quantityAvailable.toString() : "0"}
+                  
                   />
                 </td>
                 <td className={index % 2 === 0 ? "dark right" : "right"}>
                   <input
                     type="text"
-                    className={`${"input right"} ${
-                      x.unitValueChanged ? "pending-changes" : ""
-                    }`}
+                    className={`${"input right"} ${x.unitValueChanged ? "pending-changes" : ""
+                      }`}
                     value={
                       x.unitValue
                         ? common.getMoneyFomat(
-                            x.unitValue.toString(),
-                            x.editing,
-                          )
+                          x.unitValue.toString(),
+                          x.editing,
+                        )
                         : "0"
                     }
                     onKeyDown={(event) => handlers.onHandlerDecimal(event)}
@@ -106,7 +132,7 @@ const ContractInputsTable = ({
           })}
           {contractInputsArray && contractInputsArray.length > 0 && (
             <tr>
-              <td colspan={8}></td>
+              <td colspan={10}></td>
               <td className="right">
                 {common.getMoneyFomat(
                   common.getTotals(contractInputsArray, "totalInput"),

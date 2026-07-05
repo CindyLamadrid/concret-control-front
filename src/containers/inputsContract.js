@@ -6,7 +6,8 @@ import {
   useSearchParams
 } from "react-router-dom";
 import Back from "../components/commons/back";
-import ContractInputsTable from '../components/Inputscontract/contractInputsTable'
+import ContractInputsTable from '../components/Inputscontract/contractInputsTable';
+import Charges from '../components/Inputscontract/charges';
 
 const InputsContract = () => {
    const { user } =
@@ -14,10 +15,12 @@ const InputsContract = () => {
 
    const [searchParams] = useSearchParams();
    const navigate = useNavigate();
-   const [type] = useState(searchParams.get('type'));
-   const [idSupplier]= useState(searchParams.get('idSupplier'));
-   const [idContract]= useState(searchParams.get("idContract"));
+   // Read directly — never stale
+   const type       = searchParams.get('type');
+   const idSupplier = searchParams.get('idSupplier');
+   const idContract = searchParams.get('idContract');
    const [contractInputsArray,setContractInputsArray ]= useState([]);
+   const [chargesModal, setChargesModal] = useState({ show: false, index: null, item: null });
    
   
    const [modalConfiguration, setModalConfiguration] = useState({
@@ -65,12 +68,12 @@ const InputsContract = () => {
   };
 
 
-  const updateContractInput=async(contractInput)=>{
-     try {
+  const updateContractInput = async (contractInput, index) => {
+    try {
       const result = await axios.post(
         `${process.env.REACT_APP_BUDGET_URL_API}/update-contract-input`,
         {
-          
+          idContractInput: contractInput.idContractInput,
           idContract: contractInput.idContract,
           idInput: contractInput.idInput,
           quantity: parseFloat(contractInput.quantity),
@@ -79,22 +82,28 @@ const InputsContract = () => {
         }
       );
 
-      if (result && result.data) 
-        {
-         getContractInputs()
-          
-        }
+      if (result && result.data) {
+        // Only clear changed flags on this row — no full reload
+        const newArr = [...contractInputsArray];
+        newArr[index] = {
+          ...newArr[index],
+          originalQuantity:  newArr[index].quantity,
+          originalUnitValue: newArr[index].unitValue,
+          quantityChanged:   false,
+          unitValueChanged:  false,
+          editing:           false,
+        };
+        setContractInputsArray([...newArr]);
+      }
     } catch (error) {
       setContractInputsArray([]);
-    
       console.error("Error fetching updateContractInput:", error);
     }
-  }
+  };
 
   const onSaveInformation = (index) => {
-   
     const contractInput = { ...contractInputsArray[index] };
-    updateContractInput(contractInput);
+    updateContractInput(contractInput, index);
   };
 
   
@@ -102,30 +111,19 @@ const InputsContract = () => {
     const newContractInputsArray = [...contractInputsArray];
     switch (type) {
       case "quantity":
-        {
-          newContractInputsArray[index].quantityChanged =
-            newContractInputsArray[index].originalQuantity.toString() !==
-            event.target.value
-              ? true
-              : false;
-          newContractInputsArray[index].quantity = event.target.value;
-        }
+        newContractInputsArray[index].quantity = event.target.value;
+        newContractInputsArray[index].quantityChanged =
+          parseFloat(event.target.value) !== newContractInputsArray[index].originalQuantity;
         break;
-      default: {
-          newContractInputsArray[index].unitValueChanged =
-            newContractInputsArray[index].originalUnitValue.toString() !==
-            event.target.value
-              ? true
-              : false;
-          newContractInputsArray[index].unitValue = event.target.value;
-      }
+      default:
+        newContractInputsArray[index].unitValue = event.target.value;
+        newContractInputsArray[index].unitValueChanged =
+          parseFloat(event.target.value) !== newContractInputsArray[index].originalUnitValue;
     }
-   
-    const quantity = newContractInputsArray[index].quantity || 0;
-    const unitValue = newContractInputsArray[index].unitValue || 0;
-    newContractInputsArray[index].totalInput =
-      quantity * unitValue;
-    setContractInputsArray(...[newContractInputsArray]);
+    const quantity  = parseFloat(newContractInputsArray[index].quantity)  || 0;
+    const unitValue = parseFloat(newContractInputsArray[index].unitValue) || 0;
+    newContractInputsArray[index].totalInput = quantity * unitValue;
+    setContractInputsArray([...newContractInputsArray]);
   };
 
  const closeModal = () => {
@@ -185,7 +183,15 @@ const InputsContract = () => {
         }).then(
             (result) => {
                 if (result && result.data && result.data.length > 0) {
-                    setContractInputsArray(result.data)
+                    const data = result.data.map((x) => ({
+                      ...x,
+                      originalQuantity:  parseFloat(x.quantity),
+                      originalUnitValue: parseFloat(x.unitValue),
+                      quantityChanged:   false,
+                      unitValueChanged:  false,
+                      editing: false,
+                    }));
+                    setContractInputsArray(data);
                 } else {
                     setContractInputsArray([])
                 }
@@ -193,12 +199,42 @@ const InputsContract = () => {
         ).catch(
             (error) => {
                 setContractInputsArray([])
-                // setNoData(true)
                 console.error('Error fetching onSearchContractInputs:', error);
             }
         )
    }
 
+
+  const onImputation = (index) => {
+    setChargesModal({ show: true, index, item: contractInputsArray[index] });
+  };
+
+  const onCloseCharges = () => {
+    setChargesModal({ show: false, index: null, item: null });
+  };
+
+  const onHandleSaveContracts =async ({ stage, chapter, input,currentItem }) => {
+    if (chargesModal.index !== null) {
+      await updateContractInput({
+        idContractInput : currentItem.idContractInput,
+        idContract : currentItem.idContract,
+        idInput: input.idInput,
+        quantity: currentItem.quantity,
+        unitValue: currentItem.unitValue,
+        user: user
+      })
+      // const newArray = [...contractInputsArray];
+      // newArray[chargesModal.index] = {
+      //   ...newArray[chargesModal.index],
+      //   idStage: stage.idStage,
+      //   idChapter: chapter.idChapter,
+      //   idSubchapter: chapter.idSubchapter,
+      //   idInputBudget: input.idInputBudget,
+      // };
+      // setContractInputsArray([...newArray]);
+    }
+    setChargesModal({ show: false, index: null });
+  };
 
   return (
     <div>
@@ -221,10 +257,15 @@ const InputsContract = () => {
             onRefresh={onRefresh}
             onFocusInput={onFocusInput}
             onBlurInput={onBlurInput}
-           
-           
+            onImputation={onImputation}
           />
       </div>
+      <Charges
+        show={chargesModal.show}
+        onClose={onCloseCharges}
+        onHandleSaveContracts={onHandleSaveContracts}
+        currentItem={chargesModal.item}
+      />
     </div>
   );
 };
