@@ -10,7 +10,8 @@ const CompoundInputTable = ({
   onRefresh,
   onFocusInput,
   onBlurInput,
-  onEditInput
+  onEditInput,
+  canEdit
 }) => {
   return (
     <div>
@@ -35,10 +36,9 @@ const CompoundInputTable = ({
             return (
               <tr key={index.toString()}>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
-                  <i
-                    class="far fa-trash-alt icon-view-detail"
-                    onClick={() => onCompoundRemoveInput(index)}
-                  />
+                  {canEdit && (
+                    <i class="far fa-trash-alt icon-view-detail" onClick={() => onCompoundRemoveInput(index)} />
+                  )}
                 </td>
               
 

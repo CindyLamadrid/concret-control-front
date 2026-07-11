@@ -4,6 +4,7 @@ const StagesTable = ({
   onViewStageItems,
   onEditStage,
   onCloseBudget,
+  canEdit,
 }) => {
   return (
     <div>
@@ -13,8 +14,8 @@ const StagesTable = ({
             <th className="w-10">CODIGO</th>
             <th className="w-50">NOMBRE</th>
             <th className="w-30">VER</th>
-            <th className="w-5">EDITAR</th>
-            <th className="w-5">CERRAR</th>
+            {canEdit && <th className="w-5">EDITAR</th>}
+            {canEdit && <th className="w-5">CERRAR</th>}
           </tr>
         </thead>
         <tbody>
@@ -48,22 +49,26 @@ const StagesTable = ({
                     onClick={() => onViewStageItems(x.idStage, x.budgetType)}
                   />
                 </td>
-                <td className={index % 2 === 0 ? "dark center" : "center"}>
-                  <i
-                    className="fas fa-pencil-alt icon-view-detail"
-                    onClick={() => onEditStage(index)}
-                  />
-                </td>
-                <td className={index % 2 === 0 ? "dark center" : "center"}>
-                  <i
-                    className={`fas ${
-                      x.statusBudget === "O" ? "fa-unlock" : "fa-lock"
-                    } icon-view-detail`}
-                    onClick={() =>
-                      onCloseBudget(x.statusBudget === "O" ? index : -1)
-                    }
-                  />
-                </td>
+                {canEdit && (
+                  <td className={index % 2 === 0 ? "dark center" : "center"}>
+                    <i
+                      className="fas fa-pencil-alt icon-view-detail"
+                      onClick={() => onEditStage(index)}
+                    />
+                  </td>
+                )}
+                {canEdit && (
+                  <td className={index % 2 === 0 ? "dark center" : "center"}>
+                    <i
+                      className={`fas ${
+                        x.statusBudget === "O" ? "fa-unlock" : "fa-lock"
+                      } icon-view-detail`}
+                      onClick={() =>
+                        onCloseBudget(x.statusBudget === "O" ? index : -1)
+                      }
+                    />
+                  </td>
+                )}
               </tr>
             );
           })}

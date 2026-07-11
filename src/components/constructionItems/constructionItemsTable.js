@@ -10,7 +10,8 @@ const ConstructionItemsTable = ({
   onRefresh,
   onRemoveItem,
   onEditItem,
-  onShowInputsItem
+  onShowInputsItem,
+  canEdit
 }) => {
   const getTotalsSubChapter = () => {
     let total = 0;
@@ -49,10 +50,12 @@ const ConstructionItemsTable = ({
             return (
               <tr key={index.toString()}>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
-                  <i
-                    class="far fa-trash-alt icon-view-detail"
-                    onClick={() => onRemoveItem(index)}
-                  />
+                  {canEdit && (
+                    <i
+                      class="far fa-trash-alt icon-view-detail"
+                      onClick={() => onRemoveItem(index)}
+                    />
+                  )}
                 </td>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
                   <i
@@ -85,22 +88,22 @@ const ConstructionItemsTable = ({
                   />
                 </td>
                 <td className={index % 2 === 0 ? "dark center" : "center"} >
-                  <i
-                    className="far fa-save icon-view-detail"
-                    onClick={() => {
-                      if(!(x.budgetStatus==="C" && budgetType==="I")) onSaveInformation(index)
-                  
-                    }}
-                   
-                  />
-                  &nbsp;
-                  <i
-                    className="fas fa-times-circle icon-view-detail"
-                    onClick={() => {
-                      onRefresh();
-                    }}
-                  />
-                  &nbsp;
+                  {canEdit && (
+                    <>
+                      <i
+                        className="far fa-save icon-view-detail"
+                        onClick={() => {
+                          if(!(x.budgetStatus==="C" && budgetType==="I")) onSaveInformation(index)
+                        }}
+                      />
+                      &nbsp;
+                      <i
+                        className="fas fa-times-circle icon-view-detail"
+                        onClick={() => { onRefresh(); }}
+                      />
+                      &nbsp;
+                    </>
+                  )}
                 </td>
                 <td className={index % 2 === 0 ? "dark right" : "right"}>
                   {commom.getMoneyFomat(x.totalItem ? x.totalItem : 0)}
@@ -111,10 +114,9 @@ const ConstructionItemsTable = ({
                   )}
                 </td>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
-                  <i
-                    className="fas fa-pencil-alt icon-view-detail"
-                    onClick={() => onEditItem(index)}
-                  />
+                  {canEdit && (
+                    <i className="fas fa-pencil-alt icon-view-detail" onClick={() => onEditItem(index)} />
+                  )}
                 </td>
               </tr>
             );

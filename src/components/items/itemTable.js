@@ -1,4 +1,4 @@
-const ItemTable = ({ itemArray, onSelectItem,onEditItem }) => {
+const ItemTable = ({ itemArray, onSelectItem, onEditItem, canEdit }) => {
   return (
     <div>
       <table className="table w-60">
@@ -10,7 +10,7 @@ const ItemTable = ({ itemArray, onSelectItem,onEditItem }) => {
             <th className="w-55">NOMBRE</th>
             <th className="w-10">UNIDAD</th>
             <th className="w-15">SUBCAPITULO</th>
-            <th className="w-5">EDIT</th>
+            {canEdit && <th className="w-5">EDIT</th>}
           </tr>
         </thead>
         <tbody>
@@ -37,12 +37,11 @@ const ItemTable = ({ itemArray, onSelectItem,onEditItem }) => {
                 <td className={index % 2 === 0 ? "dark" : ""}>
                   {x.subChapterName}
                 </td>
-                <td className={index % 2 === 0 ? "dark center" : "center"}>
-                  <i
-                    className="fas fa-pencil-alt icon-view-detail"
-                    onClick={() => onEditItem(index)}
-                  />
-                </td>
+                {canEdit && (
+                  <td className={index % 2 === 0 ? "dark center" : "center"}>
+                    <i className="fas fa-pencil-alt icon-view-detail" onClick={() => onEditItem(index)} />
+                  </td>
+                )}
               </tr>
             );
           })}

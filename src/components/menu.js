@@ -13,10 +13,31 @@ const Menu = ({ setReportOption }) => {
   const {
     user,
     stageSelected,
+    permissions,
+    role,
     setUser,
     setStageSelected,
     setConstructionSelected,
+    setPermissions,
+    setUserConstructions,
+    setRole,
   } = useContext(ConstructionContext);
+
+  // Helper: verificar si el usuario tiene permiso a un módulo
+  const hasPermission = (module) => {
+    if (!role) return false;
+    if (role.isAdmin) return true;
+    return permissions.some((p) => p.Module === module || p.module === module);
+  };
+
+  // Helper: verificar si puede editar (action = 'full')
+  const canManage = (module) => {
+    if (!role) return false;
+    if (role.isAdmin) return true;
+    return permissions.some(
+      (p) => (p.Module === module || p.module === module) && (p.Action === "full" || p.action === "full")
+    );
+  };
 
   const onShowHome = () => {
     navigate(`/home?user=${btoa(user)}`);
@@ -24,7 +45,7 @@ const Menu = ({ setReportOption }) => {
     setConstructionSelected("");
     localStorage.setItem(
       "chapterValues",
-      JSON.stringify({ chapterSelected: 0, subchapterSelected: 0 }),
+      JSON.stringify({ chapterSelected: 0, subchapterSelected: 0 })
     );
   };
 
@@ -33,6 +54,13 @@ const Menu = ({ setReportOption }) => {
     setStageSelected("");
     setConstructionSelected("");
     setUser("");
+    setPermissions([]);
+    setUserConstructions([]);
+    setRole(null);
+    localStorage.removeItem("permissions");
+    localStorage.removeItem("userConstructions");
+    localStorage.removeItem("role");
+    localStorage.removeItem("token");
   };
 
   return (
@@ -43,310 +71,132 @@ const Menu = ({ setReportOption }) => {
         </div>
         <div className="col-7 no-margin">
           <Navbar expand="lg" className="nav-container">
-            <div className=" menu-collapse">
+            <div className="menu-collapse">
               <Nav className="me-auto menu-option">
-                <Nav.Link
-                  className="menu-option link-option"
-                  onClick={() => onShowHome()}
-                >
-                  <b>Proyectos</b>
-                </Nav.Link>
-                {stageSelected &&
-                stageSelected.idStage &&
-                stageSelected.budgetType != "CC" ? (
-                  <NavDropdown
-                    title="Reportes"
-                    className="menu-option select-option"
-                  >
-                    <DropdownButton
-                      title="Capitulos"
-                      className="submenu-option"
-                      key="end"
-                      drop="end"
-                    >
-                      <Dropdown.Item
-                        className="submenu-option"
-                        onClick={() => {
-                          setReportOption({ name: "subchapter", type: "" });
-                        }}
-                      >
-                        {" "}
+                {/* PROYECTOS - visible si tiene acceso a constructions */}
+                {hasPermission("constructions") && (
+                  <Nav.Link className="menu-option link-option" onClick={onShowHome}>
+                    <b>Proyectos</b>
+                  </Nav.Link>
+                )}
+
+                {/* REPORTES - visible si tiene acceso a reports Y tiene etapa seleccionada */}
+                {hasPermission("reports") &&
+                  stageSelected && stageSelected.idStage &&
+                  stageSelected.budgetType !== "CC" && (
+                  <NavDropdown title="Reportes" className="menu-option select-option">
+                    <DropdownButton title="Capitulos" className="submenu-option" key="end" drop="end">
+                      <Dropdown.Item className="submenu-option" onClick={() => setReportOption({ name: "subchapter", type: "" })}>
                         <i className="far fa-window-maximize" /> Pantalla
                       </Dropdown.Item>
-                      <Dropdown.Item
-                        className="submenu-option"
-                        onClick={() => {
-                          setReportOption({ name: "subchapter", type: "pdf" });
-                        }}
-                      >
+                      <Dropdown.Item className="submenu-option" onClick={() => setReportOption({ name: "subchapter", type: "pdf" })}>
                         <i className="far fa-file-pdf" /> PDF
                       </Dropdown.Item>
-                      <Dropdown.Item
-                        className="submenu-option"
-                        onClick={() => {
-                          setReportOption({ name: "subchapter", type: "excel" });
-                        }}
-                      >
+                      <Dropdown.Item className="submenu-option" onClick={() => setReportOption({ name: "subchapter", type: "excel" })}>
                         <i className="far fa-file-excel" /> Excel
                       </Dropdown.Item>
                     </DropdownButton>
 
-                    <DropdownButton
-                      title="Items"
-                      className="submenu-option"
-                      key="end"
-                      drop="end"
-                    >
-                      <Dropdown.Item
-                        className="submenu-option"
-                        onClick={() => {
-                          setReportOption({ name: "itemsInputs", type: "" });
-                        }}
-                      >
-                        {" "}
-                        <i className="far fa-window-maximize" /> Pantalla
-                        Completa
+                    <DropdownButton title="Items" className="submenu-option" key="end" drop="end">
+                      <Dropdown.Item className="submenu-option" onClick={() => setReportOption({ name: "itemsInputs", type: "" })}>
+                        <i className="far fa-window-maximize" /> Pantalla Completa
                       </Dropdown.Item>
-                      <Dropdown.Item
-                        className="submenu-option"
-                        onClick={() => {
-                          setReportOption({ name: "itemsInputs", type: "pdf" });
-                        }}
-                      >
+                      <Dropdown.Item className="submenu-option" onClick={() => setReportOption({ name: "itemsInputs", type: "pdf" })}>
                         <i className="far fa-file-pdf" /> PDF
                       </Dropdown.Item>
-                      <Dropdown.Item
-                        className="submenu-option"
-                        onClick={() => {
-                          setReportOption({ name: "itemsInputs", type: "excel" });
-                        }}
-                      >
+                      <Dropdown.Item className="submenu-option" onClick={() => setReportOption({ name: "itemsInputs", type: "excel" })}>
                         <i className="far fa-file-excel" /> Excel
                       </Dropdown.Item>
                     </DropdownButton>
 
-                    <DropdownButton
-                      title=" Insumos Compuestos"
-                      className="submenu-option"
-                      key="end"
-                      drop="end"
-                    >
-                      <Dropdown.Item
-                        className="submenu-option"
-                        onClick={() => {
-                          setReportOption({ name: "compoundInputs", type: "" });
-                        }}
-                      >
-                        {" "}
-                        <i className="far fa-window-maximize" /> Pantalla
-                        Completa
+                    <DropdownButton title="Insumos Compuestos" className="submenu-option" key="end" drop="end">
+                      <Dropdown.Item className="submenu-option" onClick={() => setReportOption({ name: "compoundInputs", type: "" })}>
+                        <i className="far fa-window-maximize" /> Pantalla Completa
                       </Dropdown.Item>
-                      <Dropdown.Item
-                        className="submenu-option"
-                        onClick={() => {
-                          setReportOption({
-                            name: "compoundInputs",
-                            type: "pdf",
-                          });
-                        }}
-                      >
+                      <Dropdown.Item className="submenu-option" onClick={() => setReportOption({ name: "compoundInputs", type: "pdf" })}>
                         <i className="far fa-file-pdf" /> PDF
                       </Dropdown.Item>
-                      <Dropdown.Item
-                        className="submenu-option"
-                        onClick={() => {
-                          setReportOption({ name: "compoundInputs", type: "excel" });
-                        }}
-                      >
+                      <Dropdown.Item className="submenu-option" onClick={() => setReportOption({ name: "compoundInputs", type: "excel" })}>
                         <i className="far fa-file-excel" /> Excel
                       </Dropdown.Item>
                     </DropdownButton>
-                    <DropdownButton
-                      title="  Insumos Generales"
-                      className="submenu-option"
-                      key="end"
-                      drop="end"
-                    >
-                      <Dropdown.Item
-                        className="submenu-option"
-                        onClick={() => {
-                          setReportOption({ name: "inputs", type: "" });
-                        }}
-                      >
-                        <i className="far fa-window-maximize" /> Pantalla
-                        Completa
+
+                    <DropdownButton title="Insumos Generales" className="submenu-option" key="end" drop="end">
+                      <Dropdown.Item className="submenu-option" onClick={() => setReportOption({ name: "inputs", type: "" })}>
+                        <i className="far fa-window-maximize" /> Pantalla Completa
                       </Dropdown.Item>
-                      <Dropdown.Item
-                        className="submenu-option"
-                        onClick={() => {
-                          setReportOption({ name: "inputs", type: "pdf" });
-                        }}
-                      >
-                        {" "}
+                      <Dropdown.Item className="submenu-option" onClick={() => setReportOption({ name: "inputs", type: "pdf" })}>
                         <i className="far fa-file-pdf" /> PDF
                       </Dropdown.Item>
-                      <Dropdown.Item
-                        className="submenu-option"
-                        onClick={() => {
-                          setReportOption({ name: "inputs", type: "excel" });
-                        }}
-                      >
+                      <Dropdown.Item className="submenu-option" onClick={() => setReportOption({ name: "inputs", type: "excel" })}>
                         <i className="far fa-file-excel" /> Excel
                       </Dropdown.Item>
                     </DropdownButton>
                   </NavDropdown>
-                ) : (
-                  ""
                 )}
 
-                <NavDropdown
-                  title="Administrar"
-                  className="menu-option select-option"
-                >
-                  <Dropdown.Item
-                    className="submenu-option"
-                    onClick={() => {
-                      navigate(`/chapters?user=${btoa(user)}`);
-                    }}
-                  >
-                    Capitulos
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    className="submenu-option"
-                    onClick={() => {
-                      navigate(`/subchapters?user=${btoa(user)}`);
-                    }}
-                  >
-                    Subcapitulos
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    className="submenu-option"
-                    onClick={() => {
-                      navigate(`/suppliers?user=${btoa(user)}`);
-                    }}
-                  >
-                    Proveedores
-                  </Dropdown.Item>
-                  {stageSelected && stageSelected.idStage ? (
-                    <DropdownButton
-                      title="Contratos"
-                      className="submenu-option submenu-main"
-                      key="end"
-                      drop="end"
-                    >
-                      <Dropdown.Item
-                        className="submenu-option"
-                        onClick={() => {
-                          navigate(
-                            `/contracts?user=${btoa(user)}&type=L&idStage=${stageSelected.idStage}`,
-                            { replace: true },
-                          );
-                        }}
-                      >
-                        {" "}
-                        Mano de Obra
+                {/* ADMINISTRAR - visible si tiene al menos un permiso de gestión */}
+                {(hasPermission("chapters") || hasPermission("suppliers") ||
+                  hasPermission("contracts") || hasPermission("orders") || hasPermission("users")) && (
+                  <NavDropdown title="Administrar" className="menu-option select-option">
+                    {hasPermission("chapters") && (
+                      <Dropdown.Item className="submenu-option" onClick={() => navigate(`/chapters?user=${btoa(user)}`)}>
+                        Capitulos
                       </Dropdown.Item>
-                      <Dropdown.Item
-                        className="submenu-option"
-                        onClick={() => {
-                          navigate(
-                            `/contracts?user=${btoa(user)}&type=S&idStage=${stageSelected.idStage}`,
-                            { replace: true },
-                          );
-                        }}
-                      >
-                        Servicios
+                    )}
+                    {hasPermission("chapters") && (
+                      <Dropdown.Item className="submenu-option" onClick={() => navigate(`/subchapters?user=${btoa(user)}`)}>
+                        Subcapitulos
                       </Dropdown.Item>
-                      <Dropdown.Item
-                        className="submenu-option"
-                        onClick={() => {
-                          navigate(
-                            `/contracts?user=${btoa(user)}&type=M&idStage=${stageSelected.idStage}`,
-                          );
-                        }}
-                      >
-                        Suministros de Materiales
+                    )}
+                    {hasPermission("suppliers") && (
+                      <Dropdown.Item className="submenu-option" onClick={() => navigate(`/suppliers?user=${btoa(user)}`)}>
+                        Proveedores
                       </Dropdown.Item>
-                      <Dropdown.Item
-                        className="submenu-option"
-                        onClick={() => {
-                          navigate(
-                            `/contracts?user=${btoa(user)}&type=C&idStage=${stageSelected.idStage}`,
-                          );
-                        }}
-                      >
-                        Construcción
-                      </Dropdown.Item>
-                    </DropdownButton>
-                  ) : (
-                    ""
-                  )}
+                    )}
 
-                  {stageSelected && stageSelected.idStage ? (
-                    <DropdownButton
-                      title="Orden Pago"
-                      className="submenu-option submenu-main"
-                      key="end"
-                      drop="end"
-                    >
-                      <Dropdown.Item
-                        className="submenu-option"
-                        onClick={() => {
-                          navigate(
-                            `/orders?user=${btoa(user)}&type=L&idStage=${stageSelected.idStage}`,
-                            { replace: true },
-                          );
-                        }}
-                      >
-                        {" "}
-                        Mano de Obra
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        className="submenu-option"
-                        onClick={() => {
-                          navigate(
-                            `/orders?user=${btoa(user)}&type=S&idStage=${stageSelected.idStage}`,
-                            { replace: true },
-                          );
-                        }}
-                      >
-                        Servicios
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        className="submenu-option"
-                        onClick={() => {
-                          navigate(
-                            `/orders?user=${btoa(user)}&type=M&idStage=${stageSelected.idStage}`,
-                          );
-                        }}
-                      >
-                        Suministros de Materiales
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        className="submenu-option"
-                        onClick={() => {
-                          navigate(
-                            `/orders?user=${btoa(user)}&type=C&idStage=${stageSelected.idStage}`,
-                          );
-                        }}
-                      >
-                        Construcción
-                      </Dropdown.Item>
-                    </DropdownButton>
-                  ) : (
-                    ""
-                  )}
-                  <NavDropdown.Divider />
+                    {hasPermission("contracts") && stageSelected && stageSelected.idStage && (
+                      <DropdownButton title="Contratos" className="submenu-option submenu-main" key="end" drop="end">
+                        <Dropdown.Item className="submenu-option" onClick={() => navigate(`/contracts?user=${btoa(user)}&type=L&idStage=${stageSelected.idStage}`, { replace: true })}>
+                          Mano de Obra
+                        </Dropdown.Item>
+                        <Dropdown.Item className="submenu-option" onClick={() => navigate(`/contracts?user=${btoa(user)}&type=S&idStage=${stageSelected.idStage}`, { replace: true })}>
+                          Servicios
+                        </Dropdown.Item>
+                        <Dropdown.Item className="submenu-option" onClick={() => navigate(`/contracts?user=${btoa(user)}&type=M&idStage=${stageSelected.idStage}`)}>
+                          Suministros de Materiales
+                        </Dropdown.Item>
+                        <Dropdown.Item className="submenu-option" onClick={() => navigate(`/contracts?user=${btoa(user)}&type=C&idStage=${stageSelected.idStage}`)}>
+                          Construcción
+                        </Dropdown.Item>
+                      </DropdownButton>
+                    )}
 
-                  <Dropdown.Item
-                    className="submenu-option"
-                    onClick={() => {
-                      navigate(`/users?user=${btoa(user)}`);
-                    }}
-                  >
-                    Usuarios
-                  </Dropdown.Item>
-                </NavDropdown>
+                    {hasPermission("orders") && stageSelected && stageSelected.idStage && (
+                      <DropdownButton title="Orden Pago" className="submenu-option submenu-main" key="end" drop="end">
+                        <Dropdown.Item className="submenu-option" onClick={() => navigate(`/orders?user=${btoa(user)}&type=L&idStage=${stageSelected.idStage}`, { replace: true })}>
+                          Mano de Obra
+                        </Dropdown.Item>
+                        <Dropdown.Item className="submenu-option" onClick={() => navigate(`/orders?user=${btoa(user)}&type=S&idStage=${stageSelected.idStage}`, { replace: true })}>
+                          Servicios
+                        </Dropdown.Item>
+                        <Dropdown.Item className="submenu-option" onClick={() => navigate(`/orders?user=${btoa(user)}&type=M&idStage=${stageSelected.idStage}`)}>
+                          Suministros de Materiales
+                        </Dropdown.Item>
+                        <Dropdown.Item className="submenu-option" onClick={() => navigate(`/orders?user=${btoa(user)}&type=C&idStage=${stageSelected.idStage}`)}>
+                          Construcción
+                        </Dropdown.Item>
+                      </DropdownButton>
+                    )}
+
+                    {hasPermission("users") && <NavDropdown.Divider />}
+                    {hasPermission("users") && (
+                      <Dropdown.Item className="submenu-option" onClick={() => navigate(`/users?user=${btoa(user)}`)}>
+                        Usuarios
+                      </Dropdown.Item>
+                    )}
+                  </NavDropdown>
+                )}
               </Nav>
             </div>
           </Navbar>
@@ -356,17 +206,9 @@ const Menu = ({ setReportOption }) => {
             <span className="container-header-icon center">
               <i className="fas fa-user right header-icon center" />
             </span>
-            <span>
-              {" "}
-              <b>{user}</b>
-            </span>{" "}
+            <span> <b>{user}</b></span>
             <span className="container-close-header-icon close center">
-              <i
-                className="fas fa-lock right close-header-icon"
-                onClick={() => {
-                  onClose();
-                }}
-              />
+              <i className="fas fa-lock right close-header-icon" onClick={onClose} />
             </span>
           </div>
         </div>

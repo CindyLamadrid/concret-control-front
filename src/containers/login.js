@@ -8,43 +8,47 @@ import Logo from "../images/concretoVivo.png";
 
 const Login = () => {
   const navigate = useNavigate();
-   const  {setUser,setConstructionSelected,setStageSelected}=
-      useContext(ConstructionContext);
-   const[userInput,setUserInput] = useState("")
-   const[password,setPassword] = useState("")
-   const[message,setMessage] = useState("")
+  const { setUser, setConstructionSelected, setStageSelected, setPermissions, setUserConstructions, setRole } =
+    useContext(ConstructionContext);
+  const [userInput, setUserInput] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
-  const onLogin=async()=>{
-    
-  if(!userInput || !password)
-    {
-       setMessage("Usuario y Contraseña obligatorios")
-       return
+  const onLogin = async () => {
+    if (!userInput || !password) {
+      setMessage("Usuario y Contraseña obligatorios");
+      return;
     }
-      
 
-    const result = await axios.get(
+    try {
+      const result = await axios.get(
         `${process.env.REACT_APP_SECURITY_URL_API}/user`,
-        {  params: { 
-          userName:userInput,
-          password
-        }
-        }
+        { params: { userName: userInput, password } }
       );
-      console.log("result===",result);
 
-      if (result && result.data && result.data &&  result.data.token){
-          localStorage.setItem("user",userInput)
-          localStorage.setItem("password",btoa(password))
-          localStorage.setItem('token', result.data.token);
-          setUser(userInput)
-        
-          navigate(`/home?user=${btoa(userInput)}`);
-    
-      }else{
-           setMessage("Usuario o Contraseña incorrecta")
-        }
-  }
+      if (result && result.data && result.data.token) {
+        localStorage.setItem("user", userInput);
+        localStorage.setItem("password", btoa(password));
+        localStorage.setItem("token", result.data.token);
+
+        // Guardar permisos y asignaciones en contexto
+        setUser(userInput);
+        setPermissions(result.data.permissions || []);
+        setUserConstructions(result.data.constructions || []);
+        setRole(result.data.role || null);
+
+        navigate(`/home?user=${btoa(userInput)}`);
+      } else {
+        setMessage("Usuario o Contraseña incorrecta");
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        setMessage("Usuario o Contraseña incorrecta");
+      } else {
+        setMessage("Error de conexión con el servidor");
+      }
+    }
+  };
 
   useEffect(
     ()=>{
@@ -52,7 +56,6 @@ const Login = () => {
       if(pass){
         pass = atob(pass)
       }
-      console.log(localStorage.getItem("user"));
       setUserInput(localStorage.getItem("user") )
       setPassword(pass || "")
       setConstructionSelected("")

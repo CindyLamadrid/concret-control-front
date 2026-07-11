@@ -7,6 +7,7 @@ const InputTable = ({
   onEditInput,
   onShowCompoundInputs,
   inputType = "",
+  canEdit,
 }) => {
   return (
     <div>
@@ -30,7 +31,7 @@ const InputTable = ({
               UNIDAD
             </th>
             <th className="w-20">VALOR</th>
-            <th className="w-5">EDITAR</th>
+            {canEdit && <th className="w-5">EDITAR</th>}
           </tr>
         </thead>
         <tbody>
@@ -77,12 +78,11 @@ const InputTable = ({
                 >
                   {common.getMoneyFomat(x.unitValue)}
                 </td>
-                <td className={index % 2 === 0 ? "dark center" : "center"}>
-                  <i
-                    className="fas fa-pencil-alt icon-view-detail"
-                    onClick={() => onEditInput(index)}
-                  />
-                </td>
+                {canEdit && (
+                  <td className={index % 2 === 0 ? "dark center" : "center"}>
+                    <i className="fas fa-pencil-alt icon-view-detail" onClick={() => onEditInput(index)} />
+                  </td>
+                )}
               </tr>
             );
           })}

@@ -15,7 +15,8 @@ const CompoundInputs = ({
   // setInputType,
   setShowOption,
   setCompoundSelected,
-  getItemInputs
+  getItemInputs,
+  canEdit,
 }) => {
   const navigate = useNavigate ();
   const { user, stageSelected, constructionSelected } =
@@ -76,7 +77,7 @@ const CompoundInputs = ({
   const getItemsInputId = async (idItem,id) => {
     try {
       const result = await axios.get(
-        `${process.env.REACT_APP_BUDGET_URL_API}/items-Input-id`,
+        `${process.env.REACT_APP_BUDGET_URL_API}/items-input-id`,
         {
           params: {idItem, idInput: id,idStage:stageSelected.idStage },
         }
@@ -150,7 +151,7 @@ const CompoundInputs = ({
       if (result && result.data) 
         {
           getCompoundInputs(compoundSelected.idInput)
-          getItemInputs(itemSelected.idItem, true)
+          getItemInputs(itemSelected.idConstructionStageItem, true)
         }
     } catch (error) {
       setCompoundInputArray([]);
@@ -221,7 +222,10 @@ const CompoundInputs = ({
     });
   };
 
-   const onSaveInput = async (
+  // BUG fix: onSaveInput en este componente solo se usa para editar (action === "edit")
+  // ya que el modal AdminInput aquí no tiene opción de crear un insumo nuevo.
+  // Se agrega guardia explícita y se usa la ruta correcta según la acción.
+  const onSaveInput = async (
     unitSelected,
     inputTypeSelected,
     name,
@@ -230,11 +234,12 @@ const CompoundInputs = ({
     categorySelected,
     action
   ) => {
+    if (action !== "edit") return; // este componente solo soporta edición
     try {
       const result = await axios.post(
         `${process.env.REACT_APP_BUDGET_URL_API}/update-input`,
         {
-          idInput: action === "edit" ? parseInt(adminInput.input.idInput) : 0,
+          idInput: parseInt(adminInput.input.idInput),
           idUnit: unitSelected,
           idInputType: inputTypeSelected,
           idCategory: categorySelected,
@@ -253,11 +258,11 @@ const CompoundInputs = ({
           );
         } else {
           setAdminInput({ show: false, input: "", action: "" });
-          if (adminInput.action === "edit") await getCompoundInputs(compoundSelected.idInput);
+          setMessageResultOperation("");
+          await getCompoundInputs(compoundSelected.idInput);
         }
       }
     } catch (error) {
-      
       console.error("Error fetching onSaveInput:", error);
     }
   };
@@ -358,8 +363,8 @@ const CompoundInputs = ({
           setShowOption={setShowOption}
           onFocusInput={onFocusInput} 
           onBlurInput={onBlurInput}
-           onEditInput={onEditInput}
-          // setCompoundSelected={setCompoundSelected}
+          onEditInput={onEditInput}
+          canEdit={canEdit}
         />
       )}
       {noData && <div>La busqueda no arrojo resultado</div>}

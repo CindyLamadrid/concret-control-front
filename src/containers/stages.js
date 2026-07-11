@@ -13,7 +13,21 @@ const Stages = ({}) => {
     constructionSelected,
     setStageSelected,
     setConstructionSelected,
+    role,
+    userConstructions,
+    permissions,
   } = useContext(ConstructionContext);
+
+  // Helper: determinar si el usuario puede editar esta etapa
+  const canManageStage = (idStage) => {
+    if (role && role.isAdmin) return true;
+    const assignment = userConstructions.find(
+      (uc) =>
+        (uc.IdConstruction || uc.idConstruction) === constructionSelected.idConstruction &&
+        ((uc.IdStage || uc.idStage) === idStage || (uc.IdStage || uc.idStage) === null)
+    );
+    return assignment && (assignment.AccessType || assignment.accessType) === "full";
+  };
 
   const [constructionsArray, setConstructionsArray] = useState([]);
   const [constructionStagesArray, setConstructionStagesArray] = useState([]);
@@ -32,8 +46,21 @@ const Stages = ({}) => {
       })
       .then((result) => {
         if (result && result.data) {
+          // Filtrar etapas según asignaciones (Admin ve todo)
+          let stages = result.data;
+          if (role && !role.isAdmin) {
+            const allowedStages = userConstructions
+              .filter((uc) => (uc.IdConstruction || uc.idConstruction) === constructionSelected.idConstruction)
+              .map((uc) => uc.IdStage || uc.idStage);
+
+            // Si alguna asignación tiene IdStage=null, tiene acceso a todas
+            const hasAllStages = allowedStages.includes(null);
+            if (!hasAllStages) {
+              stages = stages.filter((s) => allowedStages.includes(s.idStage));
+            }
+          }
           setShowStages(true);
-          setConstructionStagesArray(result.data);
+          setConstructionStagesArray(stages);
         } else {
           setConstructionStagesArray([]);
         }
@@ -83,7 +110,6 @@ const Stages = ({}) => {
     );
     if (stage && stage.length > 0) {
       setStageSelected(stage[0]);
-      console.log("optionSelected===", optionSelected);
       switch (optionSelected) {
         case "CC":
           viewCostControl(stage);
@@ -185,13 +211,11 @@ const Stages = ({}) => {
       <div>
         <div>
           <Back onBack={onBack} className="" />{" "}
-          <button
-            type="button"
-            className="primary"
-            onClick={() => onCreateStage()}
-          >
-            {"Agregar Etapa"}
-          </button>
+          {canManageStage(null) && (
+            <button type="button" className="primary" onClick={() => onCreateStage()}>
+              {"Agregar Etapa"}
+            </button>
+          )}
         </div>
         {adminStage && adminStage.show && (
           <div
@@ -221,6 +245,7 @@ const Stages = ({}) => {
           onEditStage={onEditStage}
           onCloseBudget={onCloseBudget}
           onChangeTypeBudget={onChangeTypeBudget}
+          canEdit={canManageStage(null)}
         />
       </div>
     </div>

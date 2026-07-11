@@ -45,7 +45,6 @@ const generateReport=(reportArray)=>{
      fetch(`${process.env.PUBLIC_URL}/templates/subchapterBudget.html`)
       .then((r) => r.text())
       .then((dataInfo) => {
-        console.log("dataInfo==",dataInfo);
             const newTemplates = Hogan.compile(dataInfo);
             const data ={
                list:reportArray,
@@ -55,9 +54,7 @@ const generateReport=(reportArray)=>{
                date:new Date( Date.now()).toDateString()
             }
             const htmlOutput = newTemplates.render(data);
-            console.log("htmlOutput===",htmlOutput);
             printReport(htmlOutput)
-           
       })
 }
 

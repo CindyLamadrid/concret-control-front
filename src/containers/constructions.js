@@ -7,7 +7,7 @@ import AdminContruction from "../components/constructions/adminConstruction";
 
 const Constructions = ({}) => {
   const navigate = useNavigate();
-  const { setConstructionSelected, user } = useContext(ConstructionContext);
+  const { setConstructionSelected, user, role, userConstructions, permissions } = useContext(ConstructionContext);
 
   const [constructionsArray, setConstructionsArray] = useState([]);
   const [messageResultOperation, setMessageResultOperation] = useState("");
@@ -18,15 +18,21 @@ const Constructions = ({}) => {
   });
 
   const getConstructions = () => {
-    const token= localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     axios
       .get(`${process.env.REACT_APP_BUDGET_URL_API}/constructions`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }).then((result) => {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((result) => {
         if (result && result.data) {
-          setConstructionsArray(result.data);
+          // Filtrar obras según asignaciones (Admin ve todo)
+          if (role && role.isAdmin) {
+            setConstructionsArray(result.data);
+          } else {
+            const allowedIds = userConstructions.map((uc) => uc.IdConstruction || uc.idConstruction);
+            const filtered = result.data.filter((c) => allowedIds.includes(c.idConstruction));
+            setConstructionsArray(filtered);
+          }
         } else {
           setConstructionsArray([]);
         }
@@ -105,18 +111,30 @@ const Constructions = ({}) => {
     }
   };
 
+  // Helper: verificar si puede gestionar (crear/editar)
+  const canManage = () => {
+    if (!role) return false;
+    if (role.isAdmin) return true;
+    return Array.isArray(permissions) && permissions.some(
+      (p) => (p.Module === "constructions" || p.module === "constructions") &&
+             (p.Action === "full" || p.action === "full")
+    );
+  };
+
   return (
     <div>
       <br/>
-      <div>
-        <button
-          type="button"
-          className="primary"
-          onClick={() => onCreateProject()}
-        >
-          {"Agregar Projecto"}
-        </button>
-      </div>
+      {canManage() && (
+        <div>
+          <button
+            type="button"
+            className="primary"
+            onClick={() => onCreateProject()}
+          >
+            {"Agregar Projecto"}
+          </button>
+        </div>
+      )}
       {adminConstruction && adminConstruction.show && (
         <div
           className="modal show"
@@ -145,6 +163,7 @@ const Constructions = ({}) => {
             constructionsArray={constructionsArray}
             onViewStage={onViewStage}
             onEditContruction={onEditContruction}
+            canEdit={canManage()}
           />
         </div>
       )}

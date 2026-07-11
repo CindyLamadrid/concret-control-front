@@ -5,6 +5,7 @@ const SupplierTable = ({
   onEditSupplier,
   screen,
   onChangeSupplierSelected,
+  canEdit,
 }) => {
   return (
     <div>
@@ -27,7 +28,7 @@ const SupplierTable = ({
             {/* <th className="w-5">TELÉFONO</th>
             <th className="w-2">TELÉFONO OFICINA</th> */}
             <th className="w-10">CORREO</th>
-            <th className="w-5" hidden={screen === "contract"}>
+            <th className="w-5" hidden={screen === "contract" || !canEdit}>
               EDITAR
             </th>
           </tr>
@@ -93,7 +94,7 @@ const SupplierTable = ({
                 <td className={index % 2 === 0 ? "dark left" : "left"}>
                   {x.email}
                 </td>
-                {screen === "supplier" && (
+                {screen === "supplier" && canEdit && (
                   <td className={index % 2 === 0 ? "dark center" : "center"}>
                     <i
                       className="fas fa-pencil-alt icon-view-detail"

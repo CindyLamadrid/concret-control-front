@@ -3,7 +3,8 @@ const common = require("../utils/common");
 const ContractTable = ({
   contractsArray,
   onEditCotract,
-  onViewContractInputs
+  onViewContractInputs,
+  canEdit
 }) => {
   return (
     <div>
@@ -19,9 +20,7 @@ const ContractTable = ({
             <th className="w-5">
               VER
             </th>
-            <th className="w-5">
-              EDITAR
-            </th>
+            {canEdit && <th className="w-5">EDITAR</th>}
           </tr>
         </thead>
         <tbody>
@@ -56,12 +55,11 @@ const ContractTable = ({
                     onClick={() => onViewContractInputs(index)}
                   />
                 </td>
+                {canEdit && (
                   <td className={index % 2 === 0 ? "dark center" : "center"}>
-                    <i
-                      className="fas fa-pencil-alt icon-view-detail"
-                      onClick={() => onEditCotract(index)}
-                    />
+                    <i className="fas fa-pencil-alt icon-view-detail" onClick={() => onEditCotract(index)} />
                   </td>
+                )}
                
               </tr>
             );

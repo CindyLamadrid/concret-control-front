@@ -1,6 +1,6 @@
 const common = require("../utils/common");
 
-const OrderTable = ({ orderArray, onEditOrder, onViewDetail }) => {
+const OrderTable = ({ orderArray, onEditOrder, onViewDetail, canEdit }) => {
   return (
     <div>
       <table className="table w-100">
@@ -13,7 +13,7 @@ const OrderTable = ({ orderArray, onEditOrder, onViewDetail }) => {
             <th className="w-20">CUFE</th>
             <th className="w-15">ID DOC. ELECTRÓNICO</th>
             <th className="w-5">VER</th>
-            <th className="w-5">EDITAR</th>
+            {canEdit && <th className="w-5">EDITAR</th>}
           </tr>
         </thead>
         <tbody>
@@ -28,9 +28,11 @@ const OrderTable = ({ orderArray, onEditOrder, onViewDetail }) => {
               <td className={index % 2 === 0 ? "dark center" : "center"}>
                 <i className="fas fa-external-link-alt icon-view-detail" onClick={() => onViewDetail && onViewDetail(index)} />
               </td>
-              <td className={index % 2 === 0 ? "dark center" : "center"}>
-                <i className="fas fa-pencil-alt icon-view-detail" onClick={() => onEditOrder && onEditOrder(index)} />
-              </td>
+              {canEdit && (
+                <td className={index % 2 === 0 ? "dark center" : "center"}>
+                  <i className="fas fa-pencil-alt icon-view-detail" onClick={() => onEditOrder && onEditOrder(index)} />
+                </td>
+              )}
             </tr>
           ))}
         </tbody>

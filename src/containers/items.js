@@ -14,7 +14,7 @@ const Items = ({}) => {
   const idStage = stageSelected.idStage;
   const [searchParams] = useSearchParams();
   const idSubchapter = searchParams.get("idSubchapter");
-  const [budgetType] =searchParams.get("budgetType");
+  const budgetType = searchParams.get("budgetType");
   const [item, setItem] = useState("");
   const [messageResultOperation, setMessageResultOperation] = useState("");
   const [itemArray, setItemArray] = useState([]);

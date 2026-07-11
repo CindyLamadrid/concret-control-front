@@ -208,24 +208,21 @@ const Inputs = ({}) => {
     }
   };
 
+  // BUG-17 fix: se eliminó el reset masivo x.selected=false que impedía
+  // seleccionar más de un insumo a la vez. Ahora se togglea solo el índice
+  // clickeado, permitiendo selección múltiple para "Agregar Insumo".
   const onSelectInput = (index) => {
     if (index > -1) {
-      const newInputsArray = inputsArray.map(
-        (x) =>{x.selected=false
-
-          return x
-        }
-      );
-      const input =  newInputsArray[index]
-      input.selected = !input.selected ;
-      newInputsArray[index] = input
+      const newInputsArray = [...inputsArray];
+      const input = { ...newInputsArray[index] };
+      input.selected = !input.selected;
+      newInputsArray[index] = input;
       setInputsArray(newInputsArray);
     }
   };
 
   const onCancelOption = () => {
     // setShowOption('inputItems')
-    console.log("showCompoundInputs===",idCompoundSelected)
     if(!idCompoundSelected)
     {
         const params = createSearchParams({

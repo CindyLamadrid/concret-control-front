@@ -16,7 +16,7 @@ const ConstructionItems = ({
   constructionItemsArray,
   setConstructionItemsArray,
   onConstructionItems,
-
+  canEdit,
 }) => {
   const navigate = useNavigate();
   const { user, constructionSelected, stageSelected } =
@@ -264,6 +264,7 @@ const ConstructionItems = ({
           onRemoveItem={onRemoveItem}
           onEditItem={onEditItem}
           onShowInputsItem={onShowInputsItem}
+          canEdit={canEdit}
         />
       )}
       {noData && <div>La busqueda no arrojo resultado</div>}

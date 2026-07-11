@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ChapterSelect from "./commons/select";
 import SubchapterSelect from "./commons/select";
 import axios from "../config/axiosConfig";
@@ -13,124 +13,103 @@ const Chapters = ({
   const [chapterArray, setChapterArray] = useState([]);
   const [allSubchapterArray, setAllSubchapterArray] = useState([]);
   const [subchapterArray, setSubchapterArray] = useState([]);
-  const [loadedChapter, setLoadedChapter] = useState(false);
-  const [loadedSubchapter, setLoadedSubchapter] = useState(false);
+  // ref para saber si ya cargamos los datos maestros (solo una vez)
+  const initialized = useRef(false);
 
-  const getchapters = (newChapterSelected) => {
+  // BUG-09 fix: carga de capítulos y subcapítulos solo al montar el componente.
+  // Antes el useEffect dependía de chapterSelected, lo que provocaba que cada vez
+  // que setChapterSelected era llamado dentro de getchapters, se volvía a disparar
+  // el effect generando llamadas en cadena a la API.
+  useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
+
+    // Cargar capítulos
     axios
       .get(`${process.env.REACT_APP_BUDGET_URL_API}/chapters`)
       .then((response) => {
-        setChapterArray(response.data);
-        if (response.data.length > 0)
-          setChapterSelected(newChapterSelected || response.data[0].idChapter);
-        setLoadedChapter(true);
+        if (response.data.length > 0) {
+          setChapterArray(response.data);
+          // Solo fijar el capítulo si el padre aún no tiene uno válido
+          if (!chapterSelected || chapterSelected <= 0) {
+            setChapterSelected(response.data[0].idChapter);
+          }
+        }
       })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  };
+      .catch((error) => console.error("Error fetching chapters:", error));
 
-  const getSubchapters = () => {
+    // Cargar todos los subcapítulos (catálogo completo, una sola vez)
     axios
       .get(`${process.env.REACT_APP_BUDGET_URL_API}/subchapters`)
       .then((response) => {
         setAllSubchapterArray(response.data);
-        setLoadedSubchapter(true);
       })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  };
+      .catch((error) => console.error("Error fetching subchapters:", error));
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // BUG-10 fix: cuando cambia el capítulo, filtrar subcapítulos del nuevo capítulo
+  // y verificar si el subchapterSelected actual pertenece a ese capítulo.
+  // Si no pertenece (o es 0), seleccionar el primero de la lista nueva.
   useEffect(() => {
-    console.log("chapter use effect");
-    if (chapterSelected >= 0) {
-      getchapters(chapterSelected);
-      getSubchapters();
-    }
-  }, [chapterSelected]);
+    if (!chapterSelected || chapterSelected <= 0 || allSubchapterArray.length === 0) return;
 
-  const selectSubchapter = () => {
-    console.log("selectSubchapter===",chapterSelected);
-    if (chapterSelected && JSON.stringify(chapterSelected) !== "{}") {
-      const subchapters = allSubchapterArray.filter(
-        (x) => x.idChapter === parseInt(chapterSelected, 10)
-      );
+    const subchapters = allSubchapterArray.filter(
+      (x) => x.idChapter === parseInt(chapterSelected, 10)
+    );
+    setSubchapterArray(subchapters);
 
-        
-      setSubchapterArray(subchapters);
-      if (subchapters.length > 0) {
-      
-        setSubchapterSelected(
-          subchapterSelected || subchapters[0].idSubchapter
-        );
-         localStorage.setItem(
-          "chapterValues",
-          JSON.stringify({
-            chapterSelected,
-            subchapterSelected:
-              subchapterSelected || subchapters[0].idSubchapter,
-          })
-        );
-
-      }else{
-        setSubchapterSelected(0)
-         localStorage.setItem(
-          "chapterValues",
-          JSON.stringify({
-            chapterSelected,
-            subchapterSelected:
-              0,
-          })
-        );
-      }
-       
-       
-      
-    }
-  };
-
-  useEffect(() => {
-    
-    if (loadedChapter && loadedSubchapter) {
-      
-      selectSubchapter();
-    }
-  }, [chapterSelected, loadedChapter, loadedSubchapter]);
-
-  const onChangeChapter = (value) => {
-    if (value) {
-   
-      setChapterSelected(parseInt(value, 10));
+    if (subchapters.length === 0) {
       setSubchapterSelected(0);
       localStorage.setItem(
         "chapterValues",
-        JSON.stringify({
-          chapterSelected: parseInt(value, 10),
-          subchapterSelected: 0,
-        })
+        JSON.stringify({ chapterSelected, subchapterSelected: 0 })
+      );
+      return;
+    }
+
+    // Comprobar si el subcapítulo actual pertenece a los del nuevo capítulo
+    const belongsToCurrent = subchapters.some(
+      (x) => x.idSubchapter === parseInt(subchapterSelected, 10)
+    );
+
+    const newSubchapter = belongsToCurrent
+      ? parseInt(subchapterSelected, 10)
+      : subchapters[0].idSubchapter;
+
+    setSubchapterSelected(newSubchapter);
+    localStorage.setItem(
+      "chapterValues",
+      JSON.stringify({ chapterSelected, subchapterSelected: newSubchapter })
+    );
+  }, [chapterSelected, allSubchapterArray]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const onChangeChapter = (value) => {
+    if (value) {
+      const newChapter = parseInt(value, 10);
+      // Poner subcapítulo en 0 para que el efecto anterior lo resuelva
+      setSubchapterSelected(0);
+      setChapterSelected(newChapter);
+      localStorage.setItem(
+        "chapterValues",
+        JSON.stringify({ chapterSelected: newChapter, subchapterSelected: 0 })
       );
     }
   };
 
   const onChangeSubchapter = (value) => {
     if (value) {
-      setSubchapterSelected(parseInt(value, 10));
-      //if (showOption !== 'searchItems') {
+      const newSubchapter = parseInt(value, 10);
+      setSubchapterSelected(newSubchapter);
       setShowOption("constructionItems");
       localStorage.setItem(
         "chapterValues",
-        JSON.stringify({
-          chapterSelected,
-          subchapterSelected: parseInt(value, 10),
-        })
+        JSON.stringify({ chapterSelected, subchapterSelected: newSubchapter })
       );
-      //}
     }
   };
 
   return (
     <div className="row">
-    
       <div className="col-3">
         <ChapterSelect
           id="idChapter"
@@ -140,12 +119,11 @@ const Chapters = ({
           array={chapterArray}
         />
       </div>
-    
       <div className="col-3">
         <SubchapterSelect
           id="idSubchapter"
           name="name"
-          selectedValue={subchapterArray && subchapterArray.length>0?subchapterSelected:-1}
+          selectedValue={subchapterArray && subchapterArray.length > 0 ? subchapterSelected : -1}
           setSelectedValue={onChangeSubchapter}
           array={subchapterArray}
         />
@@ -154,4 +132,5 @@ const Chapters = ({
     </div>
   );
 };
+
 export default Chapters;

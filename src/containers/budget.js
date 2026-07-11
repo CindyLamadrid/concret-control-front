@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "../config/axiosConfig";
 import { ConstructionContext } from "../context/constructionContext";
+import usePermissions from "../hooks/usePermissions";
 import Chapter from "../components/chaptersHeader";
 import ConstructionItems from "../components/constructionItems";
 import InputItem from "../components/inputItem";
@@ -11,6 +12,7 @@ import CompoundInputs from "../components/compoundInputs";
 const Budget = ({}) => {
   const { stageSelected, constructionSelected } =
     useContext(ConstructionContext);
+  const { canEdit } = usePermissions("budget");
 
   const [searchParams] = useSearchParams();
   const idItem = searchParams.get("idItem");
@@ -91,21 +93,33 @@ const Budget = ({}) => {
   };
 
   const getItems = (refreshItemSelected) => {
-    console.log("getItems===", refreshItemSelected);
+    const idStage = stageSelected && stageSelected.idStage
+      ? stageSelected.idStage
+      : null;
+
     if (
       (showOption === "constructionItems" ||
         showOption === "inputItems" ||
         showOption === "compoundInputs") &&
       chapterSelected > 0 &&
       subchapterSelected > 0 &&
-      stageSelected.idStage
+      idStage
     )
       onConstructionItems(refreshItemSelected);
   };
 
+  // BUG-16 fix: usar stageSelected.idStage como dependencia primitiva en lugar
+  // del objeto stageSelected completo. Cuando el provider rehidrata desde
+  // localStorage, React puede considerar que el objeto "no cambió" si la
+  // referencia es la misma, y no disparar el effect. Con el valor primitivo
+  // idStage sí detecta el cambio correctamente.
+  const idStageForEffect = stageSelected && stageSelected.idStage
+    ? stageSelected.idStage
+    : null;
+
   useEffect(() => {
     getItems(false);
-  }, [subchapterSelected, stageSelected]);
+  }, [subchapterSelected, idStageForEffect]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (idItem && constructionItemsArray && constructionItemsArray.length > 0) {
@@ -118,7 +132,6 @@ const Budget = ({}) => {
 
   useEffect(() => {
     const chapterValues = localStorage.getItem("chapterValues");
-    console.log("chapterValues===", chapterValues);
 
     if (chapterValues) {
       const values = JSON.parse(chapterValues);
@@ -162,6 +175,7 @@ const Budget = ({}) => {
           constructionItemsArray={constructionItemsArray}
           setConstructionItemsArray={setConstructionItemsArray}
           onConstructionItems={onConstructionItems}
+          canEdit={canEdit}
         />
       )}
       {showOption === "inputItems" && (
@@ -177,6 +191,7 @@ const Budget = ({}) => {
           getItems={getItems}
           getItemInputs={getItemInputs}
           itemInputsArray={itemInputsArray}
+          canEdit={canEdit}
         />
       )}
       {showOption === "compoundInputs" && (
@@ -189,6 +204,7 @@ const Budget = ({}) => {
           setShowOption={setShowOption}
           setCompoundSelected={setCompoundSelected}
           getItemInputs={getItemInputs}
+          canEdit={canEdit}
         />
       )}
     </div>

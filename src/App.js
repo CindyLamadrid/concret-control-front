@@ -32,15 +32,13 @@ import Orders from "./containers/orders"
 import OrderInputs from "./containers/orderInputs"
 
 function RouteLogger() {
+  // Componente de debug — se puede eliminar en producción
   const location = useLocation();
-
   useEffect(() => {
-    console.log("📍 PATH:", location.pathname);
-    console.log("🔎 SEARCH:", location.search);
-    console.log("🧩 FULL:", location.pathname + location.search);
-    console.log("🧠 KEY:", location.key);
+    if (process.env.NODE_ENV === "development") {
+      console.log("PATH:", location.pathname + location.search);
+    }
   }, [location]);
-
   return null;
 }
 

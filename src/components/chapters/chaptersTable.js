@@ -1,4 +1,4 @@
-const ChaptersTable = ({ chapterArray,onEditChapter }) => {
+const ChaptersTable = ({ chapterArray, onEditChapter, canEdit }) => {
   return (
     <div>
       <table className="table w-70">
@@ -6,7 +6,7 @@ const ChaptersTable = ({ chapterArray,onEditChapter }) => {
           <tr>
             <th>CODIGO</th>
             <th>NOMBRE</th>
-            <th>EDITAR</th>
+            {canEdit && <th>EDITAR</th>}
           </tr>
         </thead>
         <tbody>
@@ -17,13 +17,11 @@ const ChaptersTable = ({ chapterArray,onEditChapter }) => {
                   {x.cod}
                 </td>
                 <td className={index % 2 === 0 ? "dark" : ""}>{x.name}</td>
-            
-                 <td className={index % 2 === 0 ? "dark center" : "center"}>
-                  <i
-                    className="fas fa-pencil-alt icon-view-detail"
-                    onClick={() => onEditChapter(index)}
-                  />
-                </td>
+                {canEdit && (
+                  <td className={index % 2 === 0 ? "dark center" : "center"}>
+                    <i className="fas fa-pencil-alt icon-view-detail" onClick={() => onEditChapter(index)} />
+                  </td>
+                )}
               </tr>
             );
           })}

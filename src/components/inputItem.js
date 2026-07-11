@@ -22,6 +22,7 @@ const InputItem = ({
   setCompoundSelected,
   getItems,
   getItemInputs,
+  canEdit,
 }) => {
   const navigate = useNavigate();
   const { user, stageSelected, constructionSelected } =
@@ -148,7 +149,6 @@ const InputItem = ({
       buttonArray: [],
     });
 
-    console.log("inputItem===",inputItem);
     try {
       const result = await axios.post(
         `${process.env.REACT_APP_BUDGET_URL_API}/remove-item-input`,
@@ -220,9 +220,7 @@ const InputItem = ({
   };
 
   const onAddInputItem= () => {
-    //setInputType("");
     setCompoundSelected("");
-    console.log("itemSelected===",itemSelected);
 
     const params = createSearchParams({
       // idItem: itemSelected.idItem,
@@ -263,7 +261,9 @@ const InputItem = ({
     setMessageResultOperation("");
   };
 
-   const onSaveInput = async (
+  // onSaveInput en inputItem.js solo se usa para editar (action === "edit").
+  // Misma guardia que en compoundInputs.js para consistencia.
+  const onSaveInput = async (
     unitSelected,
     inputTypeSelected,
     name,
@@ -272,11 +272,12 @@ const InputItem = ({
     categorySelected,
     action
   ) => {
+    if (action !== "edit") return;
     try {
       const result = await axios.post(
         `${process.env.REACT_APP_BUDGET_URL_API}/update-input`,
         {
-          idInput: action === "edit" ? parseInt(adminInput.input.idInput) : 0,
+          idInput: parseInt(adminInput.input.idInput),
           idUnit: unitSelected,
           idInputType: inputTypeSelected,
           idCategory: categorySelected,
@@ -295,11 +296,11 @@ const InputItem = ({
           );
         } else {
           setAdminInput({ show: false, input: "", action: "" });
-          if (adminInput.action === "edit") await getItemInputs(itemSelected.idConstructionStageItem);
+          setMessageResultOperation("");
+          await getItemInputs(itemSelected.idConstructionStageItem);
         }
       }
     } catch (error) {
-      
       console.error("Error fetching onSaveInput:", error);
     }
   };
@@ -379,6 +380,7 @@ const InputItem = ({
           onFocusInput={onFocusInput}
           onBlurInput={onBlurInput}
           onEditInput={onEditInput}
+          canEdit={canEdit}
         />
       )}
       {noData && <div>La busqueda no arrojo resultado</div>}

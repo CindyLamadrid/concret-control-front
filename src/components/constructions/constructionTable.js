@@ -1,4 +1,4 @@
-const ConstructionTable = ({ constructionsArray, onViewStage,onEditContruction }) => {
+const ConstructionTable = ({ constructionsArray, onViewStage, onEditContruction, canEdit }) => {
   return (
     <div>
       <table className="table w-70">
@@ -8,8 +8,7 @@ const ConstructionTable = ({ constructionsArray, onViewStage,onEditContruction }
             <th className="w-60">NOMBRE</th>
             <th className="w-10">Area</th>
             <th className="w-10">VER</th>
-            <th className="w-5">EDITAR</th>
-           
+            {canEdit && <th className="w-5">EDITAR</th>}
           </tr>
         </thead>
         <tbody>
@@ -28,13 +27,14 @@ const ConstructionTable = ({ constructionsArray, onViewStage,onEditContruction }
                     onClick={() => onViewStage(x.idConstruction)}
                   />
                 </td>
-                 <td className={index % 2 === 0 ? "dark center" : "center"}>
-                  <i
-                    className="fas fa-pencil-alt icon-view-detail"
-                    onClick={() => onEditContruction(index)}
-                  />
-                </td>
-                
+                {canEdit && (
+                  <td className={index % 2 === 0 ? "dark center" : "center"}>
+                    <i
+                      className="fas fa-pencil-alt icon-view-detail"
+                      onClick={() => onEditContruction(index)}
+                    />
+                  </td>
+                )}
               </tr>
             );
           })}

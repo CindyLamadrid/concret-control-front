@@ -12,7 +12,8 @@ const InputItemTable = ({
   setCompoundSelected,
   onFocusInput,
   onBlurInput,
-  onEditInput
+  onEditInput,
+  canEdit
 }) => {
   return (
     <div>
@@ -38,10 +39,9 @@ const InputItemTable = ({
             return (
               <tr key={index.toString()} >
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
-                  <i
-                    class="far fa-trash-alt icon-view-detail"
-                    onClick={() => onRemoveInputItem(index)}
-                  />
+                  {canEdit && (
+                    <i class="far fa-trash-alt icon-view-detail" onClick={() => onRemoveInputItem(index)} />
+                  )}
                 </td>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
                   <i
