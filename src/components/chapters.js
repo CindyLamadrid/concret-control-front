@@ -10,8 +10,10 @@ const Chapters = ({}) => {
   const [chapter, setChapter] = useState("");
   const [messageResultOperation, setMessageResultOperation] = useState("");
 
-    const { user } =
+    const { user, role } =
       useContext(ConstructionContext);
+
+  const isAdmin = role && role.isAdmin;
 
   const [adminChapter, setAdminChapter] = useState({
     show: false,
@@ -126,6 +128,7 @@ const Chapters = ({}) => {
         <ChaptersTable
           chapterArray={chapterArray}
           onEditChapter={onEditChapter}
+          canEdit={isAdmin}
         />
       )}
     </div>

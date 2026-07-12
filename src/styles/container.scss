@@ -212,14 +212,12 @@
 }
 
 .logo {
-
      position: relative;
      margin: auto;
-     top: 20%;
-     border-bottom-right-radius: 50px;
-     border-top-right-radius: 50px;
-   
-    max-width: 100%;
+     top: 10%;
+     max-width: 100%;
+     max-height: 50px;
+     object-fit: contain;
 
   @include respond-to(mobile) {
     margin-left: 0;

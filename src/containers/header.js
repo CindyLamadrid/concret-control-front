@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ConstructionContext } from "../context/constructionContext";
-import Logo from "../images/concretoVivo.png";
+import Logo from "../images/obrika.jpg";
 
 export const Header = ({}) => {
   const navigate = useNavigate();

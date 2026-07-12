@@ -97,10 +97,11 @@ const Items = ({}) => {
 
   const onSelectItem = (index) => {
     if (index > -1) {
-      const newItemArray = [...itemArray]; ;
-      newItemArray[index].selected = !itemArray[index].selected;
-    
-      setItemArray(...[newItemArray]);
+      const newItemArray = itemArray.map((item, i) => ({
+        ...item,
+        selected: i === index ? !item.selected : false,
+      }));
+      setItemArray(newItemArray);
     }
   };
 

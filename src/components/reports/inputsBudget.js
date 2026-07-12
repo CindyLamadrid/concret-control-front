@@ -60,7 +60,7 @@ const generateReport=(reportArray)=>{
 
           const HEADER_FILL = { type: "pattern", pattern: "solid", fgColor: { argb: "FFBDD7EE" } };
           const TOTAL_FILL  = { type: "pattern", pattern: "solid", fgColor: { argb: "FFD0D0D0" } };
-          const moneyFmt = '#,##0.00';
+          const moneyFmt = '$#,##0.00';
 
           const colRow = ws.addRow(["CÓDIGO", "DESCRIPCIÓN", "UNIDAD", "CANTIDAD", "VALOR", "TOTAL"]);
           colRow.eachCell((cell) => {

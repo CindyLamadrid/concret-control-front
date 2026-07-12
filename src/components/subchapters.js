@@ -16,7 +16,9 @@ const Subchapters = ({}) => {
     buttonArray: [],
   });
 
-  const { user } = useContext(ConstructionContext);
+  const { user, role } = useContext(ConstructionContext);
+
+  const isAdmin = role && role.isAdmin;
 
   const [adminSubchapter, setAdminSubchapter] = useState({
     show: false,
@@ -200,6 +202,7 @@ const Subchapters = ({}) => {
           subchapterArray={subchapterArray}
           onEditSubchapter={onEditSubchapter}
           onRemoveSubchapter={onRemoveSubchapter}
+          canEdit={isAdmin}
         />
       )}
     </div>

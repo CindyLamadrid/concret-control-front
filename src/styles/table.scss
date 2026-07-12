@@ -99,6 +99,14 @@
 }
 
 .pending-changes {
-  color: $red;
+  color: $red !important;
   font-weight: 500;
+}
+
+// Asegurar que pending-changes gane sobre estilos de inputs en tabla
+.table tbody td input.pending-changes,
+td input.pending-changes,
+input[type="text"].pending-changes,
+input[type="number"].pending-changes {
+  color: $red !important;
 }

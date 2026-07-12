@@ -1,0 +1,283 @@
+/* ============================================================
+   Aplicar CSS variables del tema a los componentes existentes.
+   Este archivo sobreescribe los colores hardcoded usando las
+   variables definidas en themes.css.
+   ============================================================ */
+
+/* Fondo general */
+body {
+  background-color: var(--color-bg) !important;
+  color: var(--color-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ─── Menú / Header ─── */
+.menu-container {
+  background-color: var(--color-header-bg) !important;
+  border-bottom-color: var(--color-border) !important;
+}
+
+.nav-container {
+  background-color: var(--color-header-bg) !important;
+}
+
+.menu-option {
+  background-color: var(--color-header-bg) !important;
+  color: var(--color-header-text) !important;
+}
+
+.link-option {
+  color: var(--color-header-text) !important;
+}
+
+.container-user {
+  background-color: var(--color-user-bg) !important;
+  color: var(--color-header-text) !important;
+}
+
+.user {
+  background-color: var(--color-user-bg) !important;
+  color: var(--color-header-text) !important;
+}
+
+.select-option {
+  color: var(--color-header-text) !important;
+  border-right-color: rgba(255,255,255,0.3) !important;
+
+  .nav-link {
+    background-color: var(--color-header-bg) !important;
+    color: var(--color-header-text) !important;
+  }
+}
+
+.container-logo {
+  border-color: var(--color-bg) !important;
+  background-color: var(--color-bg) !important;
+}
+
+/* ─── Footer ─── */
+.footer {
+  background-color: var(--color-primary) !important;
+  color: var(--color-header-text) !important;
+}
+
+.login-footer {
+  background-color: var(--color-primary) !important;
+  color: var(--color-header-text) !important;
+}
+
+/* ─── Tablas ─── */
+.table {
+  color: var(--color-text);
+
+  thead th {
+    background-color: var(--color-bg-alt) !important;
+    color: var(--color-primary) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  tbody td {
+    border-color: var(--color-border) !important;
+    color: var(--color-text);
+  }
+}
+
+/* Filas alternadas (dark) */
+.dark {
+  background-color: var(--color-row-dark) !important;
+}
+
+/* Iconos de acción en tablas */
+.icon-view-detail {
+  color: var(--color-accent) !important;
+
+  &:hover {
+    color: var(--color-primary) !important;
+  }
+}
+
+.folder {
+  color: var(--color-primary) !important;
+}
+
+/* ─── Botones ─── */
+button.primary,
+.btn.primary,
+input[type="button"].primary {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: var(--color-header-text) !important;
+
+  &:hover {
+    background-color: var(--color-tertiary) !important;
+    border-color: var(--color-tertiary) !important;
+  }
+}
+
+button.secondary,
+.btn.secondary {
+  border-color: var(--color-primary) !important;
+  color: var(--color-primary) !important;
+  background-color: transparent !important;
+
+  &:hover {
+    background-color: var(--color-bg-alt) !important;
+  }
+}
+
+/* ─── Inputs y selects ─── */
+.select {
+  border-color: var(--color-input-border) !important;
+  background-color: var(--color-bg) !important;
+  color: var(--color-text) !important;
+}
+
+.select-table {
+  color: var(--color-text) !important;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"] {
+  background-color: var(--color-bg) !important;
+  color: var(--color-text) !important;
+}
+
+/* ─── Headers de sección ─── */
+.header-title {
+  border-left-color: var(--color-secondary) !important;
+  color: var(--color-primary) !important;
+}
+
+.subheader-title {
+  color: var(--color-secondary) !important;
+}
+
+/* ─── Resume header ─── */
+.resume {
+  border-color: var(--color-secondary) !important;
+  color: var(--color-text) !important;
+}
+
+/* ─── Content area ─── */
+.component {
+  background-color: var(--color-bg) !important;
+  border-left-color: var(--color-secondary) !important;
+}
+
+/* ─── Modals ─── */
+.modal-content,
+.modal-dialog .modal-body {
+  background-color: var(--color-bg) !important;
+  color: var(--color-text) !important;
+}
+
+/* ─── Submenú dropdown ─── */
+.dropdown-menu {
+  background-color: var(--color-bg) !important;
+  border-color: var(--color-border) !important;
+}
+
+.dropdown-item {
+  color: var(--color-text) !important;
+
+  &:hover {
+    background-color: var(--color-bg-alt) !important;
+  }
+}
+
+.submenu-option {
+  background-color: var(--color-bg) !important;
+  color: var(--color-primary) !important;
+
+  button {
+    background-color: var(--color-bg) !important;
+    color: var(--color-primary) !important;
+  }
+
+  .dropdown-toggle::after {
+    border-top-color: var(--color-primary) !important;
+  }
+}
+
+.submenu-main {
+  button {
+    background-color: var(--color-bg) !important;
+    color: var(--color-primary) !important;
+  }
+}
+
+/* NavDropdown toggles en el menú principal (solo el toggle, NO los items del dropdown) */
+.nav-container > .navbar-nav > .nav-item > .nav-link,
+.nav-container > .navbar-nav > .nav-item > .dropdown-toggle,
+.nav-container .menu-option > .nav-item > .nav-link,
+.nav-container .menu-option > .nav-item > .dropdown-toggle {
+  color: var(--color-header-text) !important;
+}
+
+.nav-container > .navbar-nav > .nav-item > .dropdown-toggle::after,
+.nav-container .menu-option > .nav-item > .dropdown-toggle::after {
+  border-top-color: var(--color-header-text) !important;
+}
+
+/* Items DENTRO de los dropdowns del menú — texto oscuro, fondo claro */
+.nav-container .dropdown-menu .dropdown-item,
+.nav-container .dropdown-menu .submenu-option,
+.nav-container .dropdown-menu .submenu-option button,
+.nav-container .dropdown-menu .submenu-main button {
+  color: var(--color-primary) !important;
+  background-color: var(--color-bg) !important;
+}
+
+.nav-container .dropdown-menu .dropdown-item:hover,
+.nav-container .dropdown-menu .submenu-option:hover,
+.nav-container .dropdown-menu .submenu-option button:hover {
+  background-color: var(--color-bg-alt) !important;
+}
+
+.nav-container .dropdown-menu {
+  background-color: var(--color-bg) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* ─── Login ─── */
+.form-container {
+  background-color: var(--color-bg) !important;
+  color: var(--color-text) !important;
+}
+
+/* ─── Badges ─── */
+.badge.bg-success {
+  background-color: var(--color-success) !important;
+}
+
+.badge.bg-secondary {
+  background-color: var(--color-text-light) !important;
+}
+
+/* ─── Labels y textos ─── */
+.label {
+  color: var(--color-text) !important;
+}
+
+.subtitle {
+  color: var(--color-primary) !important;
+}
+
+/* ─── Pending changes (rojo en inputs modificados) ─── */
+.pending-changes {
+  color: var(--color-danger) !important;
+}
+
+input.pending-changes,
+input[type="text"].pending-changes,
+input[type="number"].pending-changes,
+td input.pending-changes,
+.table tbody td input.pending-changes {
+  color: var(--color-danger) !important;
+}
+
+/* ─── Icono usuario header ─── */
+.container-header-icon {
+  background-color: var(--color-tertiary) !important;
+}

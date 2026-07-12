@@ -217,16 +217,20 @@ const ConstructionItems = ({
           </div>
       <div>
         <Back onBack={onBack} className="right back" />
-         {" "}  {" "}
-        <button
-          type="button"
-          className="primary"
-          onClick={() => onAddItems()}
-        >
-            <i className="fas fa-plus-circle"/>
-             {" "}
-           <span>Agregar Items</span> 
-        </button>
+        {canEdit && (
+          <>
+            {" "}  {" "}
+            <button
+              type="button"
+              className="primary"
+              onClick={() => onAddItems()}
+            >
+              <i className="fas fa-plus-circle"/>
+              {" "}
+              <span>Agregar Items</span>
+            </button>
+          </>
+        )}
       </div>
 
       {modalConfiguration && modalConfiguration.show && (

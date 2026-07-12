@@ -101,7 +101,7 @@ const generateReport=()=>{
           const HEADER_FILL = { type: "pattern", pattern: "solid", fgColor: { argb: "FFBDD7EE" } };
           const GROUP_FILL  = { type: "pattern", pattern: "solid", fgColor: { argb: "FFD6E4F0" } };
           const TOTAL_FILL  = { type: "pattern", pattern: "solid", fgColor: { argb: "FFD0D0D0" } };
-          const moneyFmt = '#,##0.00';
+          const moneyFmt = '$#,##0.00';
 
           const groups = createArrayData(result.data);
 

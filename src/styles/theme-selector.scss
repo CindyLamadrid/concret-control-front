@@ -1,0 +1,104 @@
+/* Estilos del panel de selección de tema */
+
+.theme-panel {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 9999;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  padding: 10px 0;
+  min-width: 170px;
+  margin-top: 4px;
+}
+
+.theme-panel-title {
+  padding: 4px 16px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 4px;
+}
+
+.theme-panel-close {
+  padding: 6px 16px 2px;
+  font-size: 11px;
+  color: #999;
+  text-align: center;
+  cursor: pointer;
+  border-top: 1px solid #eee;
+  margin-top: 4px;
+
+  &:hover {
+    color: #333;
+  }
+}
+
+.theme-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 16px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  font-size: 12px;
+  color: #333;
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+
+  &.active {
+    background-color: #e8f5e9;
+    font-weight: 600;
+  }
+}
+
+.theme-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.theme-name {
+  flex: 1;
+}
+
+.theme-check {
+  color: #28a745;
+  font-size: 11px;
+}
+
+/* Dropdown del usuario en el menú */
+.user-dropdown {
+  display: inline-block;
+
+  .nav-link {
+    color: white !important;
+    font-weight: 600;
+    font-size: 10.5pt;
+    padding: 0 4px;
+  }
+
+  .dropdown-menu {
+    min-width: 160px;
+  }
+
+  .dropdown-item {
+    font-size: 11pt;
+    padding: 6px 16px;
+
+    i {
+      margin-right: 8px;
+      width: 16px;
+      text-align: center;
+    }
+  }
+}

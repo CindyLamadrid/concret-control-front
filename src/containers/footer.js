@@ -6,7 +6,7 @@ export const Footer=()=>{
     return(
         <div className="footer" hidden={!user}>
                <div>
-                  CONCRETO VIVO - 2025
+                  OBRIKA - 2025
                </div>
         </div>
     )

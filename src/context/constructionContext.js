@@ -10,6 +10,7 @@ export const ConstructionContext = createContext({
   permissions: [],
   userConstructions: [],
   role: null,
+  company: null,
   setUser: () => {},
   setConstructionSelected: () => {},
   setStageSelected: () => {},
@@ -17,6 +18,7 @@ export const ConstructionContext = createContext({
   setPermissions: () => {},
   setUserConstructions: () => {},
   setRole: () => {},
+  setCompany: () => {},
 });
 
 export default ConstructionContext;

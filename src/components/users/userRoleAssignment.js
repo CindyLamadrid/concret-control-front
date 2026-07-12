@@ -44,6 +44,12 @@ const UserRoleAssignment = ({
   };
 
   const userName = selectedUser.CompleteName || selectedUser.completeName;
+  const userCompanyId = selectedUser.IdCompany || selectedUser.idCompany;
+
+  // Filtrar obras solo de la empresa del usuario seleccionado
+  const filteredConstructions = constructions.filter(
+    (c) => (c.IdCompany || c.idCompany) === userCompanyId
+  );
 
   return (
     <div className="modal show" style={{ display: "block", position: "initial" }}>
@@ -63,7 +69,7 @@ const UserRoleAssignment = ({
                 onChange={(e) => { setIdConstruction(e.target.value); setIdStage(""); }}
               >
                 <option value="">-- Seleccionar --</option>
-                {constructions.map((c) => (
+                {filteredConstructions.map((c) => (
                   <option key={c.idConstruction} value={c.idConstruction}>
                     {c.name}
                   </option>
@@ -98,9 +104,14 @@ const UserRoleAssignment = ({
               </select>
             </div>
             <div className="col-3" style={{ paddingTop: "22px" }}>
-              <button className="primary" onClick={onAdd} disabled={!idConstruction}>
+              <button className="primary" onClick={onAdd} disabled={!idConstruction || (stages.length === 0 && idConstruction)}>
                 <i className="fas fa-plus" /> Asignar
               </button>
+              {idConstruction && stages.length === 0 && (
+                <div className="mandatory" style={{ fontSize: "9pt", marginTop: "4px" }}>
+                  Esta obra no tiene etapas creadas
+                </div>
+              )}
             </div>
           </div>
 

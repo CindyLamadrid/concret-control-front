@@ -23,7 +23,7 @@ const commom = require('../utils/common')
 // }
  
 const SubchapterBudget = ({reportOption,setReportOption}) => {
-  const { stageSelected,constructionSelected } = useContext(ConstructionContext);
+  const { stageSelected,constructionSelected, company } = useContext(ConstructionContext);
   const [reportArray, setReportArray] =useState([]);
   const [loadReport, setLoadReport] =useState(false);
 
@@ -44,14 +44,31 @@ const generateReport=(reportArray)=>{
   
      fetch(`${process.env.PUBLIC_URL}/templates/subchapterBudget.html`)
       .then((r) => r.text())
-      .then((dataInfo) => {
+      .then(async (dataInfo) => {
+            let logoSrc = "";
+            const idCompany = company && (company.idCompany || company.IdCompany);
+            if (idCompany) {
+              try {
+                const token = localStorage.getItem("token");
+                const resp = await axios.get(
+                  `${process.env.REACT_APP_SECURITY_URL_API}/company-logo`,
+                  { params: { idCompany }, headers: { Authorization: `Bearer ${token}` }, responseType: "arraybuffer" }
+                );
+                if (resp.data && resp.data.byteLength > 0) {
+                  const contentType = resp.headers["content-type"] || "image/png";
+                  const base64 = btoa(new Uint8Array(resp.data).reduce((d, b) => d + String.fromCharCode(b), ""));
+                  logoSrc = `data:${contentType};base64,${base64}`;
+                }
+              } catch (e) { /* sin logo */ }
+            }
             const newTemplates = Hogan.compile(dataInfo);
             const data ={
                list:reportArray,
                projectName: constructionSelected.name,
                stageName : stageSelected.name,
                totalValue: commom.getMoneyFomat(commom.getTotals(reportArray,"value")),
-               date:new Date( Date.now()).toDateString()
+               date:new Date( Date.now()).toDateString(),
+               logoSrc,
             }
             const htmlOutput = newTemplates.render(data);
             printReport(htmlOutput)
@@ -76,7 +93,7 @@ const generateReport=(reportArray)=>{
 
           const HEADER_FILL = { type: "pattern", pattern: "solid", fgColor: { argb: "FFBDD7EE" } };
           const TOTAL_FILL  = { type: "pattern", pattern: "solid", fgColor: { argb: "FFD0D0D0" } };
-          const moneyFmt = '#,##0.00';
+          const moneyFmt = '$#,##0.00';
 
           const colRow = ws.addRow(["CÓDIGO", "DESCRIPCIÓN", "VALOR"]);
           colRow.eachCell((cell) => {

@@ -59,7 +59,7 @@ const CompoundInputTable = ({
                     onChange={(event) =>
                       onChangeQuantity(event, index, "quantity")
                     }
-                    disabled={x.compound || (x.budgetStatus==="C" && budgetType==="I")}
+                    disabled={!canEdit || x.compound || (x.budgetStatus==="C" && budgetType==="I")}
                   />
                 </td>
                 <td className={index % 2 === 0 ? "dark w-5 right" : "w-5 right"}>
@@ -73,7 +73,7 @@ const CompoundInputTable = ({
                     onChange={(event) =>
                       onChangeQuantity(event, index, "waste")
                     }
-                    disabled={x.compound || (x.budgetStatus==="C" && budgetType==="I")}
+                    disabled={!canEdit || x.compound || (x.budgetStatus==="C" && budgetType==="I")}
                   />
                 </td>
                 <td className={index % 2 === 0 ? "dark right" : "right"}>
@@ -96,34 +96,38 @@ const CompoundInputTable = ({
                     onChange={(event) =>
                       onChangeQuantity(event, index, "unitValue")
                     }
-                    disabled={x.compound || (x.budgetStatus==="C" && budgetType==="I")}
+                    disabled={!canEdit || x.compound || (x.budgetStatus==="C" && budgetType==="I")}
                   />
                 </td>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
-                  <i
-                    className="far fa-save icon-view-detail"
-                    onClick={() => {
-                        if(!(x.budgetStatus==="C" && budgetType==="I"))
-                         onSaveInformation(index);
-                    }}
-                  />
-                  &nbsp;
-                  <i
-                    className="fas fa-times-circle icon-view-detail"
-                    onClick={() => {
-                      onRefresh();
-                    }}
-                  />
-                  &nbsp;
+                  {canEdit && (
+                    <>
+                      <i
+                        className="far fa-save icon-view-detail"
+                        onClick={() => {
+                          if(!(x.budgetStatus==="C" && budgetType==="I"))
+                            onSaveInformation(index);
+                        }}
+                      />
+                      &nbsp;
+                      <i
+                        className="fas fa-times-circle icon-view-detail"
+                        onClick={() => { onRefresh(); }}
+                      />
+                      &nbsp;
+                    </>
+                  )}
                 </td>
                 <td className={index % 2 === 0 ? "dark right" : "right"}>
                   {`${common.getMoneyFomat(x.totalInput)}`}
                 </td>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
-                  <i
-                    className="fas fa-pencil-alt icon-view-detail"
+                  {canEdit && (
+                    <i
+                      className="fas fa-pencil-alt icon-view-detail"
                       onClick={() => onEditInput(index)}
-                  />
+                    />
+                  )}
                 </td>
               </tr>
             );

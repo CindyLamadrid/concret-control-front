@@ -3,12 +3,12 @@ import { useContext, useEffect, useState} from 'react';
 import { useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs-react";
 import { ConstructionContext } from "../context/constructionContext";
-import Logo from "../images/concretoVivo.png";
+import Logo from "../images/obrika.jpg";
 
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setUser, setConstructionSelected, setStageSelected, setPermissions, setUserConstructions, setRole } =
+  const { setUser, setConstructionSelected, setStageSelected, setPermissions, setUserConstructions, setRole, setCompany } =
     useContext(ConstructionContext);
   const [userInput, setUserInput] = useState("");
   const [password, setPassword] = useState("");
@@ -21,23 +21,25 @@ const Login = () => {
     }
 
     try {
+      const userNameNormalized = userInput.toLowerCase().trim();
       const result = await axios.get(
         `${process.env.REACT_APP_SECURITY_URL_API}/user`,
-        { params: { userName: userInput, password } }
+        { params: { userName: userNameNormalized, password } }
       );
 
       if (result && result.data && result.data.token) {
-        localStorage.setItem("user", userInput);
+        localStorage.setItem("user", userNameNormalized);
         localStorage.setItem("password", btoa(password));
         localStorage.setItem("token", result.data.token);
 
         // Guardar permisos y asignaciones en contexto
-        setUser(userInput);
+        setUser(userNameNormalized);
         setPermissions(result.data.permissions || []);
         setUserConstructions(result.data.constructions || []);
         setRole(result.data.role || null);
+        setCompany(result.data.company || null);
 
-        navigate(`/home?user=${btoa(userInput)}`);
+        navigate(`/home?user=${btoa(userNameNormalized)}`);
       } else {
         setMessage("Usuario o Contraseña incorrecta");
       }
@@ -102,7 +104,7 @@ const Login = () => {
       </div>
       <div className="footer login-footer">
         <div>
-          CONCRETO VIVO - 2025
+          OBRIKA - 2025
         </div>
       </div>
     </div>

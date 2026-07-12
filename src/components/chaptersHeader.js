@@ -30,7 +30,7 @@ const Chapters = ({
       .then((response) => {
         if (response.data.length > 0) {
           setChapterArray(response.data);
-          // Solo fijar el capítulo si el padre aún no tiene uno válido
+          // Solo fijar el capítulo si el padre aún no tiene uno válido (>0)
           if (!chapterSelected || chapterSelected <= 0) {
             setChapterSelected(response.data[0].idChapter);
           }

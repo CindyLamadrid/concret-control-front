@@ -327,13 +327,15 @@ const CompoundInputs = ({
         <div>
           <Back onBack={onBack} className="right back" />
           {" "}
-          <button
-            type="button"
-            className="primary"
-            onClick={() => onAddInputItems()}
-          >
-            {"Agregar Insumo"}
-          </button>
+          {canEdit && (
+            <button
+              type="button"
+              className="primary"
+              onClick={() => onAddInputItems()}
+            >
+              {"Agregar Insumo"}
+            </button>
+          )}
         </div>
       }
        {adminInput && adminInput.show && (

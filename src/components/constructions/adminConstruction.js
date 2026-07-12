@@ -7,14 +7,21 @@ const AdminContruction = ({
   setAdminConstruction,
   messageResultOperation,
   onSaveContruction,
+  companiesArray,
+  defaultCompany,
 }) => {
   const [name, setName] = useState("");
   const [area, setArea] = useState("");
+  const [idCompany, setIdCompany] = useState("");
 
-useEffect(() => {
+  useEffect(() => {
     if (adminConstruction.action === "edit") {
-        setName(adminConstruction.construction.name);
-        setArea(adminConstruction.construction.area);
+      setName(adminConstruction.construction.name);
+      setArea(adminConstruction.construction.area);
+      setIdCompany(adminConstruction.construction.IdCompany || adminConstruction.construction.idCompany || "");
+    } else {
+      // Al crear, preseleccionar la empresa del usuario
+      setIdCompany(defaultCompany && defaultCompany.idCompany ? defaultCompany.idCompany : "");
     }
   }, [adminConstruction.action]);
 
@@ -23,16 +30,39 @@ useEffect(() => {
       <Modal.Body>
         <div className="subtitle center">
           <b>
-            {" "}
             {adminConstruction.action === "edit"
-              ? "EDITAR PROJECTO"
-              : "CREAR PROJECTO"}{" "}
+              ? "EDITAR PROYECTO"
+              : "CREAR PROYECTO"}
           </b>
         </div>
         <div className="center mandatory">
           <div>{messageResultOperation}</div> <br />
         </div>
-        <div className="row ">
+        <div className="row">
+          <div className="col-4 right label">
+            <span>Empresa</span>
+          </div>
+          <div className="col-8">
+            <select
+              className="select w-100"
+              value={idCompany}
+              onChange={(e) => setIdCompany(e.target.value)}
+            >
+              <option value="">-- Seleccionar empresa --</option>
+              {companiesArray && companiesArray.map((c) => (
+                <option key={c.IdCompany || c.idCompany} value={c.IdCompany || c.idCompany}>
+                  {c.Name || c.name} ({c.Nit || c.nit})
+                </option>
+              ))}
+            </select>
+            <div className="mandatory left" hidden={idCompany}>
+              <i className="fas fa-exclamation-circle" />
+              &nbsp; Empresa Obligatoria
+            </div>
+          </div>
+        </div>
+        <br />
+        <div className="row">
           <div className="col-4 right label">
             <span>Nombre</span>
           </div>
@@ -70,11 +100,7 @@ useEffect(() => {
             className="secondary"
             type="button"
             onClick={() =>
-              setAdminConstruction({
-                show: false,
-                construction: "",
-                action: "",
-              })
+              setAdminConstruction({ show: false, construction: "", action: "" })
             }
           >
             {"Cerrar"}
@@ -82,14 +108,12 @@ useEffect(() => {
           &nbsp;&nbsp;
           <button
             className="primary"
-            disabled={!name}
+            disabled={!name || !idCompany}
             onClick={() => {
-              onSaveContruction(name, area, adminConstruction.action);
+              onSaveContruction(name, area, adminConstruction.action, parseInt(idCompany));
             }}
           >
-            {adminConstruction.action === "edit"
-              ? "Guardar Projecto"
-              : "Crear Projecto"}
+            {adminConstruction.action === "edit" ? "Guardar Proyecto" : "Crear Proyecto"}
           </button>
         </div>
       </Modal.Body>

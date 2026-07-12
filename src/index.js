@@ -1,8 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import './styles/themes.scss';
 import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+// Aplicar tema guardado antes de renderizar (evita flash)
+const savedTheme = localStorage.getItem('app-theme') || 'concreto';
+document.documentElement.setAttribute('data-theme', savedTheme);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

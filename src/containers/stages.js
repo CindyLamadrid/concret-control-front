@@ -87,6 +87,8 @@ const Stages = ({}) => {
   };
 
   const viewBudget = (stage, budgetType) => {
+    // Limpiar selección de capítulo para que cargue el primero al entrar
+    localStorage.removeItem("chapterValues");
     navigate(
       `/budget?option=constructionItems&user=${btoa(user)}&idStage=${
         stage[0].idStage

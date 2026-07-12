@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
@@ -6,10 +6,12 @@ import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { useNavigate } from "react-router-dom";
 import { ConstructionContext } from "../context/constructionContext";
-import Logo from "../images/concretoVivo.png";
+import ThemeSelector from "./commons/themeSelector";
+import Logo from "../images/obrika.jpg";
 
 const Menu = ({ setReportOption }) => {
   const navigate = useNavigate();
+  const [showTheme, setShowTheme] = useState(false);
   const {
     user,
     stageSelected,
@@ -191,6 +193,11 @@ const Menu = ({ setReportOption }) => {
 
                     {hasPermission("users") && <NavDropdown.Divider />}
                     {hasPermission("users") && (
+                      <Dropdown.Item className="submenu-option" onClick={() => navigate(`/companies?user=${btoa(user)}`)}>
+                        Empresas
+                      </Dropdown.Item>
+                    )}
+                    {hasPermission("users") && (
                       <Dropdown.Item className="submenu-option" onClick={() => navigate(`/users?user=${btoa(user)}`)}>
                         Usuarios
                       </Dropdown.Item>
@@ -206,11 +213,17 @@ const Menu = ({ setReportOption }) => {
             <span className="container-header-icon center">
               <i className="fas fa-user right header-icon center" />
             </span>
-            <span> <b>{user}</b></span>
-            <span className="container-close-header-icon close center">
-              <i className="fas fa-lock right close-header-icon" onClick={onClose} />
-            </span>
+            <NavDropdown title={user} className="user-dropdown" align="end">
+              <Dropdown.Item onClick={() => setShowTheme(!showTheme)}>
+                <i className="fas fa-palette" /> Cambiar Tema
+              </Dropdown.Item>
+              <NavDropdown.Divider />
+              <Dropdown.Item onClick={onClose}>
+                <i className="fas fa-lock" /> Cerrar Sesión
+              </Dropdown.Item>
+            </NavDropdown>
           </div>
+          {showTheme && <ThemeSelector onClose={() => setShowTheme(false)} />}
         </div>
       </div>
     </div>

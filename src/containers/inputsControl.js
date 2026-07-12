@@ -105,17 +105,11 @@ const InputsControl = () => {
   };
 
   const onSelectInput = (index) => {
-   
     if (index > -1) {
-          const newInputsArray = inputsArray.map(
-        (x) =>{x.selected=false
-
-          return x
-        }
-      );
-      const input =  newInputsArray[index]
-      input.selected = !input.selected ;
-      newInputsArray[index] = input
+      const newInputsArray = inputsArray.map((item, i) => ({
+        ...item,
+        selected: i === index ? !item.selected : false,
+      }));
       setInputsArray(newInputsArray);
     }
   };

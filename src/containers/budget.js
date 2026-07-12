@@ -14,7 +14,7 @@ const Budget = ({}) => {
     useContext(ConstructionContext);
   const { canEdit } = usePermissions("budget");
 
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const idItem = searchParams.get("idItem");
   const [showOption, setShowOption] = useState(
     searchParams.get("option")
@@ -25,6 +25,7 @@ const Budget = ({}) => {
     idConstructionStageItem: searchParams.get("idConstructionStageItem")
       ? searchParams.get("idConstructionStageItem")
       : "",
+    idItem: searchParams.get("idItem") || "",
   });
   const [compoundSelected, setCompoundSelected] = useState({
     idInput: searchParams.get("idCompoundSelected")
@@ -33,8 +34,38 @@ const Budget = ({}) => {
   });
   const [budgetType] = useState(searchParams.get("budgetType"));
 
-  const [chapterSelected, setChapterSelected] = useState(-1);
-  const [subchapterSelected, setSubchapterSelected] = useState(-1);
+  // Sincronizar la URL con el estado actual para que al refrescar se mantenga
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    params.set("option", showOption);
+    if (itemSelected && itemSelected.idConstructionStageItem) {
+      params.set("idConstructionStageItem", itemSelected.idConstructionStageItem);
+    }
+    if (itemSelected && itemSelected.idItem) {
+      params.set("idItem", itemSelected.idItem);
+    }
+    if (compoundSelected && compoundSelected.idInput) {
+      params.set("idCompoundSelected", compoundSelected.idInput);
+    }
+    setSearchParams(params, { replace: true });
+  }, [showOption, itemSelected?.idConstructionStageItem, compoundSelected?.idInput]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const [chapterSelected, setChapterSelected] = useState(() => {
+    const saved = localStorage.getItem("chapterValues");
+    if (saved) {
+      const v = JSON.parse(saved);
+      return parseInt(v.chapterSelected) || 0;
+    }
+    return 0;
+  });
+  const [subchapterSelected, setSubchapterSelected] = useState(() => {
+    const saved = localStorage.getItem("chapterValues");
+    if (saved) {
+      const v = JSON.parse(saved);
+      return parseInt(v.subchapterSelected) || 0;
+    }
+    return 0;
+  });
   const [constructionItemsArray, setConstructionItemsArray] = useState([]);
   // const [inputType,setInputType] = useState('')
   const [itemInputsArray, setItemInputsArray] = useState([]);
@@ -130,21 +161,16 @@ const Budget = ({}) => {
     }
   }, [constructionItemsArray]);
 
+  // Al refrescar en inputItems o compoundInputs, recargar los insumos del ítem
   useEffect(() => {
-    const chapterValues = localStorage.getItem("chapterValues");
-
-    if (chapterValues) {
-      const values = JSON.parse(chapterValues);
-      const newChapterSelected = parseInt(values.chapterSelected);
-      const newSubchapterSelected = parseInt(values.subchapterSelected);
-
-      setChapterSelected(newChapterSelected);
-      setSubchapterSelected(newSubchapterSelected);
-    } else {
-      setChapterSelected(0);
-      setSubchapterSelected(0);
+    if (
+      (showOption === "inputItems" || showOption === "compoundInputs") &&
+      itemSelected &&
+      itemSelected.idConstructionStageItem
+    ) {
+      getItemInputs(itemSelected.idConstructionStageItem, showOption === "compoundInputs");
     }
-  }, []);
+  }, [itemSelected?.idConstructionStageItem, showOption]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div>

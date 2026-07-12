@@ -47,16 +47,16 @@ const InputItem = ({
 
   const onRefresh = () => {
     setMessageResultOperation("")
-    getItemInputs(itemSelected.idConstructionStageItem);
+    if (itemSelected && itemSelected.idConstructionStageItem)
+      getItemInputs(itemSelected.idConstructionStageItem);
   };
 
   useEffect(() => {
-    if (itemSelected.idConstructionStageItem) {
+    if (itemSelected && itemSelected.idConstructionStageItem) {
        setMessageResultOperation("")
       getItemInputs(itemSelected.idConstructionStageItem);
-     
     }
-  }, [itemSelected.idConstructionStageItem]);
+  }, [itemSelected && itemSelected.idConstructionStageItem]);
 
   useEffect(
     ()=>{
@@ -132,9 +132,10 @@ const InputItem = ({
 
       if (result && result.data) 
         {
-          getItemInputs(itemSelected.idConstructionStageItem);
-          getItems(true); 
-          
+          if (itemSelected && itemSelected.idConstructionStageItem) {
+            getItemInputs(itemSelected.idConstructionStageItem);
+            getItems(true);
+          }
         }
     } catch (error) {
       setItemInputsArray([]);
@@ -159,7 +160,8 @@ const InputItem = ({
         }
       );
 
-      if (result && result.data) getItemInputs(itemSelected.idConstructionStageItem);
+      if (result && result.data && itemSelected && itemSelected.idConstructionStageItem)
+        getItemInputs(itemSelected.idConstructionStageItem);
     } catch (error) {
       setItemInputsArray([]);
       setNoData(true);
@@ -297,7 +299,8 @@ const InputItem = ({
         } else {
           setAdminInput({ show: false, input: "", action: "" });
           setMessageResultOperation("");
-          await getItemInputs(itemSelected.idConstructionStageItem);
+          if (itemSelected && itemSelected.idConstructionStageItem)
+            await getItemInputs(itemSelected.idConstructionStageItem);
         }
       }
     } catch (error) {
@@ -341,13 +344,15 @@ const InputItem = ({
       <div >
          <Back onBack={onBack} className="" />
             {" "}
-        <button
-          type="button"
-          className="primary"
-          onClick={() => onAddInputItem()}
-        >
-          {"Agregar Insumo"}
-        </button>
+        {canEdit && (
+          <button
+            type="button"
+            className="primary"
+            onClick={() => onAddInputItem()}
+          >
+            {"Agregar Insumo"}
+          </button>
+        )}
       </div>
       <br />
 

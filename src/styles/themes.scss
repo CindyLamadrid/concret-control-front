@@ -1,0 +1,110 @@
+/* ============================================================
+   TEMAS DE LA APLICACIÓN
+   Se activan poniendo data-theme="nombre" en el <html>
+   ============================================================ */
+
+/* Tema por defecto: OBRIKA (azul oscuro + naranja) */
+:root,
+[data-theme="concreto"] {
+  --color-primary: #1a2744;
+  --color-secondary: #e8712a;
+  --color-tertiary: #132036;
+  --color-bg: #ffffff;
+  --color-bg-alt: #f5f6f8;
+  --color-text: #1a2744;
+  --color-text-light: #5a6577;
+  --color-border: #dce0e6;
+  --color-header-bg: #1a2744;
+  --color-header-text: #ffffff;
+  --color-row-dark: #f0f2f5;
+  --color-sidebar: #1a2744;
+  --color-accent: #e8712a;
+  --color-danger: #dc3545;
+  --color-success: #28a745;
+  --color-input-border: #1a2744;
+  --color-user-bg: #243454;
+}
+
+/* Tema: Acero (claro con acentos azul acero) */
+[data-theme="acero"] {
+  --color-primary: #3a5a8c;
+  --color-secondary: #5a7eb5;
+  --color-tertiary: #2c4a7c;
+  --color-bg: #f4f6f9;
+  --color-bg-alt: #e8ecf2;
+  --color-text: #1a1a2e;
+  --color-text-light: #555566;
+  --color-border: #c8d0dc;
+  --color-header-bg: #4a6fa5;
+  --color-header-text: #ffffff;
+  --color-row-dark: #e8ecf2;
+  --color-sidebar: #3a5a8c;
+  --color-accent: #4a6fa5;
+  --color-danger: #dc3545;
+  --color-success: #28a745;
+  --color-input-border: #4a6fa5;
+  --color-user-bg: #3d6090;
+}
+
+/* Tema: Arena (warm) */
+[data-theme="arena"] {
+  --color-primary: #8b5e3c;
+  --color-secondary: #c4713b;
+  --color-tertiary: #6b4226;
+  --color-bg: #faf5f0;
+  --color-bg-alt: #f5ebe0;
+  --color-text: #3d2b1f;
+  --color-text-light: #7a6555;
+  --color-border: #e0d5c8;
+  --color-header-bg: #c4713b;
+  --color-header-text: #ffffff;
+  --color-row-dark: #f5ebe0;
+  --color-sidebar: #8b5e3c;
+  --color-accent: #d4956a;
+  --color-danger: #c0392b;
+  --color-success: #27ae60;
+  --color-input-border: #8b5e3c;
+  --color-user-bg: #a85f30;
+}
+
+/* Tema: Plano (corporate blue) */
+[data-theme="plano"] {
+  --color-primary: #1e40af;
+  --color-secondary: #2563eb;
+  --color-tertiary: #1d4ed8;
+  --color-bg: #f8fafc;
+  --color-bg-alt: #eff6ff;
+  --color-text: #1e293b;
+  --color-text-light: #64748b;
+  --color-border: #cbd5e1;
+  --color-header-bg: #2563eb;
+  --color-header-text: #ffffff;
+  --color-row-dark: #eff6ff;
+  --color-sidebar: #1e40af;
+  --color-accent: #3b82f6;
+  --color-danger: #ef4444;
+  --color-success: #22c55e;
+  --color-input-border: #2563eb;
+  --color-user-bg: #1d4ed8;
+}
+
+/* Tema: Bosque (nature) */
+[data-theme="bosque"] {
+  --color-primary: #1b4332;
+  --color-secondary: #2d6a4f;
+  --color-tertiary: #1b4332;
+  --color-bg: #f0fdf4;
+  --color-bg-alt: #dcfce7;
+  --color-text: #14532d;
+  --color-text-light: #4d7c5e;
+  --color-border: #bbf7d0;
+  --color-header-bg: #2d6a4f;
+  --color-header-text: #ffffff;
+  --color-row-dark: #dcfce7;
+  --color-sidebar: #1b4332;
+  --color-accent: #40916c;
+  --color-danger: #dc2626;
+  --color-success: #16a34a;
+  --color-input-border: #2d6a4f;
+  --color-user-bg: #245740;
+}

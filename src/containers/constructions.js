@@ -7,9 +7,10 @@ import AdminContruction from "../components/constructions/adminConstruction";
 
 const Constructions = ({}) => {
   const navigate = useNavigate();
-  const { setConstructionSelected, user, role, userConstructions, permissions } = useContext(ConstructionContext);
+  const { setConstructionSelected, user, role, userConstructions, permissions, company } = useContext(ConstructionContext);
 
   const [constructionsArray, setConstructionsArray] = useState([]);
+  const [companiesArray, setCompaniesArray] = useState([]);
   const [messageResultOperation, setMessageResultOperation] = useState("");
   const [adminConstruction, setAdminConstruction] = useState({
     show: false,
@@ -25,9 +26,14 @@ const Constructions = ({}) => {
       })
       .then((result) => {
         if (result && result.data) {
-          // Filtrar obras según asignaciones (Admin ve todo)
+          // Filtrar obras según asignaciones (Admin ve todo de su empresa)
           if (role && role.isAdmin) {
-            setConstructionsArray(result.data);
+            // Admin: filtra por su empresa
+            const idComp = company && company.idCompany;
+            const filtered = idComp
+              ? result.data.filter((c) => (c.IdCompany || c.idCompany) === idComp)
+              : result.data;
+            setConstructionsArray(filtered);
           } else {
             const allowedIds = userConstructions.map((uc) => uc.IdConstruction || uc.idConstruction);
             const filtered = result.data.filter((c) => allowedIds.includes(c.idConstruction));
@@ -49,7 +55,22 @@ const Constructions = ({}) => {
       JSON.stringify({ chapterSelected: 0, subchapterSelected: 0 })
     );
     getConstructions();
+    getCompanies();
   }, []);
+
+  const getCompanies = () => {
+    const token = localStorage.getItem("token");
+    axios
+      .get(`${process.env.REACT_APP_SECURITY_URL_API}/companies`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((result) => {
+        if (result && result.data) {
+          setCompaniesArray(result.data);
+        }
+      })
+      .catch((error) => console.error("Error fetching companies:", error));
+  };
 
   const onViewStage = (idConstruction) => {
     const construction = constructionsArray.filter(
@@ -78,7 +99,7 @@ const Constructions = ({}) => {
     setAdminConstruction({ show: true, construction: "", action: "new" });
   };
 
-  const onSaveContruction = async(name,area,action) => {
+  const onSaveContruction = async(name, area, action, idCompany) => {
 
       try {
       const result = await axios.post(
@@ -88,6 +109,7 @@ const Constructions = ({}) => {
           idConstruction:action === "edit" ? parseInt(adminConstruction.construction.idConstruction) : 0,
           name,
           area,
+          idCompany: idCompany || (company && company.idCompany) || null,
           user,
         }
       );
@@ -145,6 +167,8 @@ const Constructions = ({}) => {
             setAdminConstruction={setAdminConstruction}
             messageResultOperation={messageResultOperation}
             onSaveContruction={onSaveContruction}
+            companiesArray={companiesArray}
+            defaultCompany={company}
           />
         </div>
       )}

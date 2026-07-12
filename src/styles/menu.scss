@@ -7,7 +7,7 @@
   height: $header-height;
   min-width: 700px;
   min-height: 90px;
-  background-color: #06a796;
+  background-color: var(--color-header-bg, #1a2744);
   padding-bottom: 2px;
   padding-top: 2px;
   @include respond-to(mobile) {
@@ -17,10 +17,8 @@
 }
 
 .container-logo {
- 
-  border: solid $white;
+  border: none;
   position: relative;
-  // left: 8%;
   background-color: $white;
   min-width: 140px;
   border-bottom-right-radius: 50px;
@@ -36,7 +34,7 @@
   height: 100%;
   --bs-navbar-padding-y: 0rem;
   --bs-navbar-brand-padding-y: 0rem;
-  background-color: $secondary-color;
+  background-color: var(--color-header-bg, #1a2744);
 
   @include respond-to(mobile) {
     height: auto;
@@ -45,7 +43,7 @@
 }
 
 .menu-option {
-  background-color: $secondary-color;
+  background-color: var(--color-header-bg, #1a2744);
   color: $white;
   text-align: end;
   font-size: $font-size-large;
@@ -62,7 +60,7 @@
   border-right: 1px solid $white;
 
   .nav-link {
-    background-color: $secondary-color;
+    background-color: var(--color-header-bg, #1a2744);
     color: $white;
     
     @include respond-to(mobile) {

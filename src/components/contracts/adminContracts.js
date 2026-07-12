@@ -62,14 +62,13 @@ const AdminContract = ({
   };
 
   const onChangeSupplierSelected = (index) => {
-    console.log("onChange===", index);
     if (index > -1) {
-      const newSupliersArray = [...suppliersArray];
-      newSupliersArray[index].selected = !suppliersArray[index].selected;
-
-      setSuppliersArray(...[newSupliersArray]);
+      const newSupliersArray = suppliersArray.map((item, i) => ({
+        ...item,
+        selected: i === index,
+      }));
+      setSuppliersArray(newSupliersArray);
       setSupplier(newSupliersArray[index]);
-      console.log("newSupliersArray.idSupplier", newSupliersArray);
     }
   };
 

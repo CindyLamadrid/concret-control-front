@@ -42,7 +42,7 @@ const SupplierTable = ({
                     <input
                       type="radio"
                       name="supplier" 
-                      value={x.selected}
+                      checked={x.selected}
                       onChange={() => {
                         onChangeSupplierSelected(index);
                       }}

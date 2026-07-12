@@ -122,7 +122,7 @@ const generateReport=(reportArray)=>{
           const APU_FILL     = { type: "pattern", pattern: "solid", fgColor: { argb: "FFE8F4FD" } };
           const TOTAL_FILL   = { type: "pattern", pattern: "solid", fgColor: { argb: "FFD0D0D0" } };
 
-          const moneyFmt = '#,##0.00';
+          const moneyFmt = '$#,##0.00';
 
           const items = createArrayData(result.data);
           let currentChapter = null;
@@ -132,7 +132,7 @@ const generateReport=(reportArray)=>{
             if (item.chapterReport && item.chapter !== currentChapter) {
               currentChapter = item.chapter;
               const chRow = ws.addRow([item.chapterReport]);
-              ws.mergeCells(`A${chRow.number}:K${chRow.number}`);
+              ws.mergeCells(`A${chRow.number}:H${chRow.number}`);
               chRow.getCell(1).fill = CHAPTER_FILL;
               chRow.getCell(1).font = { bold: true };
               chRow.getCell(1).alignment = { horizontal: "left" };
@@ -140,7 +140,7 @@ const generateReport=(reportArray)=>{
 
             // A.P.U header row — all from col A
             const apuRow = ws.addRow([`A.P.U: ${item.itemCod} - ${item.itemName}`]);
-            ws.mergeCells(`A${apuRow.number}:K${apuRow.number}`);
+            ws.mergeCells(`A${apuRow.number}:H${apuRow.number}`);
             apuRow.getCell(1).fill = APU_FILL;
             apuRow.getCell(1).font = { italic: true };
             apuRow.getCell(1).alignment = { horizontal: "left" };
