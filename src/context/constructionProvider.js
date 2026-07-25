@@ -27,6 +27,7 @@ export const ConstructionProvider = ({ children }) => {
   const [userConstructions, setUserConstructions] = useState(() => loadFromStorage('userConstructions', []));
   const [role, setRole] = useState(() => loadFromStorage('role', null));
   const [company, setCompany] = useState(() => loadFromStorage('company', null));
+  const [isCostControl, setIsCostControl] = useState(() => loadFromStorage('isCostControl', false));
 
   const constructionValue = {
     user,
@@ -37,6 +38,7 @@ export const ConstructionProvider = ({ children }) => {
     userConstructions,
     role,
     company,
+    isCostControl,
     setUser,
     setStageSelected,
     setConstructionSelected,
@@ -45,6 +47,7 @@ export const ConstructionProvider = ({ children }) => {
     setUserConstructions,
     setRole,
     setCompany,
+    setIsCostControl,
   };
 
   // Persistir en localStorage
@@ -55,6 +58,7 @@ export const ConstructionProvider = ({ children }) => {
   useEffect(() => { saveToStorage('userConstructions', userConstructions); }, [userConstructions]);
   useEffect(() => { saveToStorage('role', role); }, [role]);
   useEffect(() => { saveToStorage('company', company); }, [company]);
+  useEffect(() => { saveToStorage('isCostControl', isCostControl); }, [isCostControl]);
 
   return (
     <ConstructionContext.Provider value={constructionValue}>{children}</ConstructionContext.Provider>

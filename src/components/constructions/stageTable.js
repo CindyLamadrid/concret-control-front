@@ -36,12 +36,16 @@ const StagesTable = ({
                     <option key="1" value="I" className="bold">
                       Presupuesto Inicial
                     </option>
-                    <option key="2" value="U" className="bold">
-                       Presupuesto Modificado
-                    </option>
-                    <option key="3" value="CC" className="bold">
-                     Control Costos
-                    </option>
+                    {x.statusBudget !== "O" && (
+                      <option key="2" value="U" className="bold">
+                        Presupuesto Modificado
+                      </option>
+                    )}
+                    {x.statusBudget !== "O" && (
+                      <option key="3" value="CC" className="bold">
+                        Control Costos
+                      </option>
+                    )}
                   </select>
                   &nbsp;&nbsp;
                   <i

@@ -3,13 +3,21 @@
 
 .table {
   @include table-responsive;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid $lightgray;
 
   thead th {
-    background-color: $white;
-    color: $primary-color;
+    background-color: var(--color-primary, $primary-color);
+    color: $white;
     font-size: $font-size-small;
     font-weight: 500;
     text-align: center;
+    padding: 6px 8px;
+    border: none;
+    border-bottom: 2px solid var(--color-secondary, $secondary-color);
 
     @include respond-to(mobile) {
       font-size: 7pt;
@@ -19,12 +27,11 @@
 
   tbody td {
     font-size: $font-size-normal;
-    border-bottom: 1px $lightgray solid;
-    padding-right: 2px;
-    padding-left: 2px;
-    padding-top: 1px;
-    padding-bottom: 1px;
-    border: solid 1px $lightgray;
+    padding: 5px 8px;
+    border-bottom: 1px solid #e8e8e8;
+    border-left: none;
+    border-right: none;
+    border-top: none;
 
     @include respond-to(mobile) {
       font-size: $font-size-small;
@@ -47,6 +54,10 @@
     i {
       vertical-align: middle;
     }
+  }
+
+  tbody tr:hover {
+    background-color: var(--color-bg-alt, #f5f6f8);
   }
 }
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from "react-bootstrap/Modal";
 
-const NewUser = ({ setShowNewUser, onSaveUser }) => {
+const NewUser = ({ setShowNewUser, onSaveUser, message }) => {
   const [name, setName] = useState("");
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -54,6 +54,9 @@ const NewUser = ({ setShowNewUser, onSaveUser }) => {
         <form autoComplete="off">
         <div className="subtitle center">
           <b>CREAR USUARIO</b>
+        </div>
+        <div className="center mandatory">
+          <div>{message}</div>
         </div>
         <div className="row">
           <div className="col-4 right label">

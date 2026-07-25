@@ -3,8 +3,7 @@ import Modal from "react-bootstrap/Modal";
 const Notifications = ({ message, buttonArray, item }) => {
   return (
     <div
-      className="modal show"
-      style={{ display: "block", position: "initial" }}
+      className="modal show modal-inline"
     >
       <Modal.Dialog>
         <Modal.Body>

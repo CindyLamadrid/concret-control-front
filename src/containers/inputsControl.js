@@ -14,7 +14,7 @@ import { ConstructionContext } from "../context/constructionContext";
 import useEventListener from "../components/utils/useEventListener";
 
 const InputsControl = () => {
-  const { user,stageSelected } = useContext(ConstructionContext);
+  const { user, stageSelected } = useContext(ConstructionContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [type] = useState(searchParams.get("type"));
@@ -25,10 +25,10 @@ const InputsControl = () => {
   const [input, setInput] = useState("");
   const [messageResultOperation, setMessageResultOperation] = useState("");
   const [chapters, setChapters] = useState([]);
-  const [inputs,setInputs] = useState([]);
+  const [inputs, setInputs] = useState([]);
   const [chapterSubChater, setChapterSubChater] = useState("");
-  const [chapterSelected,setChapterSelected]=useState("")
-  const [inputSelected,setInputSelected]=useState("")
+  const [chapterSelected, setChapterSelected] = useState("")
+  const [inputSelected, setInputSelected] = useState("")
 
   const [adminInput, setAdminInput] = useState({
     show: false,
@@ -37,17 +37,17 @@ const InputsControl = () => {
   });
 
   const onSearchInput = async () => {
-  //  setChapterSelected("")
+    //  setChapterSelected("")
     if (!input) return;
     setMessageResultOperation("");
     try {
       const result = await axios.get
-      (
-        `${process.env.REACT_APP_BUDGET_URL_API}/item-inputs-control-nameCod`,
-        {
-          params: { input },
-        },
-      );
+        (
+          `${process.env.REACT_APP_BUDGET_URL_API}/item-inputs-control-nameCod`,
+          {
+            params: { input, contractType: type },
+          },
+        );
       if (result && result.data && result.data.length > 0) {
         let { data } = result;
         setInputsArray(data);
@@ -67,13 +67,13 @@ const InputsControl = () => {
     try {
       console.log("adminInput==", adminInput);
       const result = await axios.post(
-        `${process.env.REACT_APP_BUDGET_URL_API}/${
-          action === "edit" ? "update-input-control" : "create-input-control"
+        `${process.env.REACT_APP_BUDGET_URL_API}/${action === "edit" ? "update-input-control" : "create-input-control"
         }`,
         {
           idInput: action === "edit" ? parseInt(adminInput.input.idInput) : 0,
           idUnit: unitSelected,
           name: name,
+          contractType: type,
           user,
         },
       );
@@ -146,14 +146,15 @@ const InputsControl = () => {
 
   const onSaveInputContract = async (items) => {
     try {
-       console.log("chapterSelected",chapterSelected);
+      console.log("chapterSelected", chapterSelected);
       const result = await axios.post(
         `${process.env.REACT_APP_BUDGET_URL_API}/create-contract-input`,
         {
           idInput: items,
           idContract,
           idChapter: chapterSelected.idChapter,
-          idSubchapter :chapterSelected.idSubchapter,
+          idSubchapter: chapterSelected.idSubchapter,
+          idInputBudget: inputSelected || null,
           user,
         },
       );
@@ -215,28 +216,27 @@ const InputsControl = () => {
         )
         .then((result) => {
           setChapters(result.data);
-          console.log("getChaptersSubchapters===",result.data)
-          if(result.data.length>0)
-          {
-             console.log("getChaptersSubchaptersV1===",result.data[0])
-              setChapterSelected(result.data[0])
+          console.log("getChaptersSubchapters===", result.data)
+          if (result.data.length > 0) {
+            console.log("getChaptersSubchaptersV1===", result.data[0])
+            setChapterSelected(result.data[0])
           }
-        
+
         });
     } catch (error) {
       console.error("Error fetching getChaptersSubchapters:", error);
     }
   };
 
-    const getChapterInputs = async () => {
-     
+  const getChapterInputs = async () => {
+
     try {
       axios
         .post(
           `${process.env.REACT_APP_BUDGET_URL_API}/chapter-inputs`,
           {
             idStage: stageSelected.idStage,
-            idChapter : chapterSelected.idChapter,
+            idChapter: chapterSelected.idChapter,
             idSubchapter: chapterSelected.idSubchapter
           }
         )
@@ -254,22 +254,22 @@ const InputsControl = () => {
     getChaptersSubchapters();
   }, []);
 
-  
+
   useEffect(() => {
-    if(chapterSelected &&JSON.stringify(chapterSelected)!=="{")
-    getChapterInputs()
+    if (chapterSelected && JSON.stringify(chapterSelected) !== "{}" && stageSelected && stageSelected.idStage)
+      getChapterInputs()
   }, [chapterSelected]);
 
-  const onSelectChapter=(value)=>{
+  const onSelectChapter = (value) => {
     const chapterSelected = chapters.filter(
       (x) =>
-        x.cod===value
-      
-    )
-    console.log("chapterSelected",chapterSelected);
+        x.cod === value
 
-    if(chapterSelected && chapterSelected.length>0){
-       setChapterSelected(chapterSelected[0])
+    )
+    console.log("chapterSelected", chapterSelected);
+
+    if (chapterSelected && chapterSelected.length > 0) {
+      setChapterSelected(chapterSelected[0])
     }
     setChapterSubChater(value)
   }
@@ -298,8 +298,7 @@ const InputsControl = () => {
       }
       {adminInput && adminInput.show && (
         <div
-          className="modal show"
-          style={{ display: "block", position: "initial" }}
+          className="modal show modal-inline"
         >
           <AdminInput
             messageResultOperation={messageResultOperation}
@@ -313,10 +312,41 @@ const InputsControl = () => {
       )}
       {inputsArray && inputsArray.length > 0 && (
         <div>
-          <div className="subtitle">
-            <span>LISTADO DE INSUMOS GENERALES</span>
+          <div className="section-title">
+            Asignación de Insumos
           </div>
 
+          <div className="row subcontainer-admin-options">
+            <div className="col-2 left label">
+              <span>Capítulo / Subcapítulo&nbsp;</span>
+            </div>
+            <div className="col-4">
+              <ChapterSelect
+                id="cod"
+                name="chapterSubchapter"
+                array={chapters}
+                selectedValue={chapterSubChater}
+                setSelectedValue={onSelectChapter}
+              />
+            </div>
+          </div>
+
+          <div className="row subcontainer-admin-options">
+            <div className="col-2 left label">
+              <span>Insumo Presupuesto&nbsp;</span>
+            </div>
+            <div className="col-4">
+              <ChapterSelect
+                id="cod"
+                name="name"
+                array={inputs}
+                selectedValue={inputSelected}
+                setSelectedValue={setInputSelected}
+              />
+            </div>
+          </div>
+
+          <br />
           <div>
             <Back onBack={onBack} className="" />{" "}
             <button
@@ -327,41 +357,12 @@ const InputsControl = () => {
               {"Agregar Insumo"}
             </button>
           </div>
-
-          <br />
-            <div className="row">
-            <div className="col-2">Capitulo y Subcapitulo</div>
-            <div className="col-10">
-              <div className="w-40">
-                <ChapterSelect
-                  id="cod"
-                  name="chapterSubchapter"
-                  array={chapters}
-                  selectedValue={chapterSubChater}
-                  setSelectedValue={onSelectChapter}
-                />
-              </div>
-            </div>
-          </div>
-             <div className="row">
-            <div className="col-2">Inputs</div>
-            <div className="col-10">
-              <div className="w-40">
-                <ChapterSelect
-                  id="cod"
-                  name="name"
-                  array={inputs}
-                  selectedValue={inputSelected}
-                  setSelectedValue={setInputSelected}
-                />
-              </div>
-            </div>
-          </div>
+ <br />
           <InputTable
             inputsArray={inputsArray}
             onSelectInput={onSelectInput}
             onEditInput={onEditInput}
-            onShowCompoundInputs={() => {}}
+            onShowCompoundInputs={() => { }}
             showCompoundInputs={false}
             inputType="control"
           />

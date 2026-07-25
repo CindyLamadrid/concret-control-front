@@ -152,7 +152,7 @@ const Orders = () => {
       />
 
       {adminOrder.show && (
-        <div className="modal show modal-xl" style={{ display: "block", position: "initial" }}>
+        <div className="modal show modal-xl modal-inline">
           <AdminOrder
             adminOrder={adminOrder}
             messageResultOperation={messageResultOperation}
@@ -163,7 +163,7 @@ const Orders = () => {
       )}
 
       {adminOrderEdit.show && (
-        <div className="modal show modal-xl" style={{ display: "block", position: "initial" }}>
+        <div className="modal show modal-xl modal-inline">
           <AdminOrderEdit
             adminOrderEdit={adminOrderEdit}
             messageResultOperation={messageResultOperation}

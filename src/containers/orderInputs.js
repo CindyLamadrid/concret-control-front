@@ -149,7 +149,7 @@ const OrderInputs = () => {
         </button>
       </div>
 
-      <div className="header-title" style={{ marginTop: 8 }}>
+      <div className="header-title mt-8">
         <span>INSUMOS DE ORDEN DE PAGO</span>
       </div>
 
@@ -161,7 +161,7 @@ const OrderInputs = () => {
       />
 
       {addModal && (
-        <div className="modal show modal-xl" style={{ display: "block", position: "initial" }}>
+        <div className="modal show modal-xl modal-inline">
           <AddOrderInput
             idOrder={idOrder}
             idSupplier={idSupplier}

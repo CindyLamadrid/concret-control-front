@@ -80,7 +80,7 @@ const Users = () => {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
     try {
-      await axios.post(
+      const response = await axios.post(
         `${process.env.REACT_APP_SECURITY_URL_API}/create-user`,
         { userName, completeName: name, password: hash, user, idCompany, idRole },
         { headers }
@@ -90,7 +90,11 @@ const Users = () => {
       if (searchText.length >= 2) searchUsers();
     } catch (err) {
       console.error("Error creating user:", err);
-      setMessage("Error al crear usuario");
+      if (err.response && err.response.status === 409) {
+        setMessage("El usuario ya se encuentra registrado, por favor intente con otro nombre de usuario");
+      } else {
+        setMessage("Error al crear usuario");
+      }
     }
   };
 
@@ -151,7 +155,7 @@ const Users = () => {
         <span>LISTADO DE USUARIOS</span>
         <span className="subheader-title">&nbsp;&nbsp;&nbsp;{usersArray.length} usuario(s)</span>
       </div>
-      <div className="row" style={{ marginBottom: "15px" }}>
+      <div className="row mb-15">
         <div className="col-4">
           <input
             className="input w-100"
@@ -176,8 +180,8 @@ const Users = () => {
       {message && <div className="mandatory">{message}</div>}
 
       {showNewUser && (
-        <div className="modal show" style={{ display: "block", position: "initial" }}>
-          <NewUser setShowNewUser={setShowNewUser} onSaveUser={onSaveUser} />
+        <div className="modal show modal-inline">
+          <NewUser setShowNewUser={setShowNewUser} onSaveUser={onSaveUser} message={message} />
         </div>
       )}
 

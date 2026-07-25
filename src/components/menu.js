@@ -17,6 +17,7 @@ const Menu = ({ setReportOption }) => {
     stageSelected,
     permissions,
     role,
+    isCostControl,
     setUser,
     setStageSelected,
     setConstructionSelected,
@@ -138,44 +139,44 @@ const Menu = ({ setReportOption }) => {
                 )}
 
                 {/* ADMINISTRAR - visible si tiene al menos un permiso de gestión */}
-                {(hasPermission("chapters") || hasPermission("suppliers") ||
-                  hasPermission("contracts") || hasPermission("orders") || hasPermission("users")) && (
+                {((hasPermission("chapters") && !isCostControl) || (hasPermission("suppliers") && isCostControl) ||
+                  (hasPermission("contracts") && isCostControl) || (hasPermission("orders") && isCostControl) || hasPermission("users")) && (
                   <NavDropdown title="Administrar" className="menu-option select-option">
-                    {hasPermission("chapters") && (
+                    {hasPermission("chapters") && !isCostControl && (
                       <Dropdown.Item className="submenu-option" onClick={() => navigate(`/chapters?user=${btoa(user)}`)}>
                         Capitulos
                       </Dropdown.Item>
                     )}
-                    {hasPermission("chapters") && (
+                    {hasPermission("chapters") && !isCostControl && (
                       <Dropdown.Item className="submenu-option" onClick={() => navigate(`/subchapters?user=${btoa(user)}`)}>
                         Subcapitulos
                       </Dropdown.Item>
                     )}
-                    {hasPermission("suppliers") && (
+                    {hasPermission("suppliers") && isCostControl && (
                       <Dropdown.Item className="submenu-option" onClick={() => navigate(`/suppliers?user=${btoa(user)}`)}>
                         Proveedores
                       </Dropdown.Item>
                     )}
 
-                    {hasPermission("contracts") && stageSelected && stageSelected.idStage && (
-                      <DropdownButton title="Contratos" className="submenu-option submenu-main" key="end" drop="end">
-                        <Dropdown.Item className="submenu-option" onClick={() => navigate(`/contracts?user=${btoa(user)}&type=L&idStage=${stageSelected.idStage}`, { replace: true })}>
+                    {hasPermission("contracts") && isCostControl && (
+                      <DropdownButton title="Contratos" className="submenu-option submenu-main" key="contracts" drop="end">
+                        <Dropdown.Item className="submenu-option" onClick={() => navigate(`/contracts?user=${btoa(user)}&type=L${stageSelected ? `&idStage=${stageSelected.idStage}` : ""}`, { replace: true })}>
                           Mano de Obra
                         </Dropdown.Item>
-                        <Dropdown.Item className="submenu-option" onClick={() => navigate(`/contracts?user=${btoa(user)}&type=S&idStage=${stageSelected.idStage}`, { replace: true })}>
+                        <Dropdown.Item className="submenu-option" onClick={() => navigate(`/contracts?user=${btoa(user)}&type=S${stageSelected ? `&idStage=${stageSelected.idStage}` : ""}`, { replace: true })}>
                           Servicios
                         </Dropdown.Item>
-                        <Dropdown.Item className="submenu-option" onClick={() => navigate(`/contracts?user=${btoa(user)}&type=M&idStage=${stageSelected.idStage}`)}>
+                        <Dropdown.Item className="submenu-option" onClick={() => navigate(`/contracts?user=${btoa(user)}&type=M${stageSelected ? `&idStage=${stageSelected.idStage}` : ""}`)}>
                           Suministros de Materiales
                         </Dropdown.Item>
-                        <Dropdown.Item className="submenu-option" onClick={() => navigate(`/contracts?user=${btoa(user)}&type=C&idStage=${stageSelected.idStage}`)}>
+                        <Dropdown.Item className="submenu-option" onClick={() => navigate(`/contracts?user=${btoa(user)}&type=C${stageSelected ? `&idStage=${stageSelected.idStage}` : ""}`)}>
                           Construcción
                         </Dropdown.Item>
                       </DropdownButton>
                     )}
 
-                    {hasPermission("orders") && stageSelected && stageSelected.idStage && (
-                      <DropdownButton title="Orden Pago" className="submenu-option submenu-main" key="end" drop="end">
+                    {hasPermission("orders") && isCostControl && stageSelected && stageSelected.idStage && (
+                      <DropdownButton title="Orden Pago" className="submenu-option submenu-main" key="orders" drop="end">
                         <Dropdown.Item className="submenu-option" onClick={() => navigate(`/orders?user=${btoa(user)}&type=L&idStage=${stageSelected.idStage}`, { replace: true })}>
                           Mano de Obra
                         </Dropdown.Item>

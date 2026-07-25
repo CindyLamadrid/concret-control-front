@@ -17,12 +17,12 @@ const ContractInputsTable = ({
         <thead>
           <tr>
             <th className="w-5">ELIMINAR</th>
-            <th className="w-10">IMPUTACIÓN</th>
+            <th className="w-20">IMPUTACIÓN</th>
             <th className="w-5">CODIGO</th>
             <th className="w-20">INSUMO</th>
             <th className="w-5">UNIDAD</th>
-            <th className="w-10">CANT. CONTRATADA</th>
-            <th className="w-10">CANT. EJECUTADA</th>
+            <th className="w-8">CANT. CONTRATADA</th>
+            <th className="w-8">CANT. EJECUTADA</th>
             <th className="w-10">CANT. DISPONIBLE</th>
             <th className="w-10">VALOR/UN</th>
             <th className="w-5">GUARDAR</th>
@@ -41,11 +41,10 @@ const ContractInputsTable = ({
                 </td>
                 <td className={index % 2 === 0 ? "dark left" : "left"}>
                   <span
-                    className="link"
-                    style={{ cursor: "pointer", textDecoration: "underline" }}
+                    className="link cursor-pointer underline"
                     onClick={() => onImputation && onImputation(index)}
                   >
-                    {`${x.idStage}-${x.idChapter}-${x.idSubchapter}-${x.idInputBudget}`}
+                    {x.imputation || 'Sin asignar'}
                   </span>
                 </td>
 

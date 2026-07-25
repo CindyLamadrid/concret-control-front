@@ -159,8 +159,7 @@ const Constructions = ({}) => {
       )}
       {adminConstruction && adminConstruction.show && (
         <div
-          className="modal show"
-          style={{ display: "block", position: "initial" }}
+          className="modal show modal-inline"
         >
           <AdminContruction
             adminConstruction={adminConstruction}

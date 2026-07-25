@@ -11,6 +11,7 @@ export const ConstructionContext = createContext({
   userConstructions: [],
   role: null,
   company: null,
+  isCostControl: false,
   setUser: () => {},
   setConstructionSelected: () => {},
   setStageSelected: () => {},
@@ -19,6 +20,7 @@ export const ConstructionContext = createContext({
   setUserConstructions: () => {},
   setRole: () => {},
   setCompany: () => {},
+  setIsCostControl: () => {},
 });
 
 export default ConstructionContext;

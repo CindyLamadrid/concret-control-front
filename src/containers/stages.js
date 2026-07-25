@@ -16,6 +16,7 @@ const Stages = ({}) => {
     role,
     userConstructions,
     permissions,
+    setIsCostControl,
   } = useContext(ConstructionContext);
 
   // Helper: determinar si el usuario puede editar esta etapa
@@ -89,6 +90,7 @@ const Stages = ({}) => {
   const viewBudget = (stage, budgetType) => {
     // Limpiar selección de capítulo para que cargue el primero al entrar
     localStorage.removeItem("chapterValues");
+    setIsCostControl(false);
     navigate(
       `/budget?option=constructionItems&user=${btoa(user)}&idStage=${
         stage[0].idStage
@@ -99,6 +101,7 @@ const Stages = ({}) => {
   };
 
   const viewCostControl = (stage) => {
+    setIsCostControl(true);
     navigate(
       `/control?option=constructionItems&user=${btoa(user)}&idStage=${
         stage[0].idStage
@@ -221,8 +224,7 @@ const Stages = ({}) => {
         </div>
         {adminStage && adminStage.show && (
           <div
-            className="modal show"
-            style={{ display: "block", position: "initial" }}
+            className="modal show modal-inline"
           >
             <AdminStage
               adminStage={adminStage}

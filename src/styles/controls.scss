@@ -3,9 +3,9 @@
 
 .select {
   @include select-base;
-  width: 98%;
+  width: 100%;
   padding: 2px;
-  border: 1.5px solid $primary-color;
+  border: var(--bs-border-width) solid var(--bs-border-color);
 
   @include respond-to(mobile) {
     width: 100%;
@@ -92,7 +92,7 @@
 
 .input-modal {
   @include input-base;
-  padding: 0.5rem;
+  padding: 0.2rem 0.4rem;
   border-radius: 2px;
 }
 

@@ -210,8 +210,7 @@ const Items = ({}) => {
 
       {adminItem && adminItem.show && (
         <div
-          className="modal show"
-          style={{ display: "block", position: "initial" }}
+          className="modal show modal-inline"
         >
           <AdminItem
             adminItem={adminItem}

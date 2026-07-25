@@ -52,7 +52,7 @@ const UserRoleAssignment = ({
   );
 
   return (
-    <div className="modal show" style={{ display: "block", position: "initial" }}>
+    <div className="modal show modal-inline">
       <Modal.Dialog size="lg">
         <Modal.Body>
           <div className="subtitle center">
@@ -60,7 +60,7 @@ const UserRoleAssignment = ({
           </div>
 
           {/* Formulario de asignación */}
-          <div className="row" style={{ marginBottom: "15px" }}>
+          <div className="row mb-15">
             <div className="col-3">
               <span className="label">Obra</span>
               <select
@@ -103,12 +103,12 @@ const UserRoleAssignment = ({
                 <option value="full">Control completo</option>
               </select>
             </div>
-            <div className="col-3" style={{ paddingTop: "22px" }}>
+            <div className="col-3 pt-22">
               <button className="primary" onClick={onAdd} disabled={!idConstruction || (stages.length === 0 && idConstruction)}>
                 <i className="fas fa-plus" /> Asignar
               </button>
               {idConstruction && stages.length === 0 && (
-                <div className="mandatory" style={{ fontSize: "9pt", marginTop: "4px" }}>
+                <div className="mandatory text-sm mt-8">
                   Esta obra no tiene etapas creadas
                 </div>
               )}

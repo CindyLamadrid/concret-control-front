@@ -120,7 +120,7 @@ const AddOrderInput = ({ idOrder, idSupplier, type, stageSelected, onSave, onClo
                 <div className="center mandatory">El contrato no tiene insumos disponibles.</div>
               )}
               {!loadingInputs && contractInputsArray.length > 0 && (
-                <div style={{ overflowX: "auto", marginTop: 8 }}>
+                <div className="overflow-x-auto mt-8">
                   <table className="table w-100">
                     <thead>
                       <tr>

@@ -123,7 +123,6 @@ const Contracts = () => {
       );
       if (result && result.data && result.data.length > 0) {
         let { data } = result;
-       
         setSuppliersArray(data);
         setNoData(false);
       } else {
@@ -188,7 +187,7 @@ const Contracts = () => {
           onSearch={onSearchContracts}
           onNewOption={onNewContract}
           onCancelOption={() => {}}
-          labelOption="Crear Nuevo Contrato"
+          labelOption="Buscar Contrato"
           hideCancelOption
         />
       </div>
@@ -201,14 +200,18 @@ const Contracts = () => {
 
       {adminContract.show && (
         <div
-          className="modal show modal-xl"
-          style={{ display: "block", position: "initial" }}
+          className="modal show modal-lg modal-inline"
         >
           <AdminContract
             adminContract={adminContract}
             messageResultOperation={messageResultOperation}
             onSaveContract={onSaveContract}
             onCloseAdminContract={onCloseAdminContract}
+            preselectedSupplier={supplier}
+            onCreateSupplier={() => {
+              onCloseAdminContract();
+              navigate(`/suppliers?user=${btoa(user)}`);
+            }}
           />
         </div>
       )}

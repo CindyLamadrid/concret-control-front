@@ -127,13 +127,29 @@ button.secondary,
 
 /* ─── Inputs y selects ─── */
 .select {
-  border-color: var(--color-input-border) !important;
+  border-color: var(--bs-border-color) !important;
   background-color: var(--color-bg) !important;
   color: var(--color-text) !important;
 }
 
 .select-table {
   color: var(--color-text) !important;
+}
+
+.section-title {
+  color: var(--color-section-title);
+  font-size: 9pt;
+  font-weight: bold;
+  border-bottom: 2px solid var(--color-section-title);
+  padding-bottom: 4px;
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
+
+.date-picker-custom .react-date-picker__wrapper {
+  border-color: var(--bs-border-color) !important;
+  border-radius: 2px;
+  padding: 0.15rem 0.3rem;
 }
 
 input[type="text"],

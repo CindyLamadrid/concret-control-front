@@ -76,6 +76,10 @@ const InputsContract = () => {
           idContractInput: contractInput.idContractInput,
           idContract: contractInput.idContract,
           idInput: contractInput.idInput,
+          idChapter: contractInput.idChapter || null,
+          idSubchapter: contractInput.idSubchapter || null,
+          idInputBudget: contractInput.idInputBudget || null,
+          idStage: contractInput.idStage || null,
           quantity: parseFloat(contractInput.quantity),
           unitValue: parseFloat(contractInput.unitValue).toFixed(2),
           user,
@@ -218,22 +222,18 @@ const InputsContract = () => {
       await updateContractInput({
         idContractInput : currentItem.idContractInput,
         idContract : currentItem.idContract,
-        idInput: input.idInput,
+        idInput: currentItem.idInput,
+        idChapter: chapter.idChapter,
+        idSubchapter: chapter.idSubchapter,
+        idInputBudget: input ? input.value : null,
+        idStage: stage ? stage.idStage : null,
         quantity: currentItem.quantity,
         unitValue: currentItem.unitValue,
         user: user
       })
-      // const newArray = [...contractInputsArray];
-      // newArray[chargesModal.index] = {
-      //   ...newArray[chargesModal.index],
-      //   idStage: stage.idStage,
-      //   idChapter: chapter.idChapter,
-      //   idSubchapter: chapter.idSubchapter,
-      //   idInputBudget: input.idInputBudget,
-      // };
-      // setContractInputsArray([...newArray]);
+      await getContractInputs();
     }
-    setChargesModal({ show: false, index: null });
+    setChargesModal({ show: false, index: null, item: null });
   };
 
   return (

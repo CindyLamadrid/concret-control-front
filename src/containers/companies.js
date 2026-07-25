@@ -136,7 +136,7 @@ const Companies = () => {
         <span>LISTADO DE EMPRESAS</span>
         <span className="subheader-title">&nbsp;&nbsp;&nbsp;{companiesArray.length} empresa(s)</span>
       </div>
-      <div className="row" style={{ marginBottom: "15px" }}>
+      <div className="row mb-15">
         <div className="col-4">
           <input
             className="input w-100"
@@ -159,7 +159,7 @@ const Companies = () => {
       </div>
 
       {showAdmin && (
-        <div className="modal show" style={{ display: "block", position: "initial" }}>
+        <div className="modal show modal-inline">
           <Modal.Dialog>
             <Modal.Body>
               <div className="subtitle center">
@@ -216,15 +216,15 @@ const Companies = () => {
                     type="file"
                     accept="image/png,image/jpeg"
                     onChange={onLogoChange}
-                    style={{ fontSize: "10pt" }}
+                    className="text-10pt"
                   />
-                  <div style={{ fontSize: "9pt", color: "gray" }}>PNG o JPG, máximo 500KB</div>
+                  <div className="text-sm-gray">PNG o JPG, máximo 500KB</div>
                   {logoPreview && (
-                    <div style={{ marginTop: "8px" }}>
+                    <div className="mt-8">
                       <img
                         src={logoPreview}
                         alt="Logo"
-                        style={{ maxHeight: "50px", maxWidth: "150px", objectFit: "contain" }}
+                        className="logo-preview"
                         onError={(e) => { e.target.style.display = "none"; }}
                       />
                     </div>
@@ -264,7 +264,7 @@ const Companies = () => {
                   <img
                     src={`${process.env.REACT_APP_BUDGET_URL_API}/company-logo?idCompany=${c.IdCompany || c.idCompany}`}
                     alt=""
-                    style={{ maxHeight: "25px", maxWidth: "50px", objectFit: "contain" }}
+                    className="logo-thumb"
                     onError={(e) => { e.target.style.display = "none"; }}
                   />
                 </td>

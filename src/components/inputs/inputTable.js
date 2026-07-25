@@ -11,7 +11,7 @@ const InputTable = ({
 }) => {
   return (
     <div>
-      <table className="table w-60">
+      <table className="table w-50">
         <thead>
           <tr>
             {/* <th className="w-5">ELIMINAR</th> */}
@@ -27,10 +27,10 @@ const InputTable = ({
 
             <th className="w-10">CODIGO</th>
             <th className="w-40">DESCRIPCION</th>
-            <th className="w-10" hidden={inputType === "control"}>
+            <th className="w-10">
               UNIDAD
             </th>
-            <th className="w-20">VALOR</th>
+            <th className="w-20" hidden={inputType === "control"}>VALOR</th>
             {canEdit && <th className="w-5">EDITAR</th>}
           </tr>
         </thead>

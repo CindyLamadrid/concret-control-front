@@ -118,8 +118,7 @@ const Suppliers = () => {
 
       {adminSupplier.show && (
         <div
-          className="modal show modal-xl"
-          style={{ display: "block", position: "initial" }}
+          className="modal show modal-lg modal-inline"
         >
           <AdminSupplier
             adminSupplier={adminSupplier}
@@ -144,6 +143,7 @@ const Suppliers = () => {
             suppliersArray={suppliersArray}
             onEditSupplier ={onEditSupplier}
             screen="supplier"
+            canEdit={true}
           />
         </div>
       )}

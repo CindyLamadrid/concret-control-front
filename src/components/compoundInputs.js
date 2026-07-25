@@ -340,8 +340,7 @@ const CompoundInputs = ({
       }
        {adminInput && adminInput.show && (
               <div
-                className="modal show"
-                style={{ display: "block", position: "initial" }}
+                className="modal show modal-inline"
               >
                 <AdminInput
                   messageResultOperation={messageResultOperation}

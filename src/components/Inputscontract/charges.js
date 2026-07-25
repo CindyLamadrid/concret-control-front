@@ -45,13 +45,13 @@ const Charges = ({ show, onClose, onHandleSaveContracts, currentItem }) => {
       .get(`${process.env.REACT_APP_BUDGET_URL_API}/get-chapters-subchapters`)
       .then((result) => {
         setChapters(result.data);
-        if (item) {
+        if (item && item.idChapter && item.idSubchapter) {
           const found = result.data.find(
-            (c) => c.idChapter ===parseInt( item.idChapter) && c.idSubchapter ===parseInt( item.idSubchapter)
+            (c) => c.idChapter === parseInt(item.idChapter) && c.idSubchapter === parseInt(item.idSubchapter)
           );
           if (found) setChapterSelected(found);
         } else if (result.data && result.data.length > 0) {
-          setChapterSelected(result.data[0]);
+          setChapterSelected(null);
         }
       })
       .catch((error) => {
@@ -70,12 +70,9 @@ const Charges = ({ show, onClose, onHandleSaveContracts, currentItem }) => {
       .then((result) => {
         const data = result.data || [];
         setInputs(data);
-        const preload = item ;
-        console.log("item",item);
-        if (preload) {
-          const found = data.find((i) => parseInt(i.idInput) === parseInt(preload.idInputBudget));
-            console.log("found",found);
-          if (found) setInputSelected({ value:  parseInt(found.idInput), label: `${found.cod} - ${found.name}`, ...found });
+        if (item && item.idInputBudget) {
+          const found = data.find((i) => parseInt(i.idInput) === parseInt(item.idInputBudget));
+          if (found) setInputSelected({ value: parseInt(found.idInput), label: `${found.cod} - ${found.name}`, ...found });
           else setInputSelected(null);
         } else {
           setInputSelected(null);
@@ -121,12 +118,12 @@ const Charges = ({ show, onClose, onHandleSaveContracts, currentItem }) => {
 
   const chapterOptions = chapters.map((c) => ({
     value: `${c.idChapter}-${c.idSubchapter}`,
-    label: `${c.chapter || ""} - ${c.subchapter || ""}`,
+    label: `${c.cod || ""} ${c.chapter || ""} - ${c.subchapter || ""}`,
     ...c,
   }));
 
   const inputOptions = inputs.map((i) => ({
-    value: i.idInputBudget,
+    value: i.idInput,
     label: `${i.cod} - ${i.name}`,
     ...i,
   }));
@@ -137,63 +134,92 @@ const Charges = ({ show, onClose, onHandleSaveContracts, currentItem }) => {
     }
   };
 
+  if (!show) return null;
+
   return (
     <div
-      className="modal show modal-xl"
-      style={{ display: show ? "block" : "none", position: "initial" }}
+      className="modal show modal-xs modal-inline"
     >
       <Modal.Dialog>
         <Modal.Body>
-          <div className="container-xl-modals">
+          <div>
             <div className="subtitle center">
               <b>IMPUTACIÓN</b>
             </div>
 
+            <div className="section-title">
+              Seleccione la imputación
+            </div>
+
             <div className="row subcontainer-admin-options">
-              <div className="col-3 right label">
-                <span>Etapa &nbsp;</span>
+              <div className="col-5 right label">
+                <span>Etapa&nbsp;</span>
               </div>
-              <div className="col-9">
+              <div className="col-7">
                 <Select
-                  className="input w-80 select-no-border"
                   isClearable
                   options={stageOptions}
                   value={stageOption}
                   onChange={(val) => setStageOption(val)}
                   placeholder="Seleccione etapa..."
+                  styles={{
+                    control: (base) => ({ ...base, minHeight: '34px', borderColor: '#dee2e6', fontSize: '9pt' }),
+                    valueContainer: (base) => ({ ...base, padding: '4px 10px' }),
+                    input: (base) => ({ ...base, margin: 0, padding: 0 }),
+                    placeholder: (base) => ({ ...base, fontSize: '9pt' }),
+                    singleValue: (base) => ({ ...base, fontSize: '9pt' }),
+                    option: (base) => ({ ...base, fontSize: '9pt', padding: '6px 10px' }),
+                    menu: (base) => ({ ...base, fontSize: '9pt' }),
+                  }}
                 />
               </div>
             </div>
 
             <div className="row subcontainer-admin-options">
-              <div className="col-3 right label">
-                <span>Capítulo / Subcapítulo &nbsp;</span>
+              <div className="col-5 right label">
+                <span>Capítulo / Subcapítulo&nbsp;</span>
               </div>
-              <div className="col-9">
+              <div className="col-7">
                 <Select
-                  className="input w-80 select-no-border"
                   isClearable
                   options={chapterOptions}
                   value={chapterSelected ? chapterOptions.find((o) => o.value === `${chapterSelected.idChapter}-${chapterSelected.idSubchapter}`) : null}
                   onChange={(val) => setChapterSelected(val || null)}
                   placeholder="Seleccione capítulo..."
+                  styles={{
+                    control: (base) => ({ ...base, minHeight: '34px', borderColor: '#dee2e6', fontSize: '9pt' }),
+                    valueContainer: (base) => ({ ...base, padding: '4px 10px' }),
+                    input: (base) => ({ ...base, margin: 0, padding: 0 }),
+                    placeholder: (base) => ({ ...base, fontSize: '9pt' }),
+                    singleValue: (base) => ({ ...base, fontSize: '9pt' }),
+                    option: (base) => ({ ...base, fontSize: '9pt', padding: '6px 10px' }),
+                    menu: (base) => ({ ...base, fontSize: '9pt' }),
+                  }}
                 />
               </div>
             </div>
 
             <div className="row subcontainer-admin-options">
-              <div className="col-3 right label">
-                <span>Insumo &nbsp;</span>
+              <div className="col-5 right label">
+                <span>Insumo&nbsp;</span>
               </div>
-              <div className="col-9">
+              <div className="col-7">
                 <Select
-                  className="input w-80 select-no-border"
                   isClearable
                   options={inputOptions}
                   value={inputSelected}
                   onChange={(val) => setInputSelected(val || null)}
                   placeholder="Seleccione insumo..."
                   isDisabled={!stageOption || !chapterSelected}
+                  styles={{
+                    control: (base) => ({ ...base, minHeight: '34px', borderColor: '#dee2e6', fontSize: '9pt' }),
+                    valueContainer: (base) => ({ ...base, padding: '4px 10px' }),
+                    input: (base) => ({ ...base, margin: 0, padding: 0 }),
+                    placeholder: (base) => ({ ...base, fontSize: '9pt' }),
+                    singleValue: (base) => ({ ...base, fontSize: '9pt' }),
+                    option: (base) => ({ ...base, fontSize: '9pt', padding: '6px 10px' }),
+                    menu: (base) => ({ ...base, fontSize: '9pt' }),
+                  }}
                 />
               </div>
             </div>

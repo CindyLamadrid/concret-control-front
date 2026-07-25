@@ -83,6 +83,7 @@ const ConstructionItems = ({
       show: false,
       buttonArray: [],
     });
+    setMessageResultOperation("");
 
     try {
       const result = await axios.post(
@@ -96,8 +97,12 @@ const ConstructionItems = ({
 
       if (result && result.data) onConstructionItems();
     } catch (error) {
-      setConstructionItemsArray([]);
-      setNoData(true);
+      if (error.response && error.response.status === 409) {
+        setMessageResultOperation(error.response.data.error || "No se puede eliminar el ítem");
+      } else {
+        setConstructionItemsArray([]);
+        setNoData(true);
+      }
       console.error("Error fetching removeItem:", error);
     }
   };
@@ -243,8 +248,7 @@ const ConstructionItems = ({
 
         {adminItem && adminItem.show && (
         <div
-          className="modal show"
-          style={{ display: "block", position: "initial" }}
+          className="modal show modal-inline"
         >
           <AdminItem
             messageResultOperation={messageResultOperation}
@@ -258,6 +262,9 @@ const ConstructionItems = ({
       )}
    
       <br />
+      {messageResultOperation && (
+        <div className="mandatory">{messageResultOperation}</div>
+      )}
       {constructionItemsArray && constructionItemsArray.length > 0 && (
         <ConstructionItemsTable
           constructionItemsArray={constructionItemsArray}

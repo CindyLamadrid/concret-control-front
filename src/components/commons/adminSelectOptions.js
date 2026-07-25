@@ -12,13 +12,8 @@ const AdminSelectOptions = ({
 }) => {
   return (
     <div>
-     <Select isClearable className="input display-inline-block w-40" value={value} options={options} onChange={(event) => setValue(event)}/>
-      {/* <input
-        type="text"
-        className="input"
-        value={value}
-        onChange={(event) => setValue(event.target.value)}
-      ></input> */}
+     <Select placeholder={labelOption} isClearable className="input display-inline-block w-40" value={value} options={options} onChange={(event) => setValue(event)}/>
+     
       &nbsp;&nbsp;
       <button
         type="button"

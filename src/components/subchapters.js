@@ -164,8 +164,7 @@ const Subchapters = ({}) => {
      
       {adminSubchapter && adminSubchapter.show && (
         <div
-          className="modal show"
-          style={{ display: "block", position: "initial" }}
+          className="modal show modal-inline"
         >
           <AdminSubchapter
             adminSubchapter={adminSubchapter}

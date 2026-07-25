@@ -169,19 +169,19 @@ const AdminInput = ({
               array={inputTypesArray}
             />
           </div>
-          <div className="row" hidden={inputType==="control"}>
-            <div className="col-4 right label">
-              <span>Categoria</span>
-            </div>
-            <div className="col-8 container-select">
-              <UnitSelect
-                id="idCategory"
-                name="name"
-                selectedValue={categorySelected}
-                setSelectedValue={onChangeCategory}
-                array={categoriesArray}
-              />
-            </div>
+        </div>
+        <div className="row" hidden={inputType==="control"}>
+          <div className="col-4 right label">
+            <span>Categoria</span>
+          </div>
+          <div className="col-8 container-select">
+            <UnitSelect
+              id="idCategory"
+              name="name"
+              selectedValue={categorySelected}
+              setSelectedValue={onChangeCategory}
+              array={categoriesArray}
+            />
           </div>
         </div>
        

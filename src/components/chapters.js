@@ -100,8 +100,7 @@ const Chapters = ({}) => {
       </div>
       {adminChapter && adminChapter.show && (
         <div
-          className="modal show"
-          style={{ display: "block", position: "initial" }}
+          className="modal show modal-inline"
         >
           <AdminChapter
             adminChapter={adminChapter}
