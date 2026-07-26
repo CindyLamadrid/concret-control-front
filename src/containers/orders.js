@@ -6,9 +6,10 @@ import AdminSelectOptions from "../components/commons/adminSelectOptions";
 import AdminOrder from "../components/orders/adminOrder";
 import AdminOrderEdit from "../components/orders/adminOrderEdit";
 import OrderTable from "../components/order/orderTable";
+import Resume from "../components/commons/resume";
 
 const Orders = () => {
-  const { user, stageSelected } = useContext(ConstructionContext);
+  const { user, stageSelected, constructionSelected } = useContext(ConstructionContext);
   const [searchParams] = useSearchParams();
   const [type, setType] = useState(searchParams.get("type"));
 
@@ -137,6 +138,7 @@ const Orders = () => {
 
   return (
     <div>
+      <Resume constructionSelected={constructionSelected} stageSelected={stageSelected} />
       <div className="header-title">
         <span>ÓRDENES DE PAGO</span>
       </div>

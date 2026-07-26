@@ -24,6 +24,7 @@ const ConstructionTable = ({ constructionsArray, onViewStage, onEditContruction,
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
                   <i
                     className="fas fa-external-link-alt icon-view-detail"
+                    title="Ver etapas"
                     onClick={() => onViewStage(x.idConstruction)}
                   />
                 </td>
@@ -31,6 +32,7 @@ const ConstructionTable = ({ constructionsArray, onViewStage, onEditContruction,
                   <td className={index % 2 === 0 ? "dark center" : "center"}>
                     <i
                       className="fas fa-pencil-alt icon-view-detail"
+                      title="Editar proyecto"
                       onClick={() => onEditContruction(index)}
                     />
                   </td>

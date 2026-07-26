@@ -5,9 +5,10 @@ import { ConstructionContext } from "../context/constructionContext";
 import Back from "../components/commons/back";
 import OrderInputsTable from "../components/orders/orderInputsTable";
 import AddOrderInput from "../components/orders/addOrderInput";
+import Resume from "../components/commons/resume";
 
 const OrderInputs = () => {
-  const { user, stageSelected } = useContext(ConstructionContext);
+  const { user, stageSelected, constructionSelected } = useContext(ConstructionContext);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -141,6 +142,7 @@ const OrderInputs = () => {
 
   return (
     <div>
+      <Resume constructionSelected={constructionSelected} stageSelected={stageSelected} />
       <div>
         <Back onBack={onBack} />
         &nbsp;&nbsp;

@@ -5,9 +5,10 @@ import { ConstructionContext } from "../context/constructionContext";
 import AdminOptions from "../components/commons/adminSelectOptions";
 import AdminContract from "../components/contracts/adminContracts";
 import ContractTable from "../components/contracts/contractTable";
+import Resume from "../components/commons/resume";
 
 const Contracts = () => {
-  const { user,stageSelected } =
+  const { user, stageSelected, constructionSelected } =
         useContext(ConstructionContext);
   const navigate = useNavigate();
   const [supplier, setSupplier] = useState("");
@@ -175,6 +176,7 @@ const Contracts = () => {
 
   return (
     <div>
+      <Resume constructionSelected={constructionSelected} stageSelected={stageSelected} />
       <div>
         <br />
         <div className="header-title">

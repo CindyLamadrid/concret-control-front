@@ -157,20 +157,12 @@ const Charges = ({ show, onClose, onHandleSaveContracts, currentItem }) => {
               </div>
               <div className="col-7">
                 <Select
+                  className="react-select-container"
                   isClearable
                   options={stageOptions}
                   value={stageOption}
                   onChange={(val) => setStageOption(val)}
                   placeholder="Seleccione etapa..."
-                  styles={{
-                    control: (base) => ({ ...base, minHeight: '34px', borderColor: '#dee2e6', fontSize: '9pt' }),
-                    valueContainer: (base) => ({ ...base, padding: '4px 10px' }),
-                    input: (base) => ({ ...base, margin: 0, padding: 0 }),
-                    placeholder: (base) => ({ ...base, fontSize: '9pt' }),
-                    singleValue: (base) => ({ ...base, fontSize: '9pt' }),
-                    option: (base) => ({ ...base, fontSize: '9pt', padding: '6px 10px' }),
-                    menu: (base) => ({ ...base, fontSize: '9pt' }),
-                  }}
                 />
               </div>
             </div>
@@ -181,20 +173,12 @@ const Charges = ({ show, onClose, onHandleSaveContracts, currentItem }) => {
               </div>
               <div className="col-7">
                 <Select
+                  className="react-select-container"
                   isClearable
                   options={chapterOptions}
                   value={chapterSelected ? chapterOptions.find((o) => o.value === `${chapterSelected.idChapter}-${chapterSelected.idSubchapter}`) : null}
                   onChange={(val) => setChapterSelected(val || null)}
                   placeholder="Seleccione capítulo..."
-                  styles={{
-                    control: (base) => ({ ...base, minHeight: '34px', borderColor: '#dee2e6', fontSize: '9pt' }),
-                    valueContainer: (base) => ({ ...base, padding: '4px 10px' }),
-                    input: (base) => ({ ...base, margin: 0, padding: 0 }),
-                    placeholder: (base) => ({ ...base, fontSize: '9pt' }),
-                    singleValue: (base) => ({ ...base, fontSize: '9pt' }),
-                    option: (base) => ({ ...base, fontSize: '9pt', padding: '6px 10px' }),
-                    menu: (base) => ({ ...base, fontSize: '9pt' }),
-                  }}
                 />
               </div>
             </div>
@@ -205,21 +189,13 @@ const Charges = ({ show, onClose, onHandleSaveContracts, currentItem }) => {
               </div>
               <div className="col-7">
                 <Select
+                  className="react-select-container"
                   isClearable
                   options={inputOptions}
                   value={inputSelected}
                   onChange={(val) => setInputSelected(val || null)}
                   placeholder="Seleccione insumo..."
                   isDisabled={!stageOption || !chapterSelected}
-                  styles={{
-                    control: (base) => ({ ...base, minHeight: '34px', borderColor: '#dee2e6', fontSize: '9pt' }),
-                    valueContainer: (base) => ({ ...base, padding: '4px 10px' }),
-                    input: (base) => ({ ...base, margin: 0, padding: 0 }),
-                    placeholder: (base) => ({ ...base, fontSize: '9pt' }),
-                    singleValue: (base) => ({ ...base, fontSize: '9pt' }),
-                    option: (base) => ({ ...base, fontSize: '9pt', padding: '6px 10px' }),
-                    menu: (base) => ({ ...base, fontSize: '9pt' }),
-                  }}
                 />
               </div>
             </div>

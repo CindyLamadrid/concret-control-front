@@ -297,3 +297,34 @@ td input.pending-changes,
 .container-header-icon {
   background-color: var(--color-tertiary) !important;
 }
+
+/* ─── React-Select global styles ─── */
+.react-select-container [class*="-control"] {
+  min-height: 34px !important;
+  font-size: 9pt !important;
+  border-color: var(--bs-border-color) !important;
+}
+
+.react-select-container [class*="-ValueContainer"] {
+  padding: 2px 8px 2px 12px !important;
+}
+
+.react-select-container [class*="-placeholder"],
+.react-select-container [class*="-singleValue"] {
+  font-size: 9pt !important;
+  margin-left: 2px !important;
+}
+
+.react-select-container [class*="-option"] {
+  font-size: 9pt !important;
+  padding: 6px 12px !important;
+}
+
+.react-select-container [class*="-menu"] {
+  font-size: 9pt !important;
+}
+
+.react-select-container [class*="-Input"] input {
+  margin: 0 !important;
+  padding: 0 !important;
+}

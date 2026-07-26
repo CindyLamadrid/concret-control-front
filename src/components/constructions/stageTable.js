@@ -26,32 +26,30 @@ const StagesTable = ({
                 <td className={index % 2 === 0 ? "dark" : ""}>{x.name}</td>
 
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
-                  <select
-                    className="select-table bold"
-                    value={x.budgetType}
-                    onChange={(event) =>
-                      onChangeTypeBudget(index, event.target.value)
-                    }
+                  <button
+                    className="primary btn-sm-custom"
+                    onClick={() => onViewStageItems(x.idStage, "I")}
                   >
-                    <option key="1" value="I" className="bold">
-                      Presupuesto Inicial
-                    </option>
-                    {x.statusBudget !== "O" && (
-                      <option key="2" value="U" className="bold">
-                        Presupuesto Modificado
-                      </option>
-                    )}
-                    {x.statusBudget !== "O" && (
-                      <option key="3" value="CC" className="bold">
-                        Control Costos
-                      </option>
-                    )}
-                  </select>
-                  &nbsp;&nbsp;
-                  <i
-                    className="fas fa-external-link-alt icon-view-detail"
-                    onClick={() => onViewStageItems(x.idStage, x.budgetType)}
-                  />
+                    <i className="fas fa-file-alt" /> P. Inicial
+                  </button>
+                  &nbsp;
+                  {x.statusBudget !== "O" && (
+                    <>
+                      <button
+                        className="secondary btn-sm-custom"
+                        onClick={() => onViewStageItems(x.idStage, "U")}
+                      >
+                        <i className="fas fa-file-signature" /> P. Modificado
+                      </button>
+                      &nbsp;
+                      <button
+                        className="secondary btn-sm-custom"
+                        onClick={() => onViewStageItems(x.idStage, "CC")}
+                      >
+                        <i className="fas fa-chart-line" /> Control Costos
+                      </button>
+                    </>
+                  )}
                 </td>
                 {canEdit && (
                   <td className={index % 2 === 0 ? "dark center" : "center"}>

@@ -12,7 +12,7 @@ const AdminSelectOptions = ({
 }) => {
   return (
     <div>
-     <Select placeholder={labelOption} isClearable className="input display-inline-block w-40" value={value} options={options} onChange={(event) => setValue(event)}/>
+     <Select placeholder={labelOption} isClearable className="react-select-container display-inline-block w-40" value={value} options={options} onChange={(event) => setValue(event)}/>
      
       &nbsp;&nbsp;
       <button

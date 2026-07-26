@@ -8,9 +8,10 @@ import {
 import Back from "../components/commons/back";
 import ContractInputsTable from '../components/Inputscontract/contractInputsTable';
 import Charges from '../components/Inputscontract/charges';
+import Resume from "../components/commons/resume";
 
 const InputsContract = () => {
-   const { user } =
+   const { user, constructionSelected, stageSelected } =
     useContext(ConstructionContext);
 
    const [searchParams] = useSearchParams();
@@ -107,6 +108,26 @@ const InputsContract = () => {
 
   const onSaveInformation = (index) => {
     const contractInput = { ...contractInputsArray[index] };
+    const qty = parseFloat(contractInput.quantity) || 0;
+    const val = parseFloat(contractInput.unitValue) || 0;
+    const maxQty = parseFloat(contractInput.budgetQuantity) || 0;
+    const maxVal = parseFloat(contractInput.budgetUnitValue) || 0;
+
+    let errors = [];
+    if (maxQty > 0 && qty > maxQty) {
+      errors.push(`La cantidad (${qty}) sobrepasa la del presupuesto (${maxQty})`);
+    }
+    if (maxVal > 0 && val > maxVal) {
+      const fmtVal = val.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 });
+      const fmtMax = maxVal.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 });
+      errors.push(`El valor unitario (${fmtVal}) sobrepasa el del presupuesto (${fmtMax})`);
+    }
+
+    if (errors.length > 0) {
+      setMessageResultOperation(errors.join(". "));
+      return;
+    }
+    setMessageResultOperation("");
     updateContractInput(contractInput, index);
   };
 
@@ -238,8 +259,9 @@ const InputsContract = () => {
 
   return (
     <div>
+      <Resume constructionSelected={constructionSelected} stageSelected={stageSelected} />
       <div>
-        <Back onBack={onBack} className="" />{" "}
+        <Back onBack={onBack}/>{" "}
         <button
           type="button"
           className="primary"
@@ -248,6 +270,11 @@ const InputsContract = () => {
           {"Agregar Insumo"}
         </button>
       </div>
+      <br/>
+      {messageResultOperation && (
+        <div className="mandatory mb-15"><b>{messageResultOperation}</b></div>
+      )}
+     
       <div>
           <ContractInputsTable
             contractInputsArray={contractInputsArray}

@@ -103,7 +103,7 @@ const AddOrderInput = ({ idOrder, idSupplier, type, stageSelected, onSave, onClo
             <div className="col-2 right label"><span>Contrato &nbsp;</span></div>
             <div className="col-10">
               <Select
-                className="input w-80 select-no-border"
+                className="react-select-container w-80"
                 isClearable
                 options={contractOptions}
                 value={contractSelected ? contractOptions.find((o) => o.value === contractSelected.idContract) : null}

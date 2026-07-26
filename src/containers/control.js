@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { ConstructionContext } from "../context/constructionContext";
 import ChapterHeader from '../components/chaptersHeader';
 import ChapterControl from "../components/control/chapterControl";
 import InputControl from "../components/control/inputControl"
+import Resume from "../components/commons/resume";
 
 const Control = ({}) => {
+  const { constructionSelected, stageSelected } = useContext(ConstructionContext);
   const [option, setOption] = useState("chapter");
   const [chapterSelected, setChapterSelected] = useState(-1)
   const [subchapterSelected, setSubchapterSelected] = useState(-1)
@@ -42,6 +45,10 @@ const Control = ({}) => {
   }
 
   return (<>
+     <Resume
+       constructionSelected={constructionSelected}
+       stageSelected={stageSelected}
+     />
      {
         option!=='chapter' && (
         <ChapterHeader

@@ -12,9 +12,10 @@ import Back from "../components/commons/back";
 import ChapterSelect from "../components/commons/select";
 import { ConstructionContext } from "../context/constructionContext";
 import useEventListener from "../components/utils/useEventListener";
+import Resume from "../components/commons/resume";
 
 const InputsControl = () => {
-  const { user, stageSelected } = useContext(ConstructionContext);
+  const { user, stageSelected, constructionSelected } = useContext(ConstructionContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [type] = useState(searchParams.get("type"));
@@ -276,6 +277,7 @@ const InputsControl = () => {
 
   return (
     <div>
+      <Resume constructionSelected={constructionSelected} stageSelected={stageSelected} />
       <div>
         <br />
         <div className="header-title">

@@ -1,12 +1,15 @@
 import axios from "../../config/axiosConfig";
-import { useEffect, useState,useContext } from "react";
+import { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { ConstructionContext } from "../../context/constructionContext";
 import ChapterControlTable from "./chapterControlTable";
+import Back from "../commons/back";
 
 const ChapterControl = ({
   onSetChapterSelected
 }) => {
-  const { stageSelected } = useContext(ConstructionContext);
+  const navigate = useNavigate();
+  const { stageSelected, user } = useContext(ConstructionContext);
   const [chaptersArray, setChaptersArray] = useState([]);
 
   const getChaperControl = () => {
@@ -43,9 +46,19 @@ const ChapterControl = ({
     onSetChapterSelected(idChapter)
   }
 
+  const onBack = () => {
+    navigate(`/stages?user=${btoa(user)}`);
+  };
+
   return (
     <div>
-        <ChapterControlTable chaptersArray={chaptersArray} onShowInputs={onShowInputs}/>
+      <div className="header-title">
+        <span>CONTROL DE COSTOS POR CAPÍTULO</span>
+      </div>
+      <Back onBack={onBack} className="" />
+      <br />
+      <br />
+      <ChapterControlTable chaptersArray={chaptersArray} onShowInputs={onShowInputs}/>
     </div>
   )
 }

@@ -112,3 +112,29 @@
     &:hover { border: none; }
   }
 }
+
+
+.react-select-container{
+  input{
+    grid-area:auto!important;
+    margin: -5px!important;
+  }
+  
+  //  div{
+  //   grid-area:auto!important;
+  // }
+
+  // div::after{
+  //   grid-area:auto!important;
+  // }
+}
+
+
+/* Controles deshabilitados más opacos */
+input:disabled,
+select:disabled,
+button:disabled,
+textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
