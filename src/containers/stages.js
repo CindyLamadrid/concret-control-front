@@ -218,7 +218,7 @@ const Stages = ({}) => {
           <Back onBack={onBack} className="" />{" "}
           {canManageStage(null) && (
             <button type="button" className="primary" onClick={() => onCreateStage()}>
-              {"Agregar Etapa"}
+              <i className="fas fa-plus" /> {"Agregar Etapa"}
             </button>
           )}
         </div>

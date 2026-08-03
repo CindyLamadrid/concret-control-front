@@ -161,10 +161,12 @@ const Companies = () => {
       {showAdmin && (
         <div className="modal show modal-inline">
           <Modal.Dialog>
-            <Modal.Body>
+            <Modal.Header>
               <div className="subtitle center">
                 <b>{editCompany ? "EDITAR EMPRESA" : "CREAR EMPRESA"}</b>
               </div>
+            </Modal.Header>
+            <Modal.Body>
               {message && <div className="center mandatory"><b>{message}</b></div>}
               <br />
               <div className="row">
@@ -231,15 +233,13 @@ const Companies = () => {
                   )}
                 </div>
               </div>
-              <br />
-              <div className="right">
+            </Modal.Body>
+            <Modal.Footer>
                 <button className="secondary" onClick={() => setShowAdmin(false)}>Cerrar</button>
-                &nbsp;&nbsp;
                 <button className="primary" disabled={!form.nit || !form.name} onClick={onSave}>
                   {editCompany ? "Guardar" : "Crear Empresa"}
                 </button>
-              </div>
-            </Modal.Body>
+            </Modal.Footer>
           </Modal.Dialog>
         </div>
       )}
@@ -274,7 +274,7 @@ const Companies = () => {
                 <td className={index % 2 === 0 ? "dark" : ""}>{c.Phone || c.phone || ""}</td>
                 <td className={index % 2 === 0 ? "dark" : ""}>{c.Email || c.email || ""}</td>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
-                  <i className="fas fa-pencil-alt icon-view-detail" onClick={() => openEdit(index)} />
+                  <i className="fas fa-pen icon-view-detail" onClick={() => openEdit(index)} />
                 </td>
               </tr>
             ))}

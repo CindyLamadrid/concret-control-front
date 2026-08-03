@@ -117,10 +117,12 @@ const AdminInput = ({
 
   return (
     <Modal.Dialog>
-      <Modal.Body>
+      <Modal.Header>
         <div className="subtitle center">
           <b> {adminInput.action ==="edit" ? "EDITAR INSUMO": "CREAR INSUMO" } </b>
         </div>
+      </Modal.Header>
+      <Modal.Body>
         <div className="center mandatory">
           <div>{messageResultOperation}</div> <br/>
         </div>
@@ -198,15 +200,14 @@ const AdminInput = ({
             />
           </div>
         </div>
-        <br />
-        <div className="right">
+      </Modal.Body>
+      <Modal.Footer>
           <button
             className="secondary"
             type="button"
           
             onClick={() => { onCloseAdminInput()}}
           >{"Cerrar"}</button>
-          &nbsp;
           <button
             className="primary"
             type="button"
@@ -230,8 +231,7 @@ const AdminInput = ({
               );
             }}
           >{adminInput.action ==="edit" ? "Guardar Insumo" :"Crear Insumo"}</button>
-        </div>
-      </Modal.Body>
+      </Modal.Footer>
     </Modal.Dialog>
   );
 };

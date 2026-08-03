@@ -57,7 +57,7 @@ const ContractTable = ({
                 </td>
                 {canEdit && (
                   <td className={index % 2 === 0 ? "dark center" : "center"}>
-                    <i className="fas fa-pencil-alt icon-view-detail" onClick={() => onEditCotract(index)} />
+                    <i className="fas fa-pen icon-view-detail" onClick={() => onEditCotract(index)} />
                   </td>
                 )}
                

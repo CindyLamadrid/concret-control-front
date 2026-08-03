@@ -1,0 +1,58 @@
+/* ═══════════════════════════════════════════════
+   Estilos de Modales
+   ═══════════════════════════════════════════════ */
+
+/* Contenedor general */
+.modal-dialog .modal-content {
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  border: none;
+  overflow: hidden;
+}
+
+/* Header del modal — fondo gris suave */
+.modal-dialog .modal-header {
+  background-color: #f5f6f8;
+  padding: 10px 1rem;
+  border-bottom: 1px solid #e8e8e8;
+  border-radius: 8px 8px 0 0;
+  width: 100%;
+  margin: 0;
+  text-align: center !important;
+
+  .subtitle {
+    width: 100% !important;
+    color: var(--color-primary, #1a2744);
+  }
+
+  .subtitle b {
+    color: var(--color-primary, #1a2744);
+  }
+}
+
+/* Footer del modal — botones */
+.modal-dialog .modal-footer {
+  border-top: 1px solid #e8e8e8;
+  padding: 10px 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* Separador antes de los botones (para los que aún no usan Modal.Footer) */
+.modal-dialog .modal-body > .right:last-child {
+  border-top: 1px solid #e8e8e8;
+  padding-top: 12px;
+  margin-top: 8px;
+}
+
+/* Clase para inline modals */
+.modal-inline {
+  display: block;
+  position: initial;
+}
+
+/* Tamaño xs */
+.modal-xs .modal-dialog {
+  max-width: 600px;
+}

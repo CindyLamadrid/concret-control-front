@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
-import Select from "react-select";
+import ReactSelect from "react-select";
 import axios from "../../config/axiosConfig";
 
 const common = require("../utils/common");
@@ -23,7 +23,8 @@ const AddOrderInput = ({ idOrder, idSupplier, type, stageSelected, onSave, onClo
         },
       })
       .then((result) => {
-        setContractsArray(result?.data?.length > 0 ? result.data : []);
+        const data = result?.data?.length > 0 ? result.data : [];
+        setContractsArray(data);
       })
       .catch((error) => {
         setContractsArray([]);
@@ -66,7 +67,7 @@ const AddOrderInput = ({ idOrder, idSupplier, type, stageSelected, onSave, onClo
   const contractOptions = contractsArray.map((c) => ({
     value: c.idContract,
     label: `Contrato #${c.idContract} — ${c.name} (${c.initialDate} / ${c.finalDate})`,
-    ...c,
+    idContract: c.idContract,
   }));
 
   const toggleSelect = (idContractInput) => {
@@ -95,20 +96,24 @@ const AddOrderInput = ({ idOrder, idSupplier, type, stageSelected, onSave, onClo
 
   return (
     <Modal.Dialog size="xl">
+      <Modal.Header>
+        <div className="subtitle center"><b>AGREGAR INSUMOS A LA ORDEN</b></div>
+      </Modal.Header>
       <Modal.Body>
         <div className="container-xl-modals">
-          <div className="subtitle center"><b>AGREGAR INSUMOS A LA ORDEN</b></div>
 
           <div className="row subcontainer-admin-options">
             <div className="col-2 right label"><span>Contrato &nbsp;</span></div>
             <div className="col-10">
-              <Select
+              <ReactSelect
                 className="react-select-container w-80"
                 isClearable
                 options={contractOptions}
-                value={contractSelected ? contractOptions.find((o) => o.value === contractSelected.idContract) : null}
+                value={contractSelected}
                 onChange={(val) => setContractSelected(val || null)}
                 placeholder="Seleccione un contrato..."
+                menuPortalTarget={document.body}
+                styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
               />
             </div>
           </div>
@@ -128,7 +133,6 @@ const AddOrderInput = ({ idOrder, idSupplier, type, stageSelected, onSave, onClo
                           <input type="checkbox" checked={allSelected} onChange={toggleAll} />
                         </th>
                         <th className="w-13">IMPUTACIÓN</th>
-                        <th className="w-5">REGISTRO</th>
                         <th className="w-7">CÓDIGO</th>
                         <th className="w-20">DESCRIPCIÓN</th>
                         <th className="w-5">UN</th>
@@ -153,7 +157,6 @@ const AddOrderInput = ({ idOrder, idSupplier, type, stageSelected, onSave, onClo
                               />
                             </td>
                             <td className={`${cls} left`}>{x.imputation}</td>
-                            <td className={`${cls} center`}>{x.registro}</td>
                             <td className={`${cls} center`}>{x.cod}</td>
                             <td className={`${cls} left`}>{x.name}</td>
                             <td className={`${cls} center`}>{x.unit}</td>
@@ -173,10 +176,10 @@ const AddOrderInput = ({ idOrder, idSupplier, type, stageSelected, onSave, onClo
             </>
           )}
 
-          <br />
-          <div className="right">
+        </div>
+      </Modal.Body>
+      <Modal.Footer>
             <button className="secondary" type="button" onClick={onClose}>Cancelar</button>
-            &nbsp;&nbsp;
             <button
               className="primary"
               type="button"
@@ -185,9 +188,7 @@ const AddOrderInput = ({ idOrder, idSupplier, type, stageSelected, onSave, onClo
             >
               Agregar Seleccionados ({selectedIds.length})
             </button>
-          </div>
-        </div>
-      </Modal.Body>
+      </Modal.Footer>
     </Modal.Dialog>
   );
 };

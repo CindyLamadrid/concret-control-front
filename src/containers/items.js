@@ -234,7 +234,7 @@ const Items = ({}) => {
               value="Agregar Items"
               onClick={() => onAddItems()}
             >
-              {"Agregar Items"}
+              <i className="fas fa-plus" /> {"Agregar Items"}
             </button>{" "}
             &nbsp;
           </div>

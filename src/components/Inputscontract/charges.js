@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import Modal from "react-bootstrap/Modal";
-import Select from "react-select";
+import ReactSelect from "react-select";
 import axios from "../../config/axiosConfig";
 import { ConstructionContext } from "../../context/constructionContext";
 
@@ -141,11 +141,13 @@ const Charges = ({ show, onClose, onHandleSaveContracts, currentItem }) => {
       className="modal show modal-xs modal-inline"
     >
       <Modal.Dialog>
+        <Modal.Header>
+          <div className="subtitle center">
+            <b>IMPUTACIÓN</b>
+          </div>
+        </Modal.Header>
         <Modal.Body>
           <div>
-            <div className="subtitle center">
-              <b>IMPUTACIÓN</b>
-            </div>
 
             <div className="section-title">
               Seleccione la imputación
@@ -156,13 +158,15 @@ const Charges = ({ show, onClose, onHandleSaveContracts, currentItem }) => {
                 <span>Etapa&nbsp;</span>
               </div>
               <div className="col-7">
-                <Select
+                <ReactSelect
                   className="react-select-container"
                   isClearable
                   options={stageOptions}
                   value={stageOption}
                   onChange={(val) => setStageOption(val)}
                   placeholder="Seleccione etapa..."
+                  menuPortalTarget={document.body}
+                  styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
                 />
               </div>
             </div>
@@ -172,13 +176,15 @@ const Charges = ({ show, onClose, onHandleSaveContracts, currentItem }) => {
                 <span>Capítulo / Subcapítulo&nbsp;</span>
               </div>
               <div className="col-7">
-                <Select
+                <ReactSelect
                   className="react-select-container"
                   isClearable
                   options={chapterOptions}
                   value={chapterSelected ? chapterOptions.find((o) => o.value === `${chapterSelected.idChapter}-${chapterSelected.idSubchapter}`) : null}
                   onChange={(val) => setChapterSelected(val || null)}
                   placeholder="Seleccione capítulo..."
+                  menuPortalTarget={document.body}
+                  styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
                 />
               </div>
             </div>
@@ -188,7 +194,7 @@ const Charges = ({ show, onClose, onHandleSaveContracts, currentItem }) => {
                 <span>Insumo&nbsp;</span>
               </div>
               <div className="col-7">
-                <Select
+                <ReactSelect
                   className="react-select-container"
                   isClearable
                   options={inputOptions}
@@ -196,16 +202,18 @@ const Charges = ({ show, onClose, onHandleSaveContracts, currentItem }) => {
                   onChange={(val) => setInputSelected(val || null)}
                   placeholder="Seleccione insumo..."
                   isDisabled={!stageOption || !chapterSelected}
+                  menuPortalTarget={document.body}
+                  styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
                 />
               </div>
             </div>
 
-            <br />
-            <div className="right">
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
               <button className="secondary" type="button" onClick={()=>onClose()}>
                 Cancelar
               </button>
-              &nbsp;&nbsp;
               <button
                 className="primary"
                 type="button"
@@ -214,9 +222,7 @@ const Charges = ({ show, onClose, onHandleSaveContracts, currentItem }) => {
               >
                 Guardar
               </button>
-            </div>
-          </div>
-        </Modal.Body>
+        </Modal.Footer>
       </Modal.Dialog>
     </div>
   );

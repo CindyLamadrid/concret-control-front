@@ -20,12 +20,12 @@ const SubchaptersTable = ({ subchapterArray, onEditSubchapter, onRemoveSubchapte
                 <td className={index % 2 === 0 ? "dark" : ""}>{x.chapter}</td>
                 {canEdit && (
                   <td className={index % 2 === 0 ? "dark center" : "center"}>
-                    <i className="fas fa-pencil-alt icon-view-detail" onClick={() => onEditSubchapter(index)} />
+                    <i className="fas fa-pen icon-view-detail" onClick={() => onEditSubchapter(index)} />
                   </td>
                 )}
                 {canEdit && (
                   <td className={index % 2 === 0 ? "dark center" : "center"}>
-                    <i class="far fa-trash-alt icon-view-detail" onClick={() => onRemoveSubchapter(index)} />
+                    <i class="fas fa-trash icon-view-detail" onClick={() => onRemoveSubchapter(index)} />
                   </td>
                 )}
               </tr>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
+import ReactSelect from "react-select";
 const handlers = require("../utils/handlers");
 
 const AdminContruction = ({
@@ -27,7 +28,7 @@ const AdminContruction = ({
 
   return (
     <Modal.Dialog>
-      <Modal.Body>
+      <Modal.Header>
         <div className="subtitle center">
           <b>
             {adminConstruction.action === "edit"
@@ -35,6 +36,8 @@ const AdminContruction = ({
               : "CREAR PROYECTO"}
           </b>
         </div>
+      </Modal.Header>
+      <Modal.Body>
         <div className="center mandatory">
           <div>{messageResultOperation}</div> <br />
         </div>
@@ -43,18 +46,20 @@ const AdminContruction = ({
             <span>Empresa</span>
           </div>
           <div className="col-8">
-            <select
-              className="select w-100"
-              value={idCompany}
-              onChange={(e) => setIdCompany(e.target.value)}
-            >
-              <option value="">-- Seleccionar empresa --</option>
-              {companiesArray && companiesArray.map((c) => (
-                <option key={c.IdCompany || c.idCompany} value={c.IdCompany || c.idCompany}>
-                  {c.Name || c.name} ({c.Nit || c.nit})
-                </option>
-              ))}
-            </select>
+            <ReactSelect
+              className="react-select-container w-100"
+              options={companiesArray ? companiesArray.map((c) => ({
+                value: String(c.IdCompany || c.idCompany),
+                label: `${c.Name || c.name} (${c.Nit || c.nit})`
+              })) : []}
+              value={companiesArray ? companiesArray.map((c) => ({
+                value: String(c.IdCompany || c.idCompany),
+                label: `${c.Name || c.name} (${c.Nit || c.nit})`
+              })).find((o) => o.value === String(idCompany)) || null : null}
+              onChange={(opt) => setIdCompany(opt ? opt.value : "")}
+              placeholder="-- Seleccionar empresa --"
+              isSearchable
+            />
             <div className="mandatory left" hidden={idCompany}>
               <i className="fas fa-exclamation-circle" />
               &nbsp; Empresa Obligatoria
@@ -94,8 +99,8 @@ const AdminContruction = ({
             />
           </div>
         </div>
-        <br />
-        <div className="right">
+      </Modal.Body>
+      <Modal.Footer>
           <button
             className="secondary"
             type="button"
@@ -105,7 +110,6 @@ const AdminContruction = ({
           >
             {"Cerrar"}
           </button>
-          &nbsp;&nbsp;
           <button
             className="primary"
             disabled={!name || !idCompany}
@@ -115,8 +119,7 @@ const AdminContruction = ({
           >
             {adminConstruction.action === "edit" ? "Guardar Proyecto" : "Crear Proyecto"}
           </button>
-        </div>
-      </Modal.Body>
+      </Modal.Footer>
     </Modal.Dialog>
   );
 };

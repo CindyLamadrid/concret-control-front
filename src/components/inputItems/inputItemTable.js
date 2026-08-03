@@ -40,7 +40,7 @@ const InputItemTable = ({
               <tr key={index.toString()} >
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
                   {canEdit && (
-                    <i class="far fa-trash-alt icon-view-detail" onClick={() => onRemoveInputItem(index)} />
+                    <i class="fas fa-trash icon-view-detail" onClick={() => onRemoveInputItem(index)} />
                   )}
                 </td>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
@@ -114,7 +114,7 @@ const InputItemTable = ({
                   {canEdit && (
                     <>
                       <i
-                        className="far fa-save icon-view-detail"
+                        className="fas fa-check-circle icon-view-detail"
                         onClick={() => {
                           if(!(x.budgetStatus==="C" && budgetType==="I"))
                             onSaveInformation(index);
@@ -135,7 +135,7 @@ const InputItemTable = ({
                  <td className={index % 2 === 0 ? "dark center" : "center"}>
                   {canEdit && (
                     <i
-                      className="fas fa-pencil-alt icon-view-detail"
+                      className="fas fa-pen icon-view-detail"
                       onClick={() => onEditInput(index)}
                     />
                   )}

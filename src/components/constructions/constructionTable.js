@@ -31,7 +31,7 @@ const ConstructionTable = ({ constructionsArray, onViewStage, onEditContruction,
                 {canEdit && (
                   <td className={index % 2 === 0 ? "dark center" : "center"}>
                     <i
-                      className="fas fa-pencil-alt icon-view-detail"
+                      className="fas fa-pen icon-view-detail"
                       title="Editar proyecto"
                       onClick={() => onEditContruction(index)}
                     />

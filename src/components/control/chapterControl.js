@@ -54,6 +54,7 @@ const ChapterControl = ({
     <div>
       <div className="header-title">
         <span>CONTROL DE COSTOS POR CAPÍTULO</span>
+        <span className="subheader-title">&nbsp;&nbsp;&nbsp;{chaptersArray.length} Capitulo(s)</span>
       </div>
       <Back onBack={onBack} className="" />
       <br />

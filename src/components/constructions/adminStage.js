@@ -19,7 +19,7 @@ useEffect(() => {
 
   return (
     <Modal.Dialog>
-      <Modal.Body>
+      <Modal.Header>
         <div className="subtitle center">
           <b>
             {" "}
@@ -28,6 +28,8 @@ useEffect(() => {
               : "CREAR ETAPA"}{" "}
           </b>
         </div>
+      </Modal.Header>
+      <Modal.Body>
         <div className="center mandatory">
           <div>{messageResultOperation}</div> <br />
         </div>
@@ -48,10 +50,8 @@ useEffect(() => {
             </div>
           </div>
         </div>
-        <br />
-  
-        <br />
-        <div className="right">
+      </Modal.Body>
+      <Modal.Footer>
           <button
             className="secondary"
             type="button"
@@ -65,7 +65,6 @@ useEffect(() => {
           >
             {"Cerrar"}
           </button>
-          &nbsp;&nbsp;
           <button
             className="primary"
             disabled={!name}
@@ -77,8 +76,7 @@ useEffect(() => {
               ? "Guardar Etapa"
               : "Crear Etapa"}
           </button>
-        </div>
-      </Modal.Body>
+      </Modal.Footer>
     </Modal.Dialog>
   );
 };

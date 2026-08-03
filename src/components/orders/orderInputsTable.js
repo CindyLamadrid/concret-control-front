@@ -1,7 +1,7 @@
 const common = require("../utils/common");
 const handlers = require("../utils/handlers");
 
-const OrderInputsTable = ({ orderInputsArray, onChangeField, onSaveRow, onRefresh }) => {
+const OrderInputsTable = ({ orderInputsArray, onChangeField, onSaveRow, onRefresh, onRemoveInput, onImputation }) => {
   const fmt = (v) => common.getMoneyFomat(v || 0);
 
   return (
@@ -9,9 +9,9 @@ const OrderInputsTable = ({ orderInputsArray, onChangeField, onSaveRow, onRefres
       <table className="table w-100">
         <thead>
           <tr>
+            <th className="w-3"></th>
             <th className="w-10">IMPUTACIÓN</th>
             <th className="w-7">N° CONTRATO</th>
-            <th className="w-5">REGISTRO</th>
             <th className="w-5">CÓDIGO</th>
             <th className="w-12">DESCRIPCIÓN</th>
             <th className="w-4">UN</th>
@@ -41,9 +41,18 @@ const OrderInputsTable = ({ orderInputsArray, onChangeField, onSaveRow, onRefres
 
             return (
               <tr key={index.toString()}>
-                <td className={`${cls} left`}>{x.imputation}</td>
+                <td className={`${cls} center`}>
+                  <i className="fas fa-trash icon-view-detail" title="Eliminar" onClick={() => onRemoveInput(index)} />
+                </td>
+                <td className={`${cls} left`}>
+                  <span
+                    className="link cursor-pointer underline"
+                    onClick={() => onImputation && onImputation(index)}
+                  >
+                    {x.imputation || 'Sin asignar'}
+                  </span>
+                </td>
                 <td className={`${cls} center`}>{x.contractNumber}</td>
-                <td className={`${cls} center`}>{x.registro}</td>
                 <td className={`${cls} center`}>{x.cod}</td>
                 <td className={`${cls} left`}>{x.name}</td>
                 <td className={`${cls} center`}>{x.unit}</td>
@@ -88,9 +97,9 @@ const OrderInputsTable = ({ orderInputsArray, onChangeField, onSaveRow, onRefres
 
                 {/* GUARDAR — after %IVA */}
                 <td className={`${cls} center`}>
-                  <i className="far fa-save icon-view-detail" onClick={() => onSaveRow(index)} />
+                  <i className="fas fa-check-circle icon-view-detail" title="Guardar" onClick={() => onSaveRow(index)} />
                   &nbsp;
-                  <i className="fas fa-times-circle icon-view-detail" onClick={() => onRefresh(index)} />
+                  <i className="fas fa-times-circle icon-view-detail" title="Descartar cambios" onClick={() => onRefresh(index)} />
                 </td>
 
                 <td className={`${cls} right`}>{fmt(reteFte)}</td>

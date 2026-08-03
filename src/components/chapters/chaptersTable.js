@@ -19,7 +19,7 @@ const ChaptersTable = ({ chapterArray, onEditChapter, canEdit }) => {
                 <td className={index % 2 === 0 ? "dark" : ""}>{x.name}</td>
                 {canEdit && (
                   <td className={index % 2 === 0 ? "dark center" : "center"}>
-                    <i className="fas fa-pencil-alt icon-view-detail" onClick={() => onEditChapter(index)} />
+                    <i className="fas fa-pen icon-view-detail" onClick={() => onEditChapter(index)} />
                   </td>
                 )}
               </tr>

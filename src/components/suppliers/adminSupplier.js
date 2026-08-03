@@ -328,16 +328,18 @@ const AdminSupplier = ({
   )
   return (
     <Modal.Dialog>
+      <Modal.Header>
+        <div className="subtitle center">
+          <b>
+            {" "}
+            {adminSupplier.action === "edit"
+              ? "EDITAR PROVEEDOR"
+              : "CREAR PROVEEDOR"}{" "}
+          </b>
+        </div>
+      </Modal.Header>
       <Modal.Body>
         <div className="container-xl-modals">
-          <div className="subtitle center">
-            <b>
-              {" "}
-              {adminSupplier.action === "edit"
-                ? "EDITAR PROVEEDOR"
-                : "CREAR PROVEEDOR"}{" "}
-            </b>
-          </div>
           <div className="center mandatory">
             <div>{messageResultOperation}</div>
           </div>
@@ -681,9 +683,9 @@ const AdminSupplier = ({
             </div>
           </div>
 
-          <br />
-         
-          <div className="right">
+        </div>
+      </Modal.Body>
+      <Modal.Footer>
             <button
               className="secondary"
               type="button"
@@ -693,7 +695,6 @@ const AdminSupplier = ({
             >
               {"Cerrar"}
             </button>
-            &nbsp;&nbsp;
             <button
               className="primary"
               disabled={!name ||(!lastName && getCodSupplierType() ==="PN")
@@ -710,9 +711,7 @@ const AdminSupplier = ({
                 ? "Guardar Proveedor"
                 : "Crear Proveedor"}
             </button>
-          </div>
-        </div>
-      </Modal.Body>
+      </Modal.Footer>
     </Modal.Dialog>
   );
 };

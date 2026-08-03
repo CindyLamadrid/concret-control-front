@@ -45,7 +45,7 @@ const AdminSubchapter = ({
 
   return (
     <Modal.Dialog>
-      <Modal.Body>
+      <Modal.Header>
         <div className="subtitle center">
           <b>
             {" "}
@@ -54,6 +54,8 @@ const AdminSubchapter = ({
               : "CREAR SUBCAPITUILO"}{" "}
           </b>
         </div>
+      </Modal.Header>
+      <Modal.Body>
         <div className="center mandatory">
           <div>{messageResultOperation}</div> <br />
         </div>
@@ -92,9 +94,8 @@ const AdminSubchapter = ({
             </div>
           </div>
         </div>
-        <br />
-        <br />
-        <div className="right">
+      </Modal.Body>
+      <Modal.Footer>
           <button
             className="secondary"
             type="button"
@@ -108,7 +109,6 @@ const AdminSubchapter = ({
           >
             {"Cerrar"}
           </button>
-          &nbsp;&nbsp;
           <button
             className="primary"
             disabled={!name}
@@ -120,8 +120,7 @@ const AdminSubchapter = ({
               ? "Guardar Subcapitulo"
               : "Crear Subcapitulo"}
           </button>
-        </div>
-      </Modal.Body>
+      </Modal.Footer>
     </Modal.Dialog>
   );
 };

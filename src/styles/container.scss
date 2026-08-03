@@ -2,9 +2,13 @@
 @import './mixins';
 
 .header-title {
-  @include title($font-size-xlarge, $primary-color, 6px solid $secondary-color);
-  margin-top: $spacing-xs;
-  margin-bottom: $spacing-xs;
+  @include title($font-size-xlarge, $primary-color, 3px solid $secondary-color);
+  margin-top: 8px;
+  margin-bottom: 10px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  font-size: 11pt;
+  letter-spacing: 0.3px;
 
   @include respond-to(mobile) {
     font-size: $font-size-medium;
@@ -77,14 +81,54 @@
   color: $primary-color;
   font-size: $font-size-normal;
   margin-top: $spacing-xs;
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  background: #fafbfc;
+  border-left: 3px solid $primary-color;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+
+  .left {
+    padding: 2px 0;
+  }
+
+  .row {
+    padding: 3px 0;
+  }
+
+  table.resume-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: inherit;
+
+    td {
+      padding: 3px 0;
+      border: none;
+      background: transparent !important;
+    }
+
+    .sep {
+      width: 20px;
+      text-align: center;
+      color: #ccc;
+      font-weight: 300;
+    }
+  }
 
   .text {
-    color: $gray;
-    font-weight: 600;
+    color: #555;
+    font-weight: 500;
+  }
+
+  b {
+    font-size: 0.85em;
+    color: #2c3e50;
+    letter-spacing: 0.3px;
   }
 
   @include respond-to(mobile) {
     font-size: $font-size-small;
+    padding: 8px 10px;
   }
 }
 

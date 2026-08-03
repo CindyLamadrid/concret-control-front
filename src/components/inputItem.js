@@ -350,7 +350,7 @@ const InputItem = ({
             className="primary"
             onClick={() => onAddInputItem()}
           >
-            {"Agregar Insumo"}
+            <i className="fas fa-plus" /> {"Agregar Insumo"}
           </button>
         )}
       </div>

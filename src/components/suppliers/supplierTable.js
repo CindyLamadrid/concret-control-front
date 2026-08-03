@@ -97,7 +97,7 @@ const SupplierTable = ({
                 {screen === "supplier" && canEdit && (
                   <td className={index % 2 === 0 ? "dark center" : "center"}>
                     <i
-                      className="fas fa-pencil-alt icon-view-detail"
+                      className="fas fa-pen icon-view-detail"
                       onClick={() => onEditSupplier(index)}
                     />
                   </td>

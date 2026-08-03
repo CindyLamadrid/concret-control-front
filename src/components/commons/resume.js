@@ -9,80 +9,29 @@ const Resume = ({
 
   return (
     <div className="resume">
-      <div className="left">
-        <span>
-          <b>OBRA: </b>
-        </span>
-        <span className="text">{constructionSelected.name}</span>
-        &nbsp;&nbsp;&nbsp;
-        <span>
-          <b>ETAPA: </b>
-        </span>{" "}
-        <span className="text">{stageSelected.name}</span>
-      </div>
-
-      {itemSelected && JSON.stringify(itemSelected) !== "{}" && (
-        <>
-          <div className="left">
-            <span>
-              <b>ITEM: </b>
-            </span>
-            <span className="text">{itemSelected.cod}</span>&nbsp;&nbsp;&nbsp;
-            <span>
-              <b>DESCRIPCION: </b>
-            </span>{" "}
-            <span className="text">{itemSelected.name}</span>
-          </div>
-          <div className="left">
-            <span>
-              <b>UNIDAD: </b>
-            </span>
-            <span className="text">{itemSelected.unit}</span>&nbsp;&nbsp;&nbsp;
-            <span>
-              <b>CANTIDAD: </b>
-            </span>{" "}
-            <span className="text">{itemSelected.quantity}</span>
-            &nbsp;&nbsp;&nbsp;
-            <span>
-              <b>VALOR/UN: </b>
-            </span>{" "}
-            <span className="text">
-              {commom.getMoneyFomat(itemSelected.totalItem)}
-            </span>
-          </div>
-        </>
-      )}
-      {inputSelected && JSON.stringify(inputSelected) !== "{}" && (
-        <>
-          <div className="left">
-            <span>
-              <b>INPUT: </b>
-            </span>
-            <span className="text">{inputSelected.cod}</span>&nbsp;&nbsp;&nbsp;
-            <span>
-              <b>DESCRIPCION: </b>
-            </span>{" "}
-            <span className="text">{inputSelected.name}</span>
-          </div>
-          <div className="left">
-            <span>
-              <b>UNIDAD: </b>
-            </span>
-            <span className="text">{inputSelected.unit}</span>&nbsp;&nbsp;&nbsp;
-            <span>
-              <b>CANTIDAD: </b>
-            </span>{" "}
-            <span className="text">{inputSelected.quantity}</span>
-            &nbsp;&nbsp;&nbsp;
-            <span>
-              <b>VALOR/UN: </b>
-            </span>{" "}
-            <span className="text">
-              {commom.getMoneyFomat(inputSelected.unitValue)}
-            </span>
-          </div>
-        </>
-      )}
+      <table className="resume-table">
+        <tbody>
+          <tr>
+            <td><b>OBRA:</b> {constructionSelected.name}</td>
+            <td className="sep">|</td>
+            <td><b>ETAPA:</b> {stageSelected.name}</td>
+          </tr>
+          {itemSelected && JSON.stringify(itemSelected) !== "{}" && (
+            <tr>
+              <td><b>ITEM:</b> {itemSelected.cod} - {itemSelected.name}</td>
+              <td className="sep">|</td>
+              <td><b>UNIDAD:</b> {itemSelected.unit} &nbsp; <b>CANTIDAD:</b> {itemSelected.quantity} &nbsp; <b>VALOR/UN:</b> {commom.getMoneyFomat(itemSelected.totalItem)}</td>
+            </tr>
+          )}
+          {inputSelected && JSON.stringify(inputSelected) !== "{}" && (
+            <tr>
+              <td><b>INPUT:</b> {inputSelected.cod} - {inputSelected.name}</td>
+              <td className="sep">|</td>
+              <td><b>UNIDAD:</b> {inputSelected.unit} &nbsp; <b>CANTIDAD:</b> {inputSelected.quantity} &nbsp; <b>VALOR/UN:</b> {commom.getMoneyFomat(inputSelected.unitValue)}</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
     </div>
   );
 };

@@ -68,6 +68,7 @@ const Control = ({}) => {
     {option === "input-control" && (
       <InputControl 
        subchapterSelected={subchapterSelected}
+       onBack={() => setOption("chapter")}
       />
     )}
 

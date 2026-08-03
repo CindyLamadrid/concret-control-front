@@ -2,9 +2,10 @@ import axios from "../../config/axiosConfig";
 import { useEffect, useState,useContext } from "react";
 import { ConstructionContext } from "../../context/constructionContext";
 import InputControlTable from "./inputControlTable";
+import Back from "../commons/back";
 
 
-const InputControl = ({subchapterSelected}) => {
+const InputControl = ({subchapterSelected, onBack}) => {
   const { stageSelected } = useContext(ConstructionContext);
   const [inputsArray,setInputsArray] = useState([])
 
@@ -50,6 +51,8 @@ const InputControl = ({subchapterSelected}) => {
 
   return (
     <div>
+        <Back onBack={onBack} />
+        <br /><br />
         <InputControlTable inputsArray={inputsArray} onShowDetails={onShowDetails}/>
     </div>
   );

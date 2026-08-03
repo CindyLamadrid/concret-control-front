@@ -1,0 +1,202 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <style type="text/css">
+    @page { size: A4 portrait; margin: 8mm; }
+    .logo { display: block; width: 150px; text-align: center; margin: auto; }
+    .right { text-align: right; }
+    .left { text-align: left !important; }
+    .center { text-align: center; }
+    .table {
+      font-size: 5pt; width: 98%; border-collapse: collapse;
+      margin: auto; border: none;
+    }
+    table, th, td {
+      border-collapse: collapse; font-size: 5pt !important;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    th {
+      padding: 2px 3px; border-bottom: 1px solid #333;
+      font-weight: bold;
+    }
+    td { padding: 1px 3px; }
+    .header-cell { background-color: white !important; }
+    .imputation-row td {
+      font-weight: bold; font-size: 5pt !important;
+      padding: 1px 3px; background-color: #f0f0f0 !important;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .detail-row td { padding: 2px 4px; }
+    .containerReport { width: 100%; text-align: center; }
+    .title {
+      font-size: 7pt; font-weight: 600; padding-bottom: 2px;
+      padding-top: 2px; text-align: center;
+    }
+    .subtitle {
+      font-size: 5pt; font-weight: 500; padding-bottom: 1px;
+      padding-top: 1px; text-align: center; width: 100%; margin: auto;
+    }
+    .info-section {
+      width: 98%; margin: auto; font-size: 5pt;
+      text-align: left; padding: 2px 0;
+    }
+    .separator { border: none; border-top: 0.5px solid #ccc; margin: 4px auto; width: 98%; }
+    body {
+      font-family: "Century Gothic", sans-serif;
+      font-size: 5pt;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .headerReport { border: 1px solid gray; }
+    @media print {
+      body { font-size: 5pt !important; }
+      .table { font-size: 5pt !important; width: 98%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="containerReport">
+    <table class="table headerReport">
+      <tbody>
+        <tr>
+          <td class="header-cell" style="width:18%;">
+            <img class="logo" alt="" src="{{{logoSrc}}}" />
+          </td>
+          <td class="header-cell">
+            <div class="subtitle" style="font-size:8pt;"><b>{{projectName}} - {{stageName}}</b></div>
+            <div class="subtitle">Fecha Impresion: {{date}}</div>
+          </td>
+          <td class="header-cell" style="text-align:right; vertical-align:top; padding-right:10px;">
+            <div style="font-size:9pt; font-weight:bold;">No {{billPrefix}}{{billNumber}}</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <br />
+
+    <table style="width:98%; margin:auto; border-collapse:collapse; font-size:5pt; border-left:2px solid #2c3e50; padding-left:8px;">
+      <tbody>
+        <tr>
+          <td><b>FECHA DE FACTURA:</b> {{billDate}}</td>
+          <td style="width:15px; text-align:center; color:#ccc;">|</td>
+          <td><b>FECHA DE VENCIMIENTO:</b> {{dueDate}}</td>
+          <td style="width:15px; text-align:center; color:#ccc;">|</td>
+          <td><b>FECHA DE ELABORACION:</b> {{date}}</td>
+        </tr>
+        <tr>
+          <td><b>PROYECTO:</b> {{projectName}}</td>
+          <td style="text-align:center; color:#ccc;">|</td>
+          <td><b>TIPO DE DOCUMENTO:</b> {{contractType}}</td>
+          <td style="text-align:center; color:#ccc;">|</td>
+          <td><b>FORMA DE PAGO:</b> {{paymentMethod}}</td>
+        </tr>
+        <tr>
+          <td><b>BENEFICIARIO:</b> {{supplierName}}</td>
+          <td style="text-align:center; color:#ccc;">|</td>
+          <td><b>IDENTIFICACION:</b> {{identification}}</td>
+          <td style="text-align:center; color:#ccc;">|</td>
+          <td><b>TEL:</b> {{phone}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <hr class="separator" />
+
+    <br />
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="center">IMPUTACION</th>
+          <th class="left">INSUMO</th>
+          <th class="center">UN</th>
+          <th class="right">CANTIDAD</th>
+          <th class="right">PRECIO</th>
+          <th class="right">VALOR</th>
+          <th class="right">IVA</th>
+          <th class="right">%IVA</th>
+          <th class="right">RETEFTE</th>
+          <th class="right">RETEIVA</th>
+          <th class="right">RETEICA</th>
+          <th class="right">BASE</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#inputs}}
+        <tr class="imputation-row">
+          <td>{{imputation}}</td>
+          <td colspan="11">{{imputationDesc}}</td>
+        </tr>
+        <tr class="detail-row">
+          <td></td>
+          <td class="left">{{contractInfo}} - {{name}}</td>
+          <td class="center">{{unit}}</td>
+          <td class="right">{{quantity}}</td>
+          <td class="right">{{unitValue}}</td>
+          <td class="right">{{valor}}</td>
+          <td class="right">{{iva}}</td>
+          <td class="right">{{ivaPercent}}</td>
+          <td class="right">{{reteFte}}</td>
+          <td class="right">{{reteIva}}</td>
+          <td class="right">{{reteIca}}</td>
+          <td class="right">{{base}}</td>
+        </tr>
+        {{/inputs}}
+      </tbody>
+    </table>
+
+    <div style="width:98%; margin:auto; padding-top:6px; text-align:right;">
+      <table style="width:18%; margin-left:auto; margin-right:0; border-collapse:collapse; font-size:5pt;">
+        <tr>
+          <td style="text-align:right; padding:1px 4px; border:0.5px solid #ccc; background:#f5f5f5;"><b>SUBTOTAL:</b></td>
+          <td style="text-align:right; padding:1px 4px; border:0.5px solid #ccc; background:#f5f5f5;">{{totalValor}}</td>
+        </tr>
+        <tr>
+          <td style="text-align:right; padding:1px 4px; border:0.5px solid #ccc; background:white;"><b>IMPUESTO:</b></td>
+          <td style="text-align:right; padding:1px 4px; border:0.5px solid #ccc; background:white;">{{totalIva}}</td>
+        </tr>
+        <tr>
+          <td style="text-align:right; padding:1px 4px; border:0.5px solid #ccc; background:#f5f5f5;"><b>TOTAL:</b></td>
+          <td style="text-align:right; padding:1px 4px; border:0.5px solid #ccc; background:#f5f5f5;">{{totalGeneral}}</td>
+        </tr>
+      </table>
+    </div>
+
+    {{#observations}}
+    <div class="info-section">
+      <b>OBSERVACIONES:</b> {{observations}}
+    </div>
+    {{/observations}}
+
+    <!-- Firmas -->
+    <div style="width:98%; margin:50px auto 0 auto;">
+      <table style="width:100%; border-collapse:collapse; font-size:5pt;">
+        <tr>
+          <td style="width:30%; text-align:center; padding-top:50px;">
+            <div style="border-top:1px solid #333; display:inline-block; width:80%; padding-top:4px;">ALMACEN</div>
+          </td>
+          <td style="width:5%;"></td>
+          <td style="width:30%; text-align:center; padding-top:50px;">
+            <div style="border-top:1px solid #333; display:inline-block; width:80%; padding-top:4px;">RESIDENTE</div>
+          </td>
+          <td style="width:5%;"></td>
+          <td style="width:30%; text-align:center; padding-top:50px;">
+            <div style="border-top:1px solid #333; display:inline-block; width:80%; padding-top:4px;">DIRECTOR DE OBRA</div>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; padding-top:50px;">
+            <div style="border-top:1px solid #333; display:inline-block; width:80%; padding-top:4px;">INTERVENTOR</div>
+          </td>
+          <td></td>
+          <td style="text-align:center; padding-top:50px;">
+            <div style="border-top:1px solid #333; display:inline-block; width:80%; padding-top:4px;">ELABORO</div>
+          </td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

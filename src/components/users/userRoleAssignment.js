@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from "react-bootstrap/Modal";
+import ReactSelect from "react-select";
 
 const UserRoleAssignment = ({
   selectedUser,
@@ -54,54 +55,68 @@ const UserRoleAssignment = ({
   return (
     <div className="modal show modal-inline">
       <Modal.Dialog size="lg">
-        <Modal.Body>
+        <Modal.Header>
           <div className="subtitle center">
             <b>ASIGNAR OBRAS — {userName}</b>
           </div>
+        </Modal.Header>
+        <Modal.Body>
 
           {/* Formulario de asignación */}
           <div className="row mb-15">
             <div className="col-3">
               <span className="label">Obra</span>
-              <select
-                className="select"
-                value={idConstruction}
-                onChange={(e) => { setIdConstruction(e.target.value); setIdStage(""); }}
-              >
-                <option value="">-- Seleccionar --</option>
-                {filteredConstructions.map((c) => (
-                  <option key={c.idConstruction} value={c.idConstruction}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
+              <ReactSelect
+                className="react-select-container"
+                options={filteredConstructions.map((c) => ({
+                  value: String(c.idConstruction),
+                  label: c.name
+                }))}
+                value={filteredConstructions.map((c) => ({
+                  value: String(c.idConstruction),
+                  label: c.name
+                })).find((o) => o.value === String(idConstruction)) || null}
+                onChange={(opt) => { setIdConstruction(opt ? opt.value : ""); setIdStage(""); }}
+                placeholder="-- Seleccionar --"
+                isSearchable
+                isClearable
+              />
             </div>
             <div className="col-3">
               <span className="label">Etapa (vacío = todas)</span>
-              <select
-                className="select"
-                value={idStage}
-                onChange={(e) => setIdStage(e.target.value)}
-                disabled={!idConstruction}
-              >
-                <option value="">Todas las etapas</option>
-                {stages.map((s) => (
-                  <option key={s.idStage} value={s.idStage}>
-                    {s.name}
-                  </option>
-                ))}
-              </select>
+              <ReactSelect
+                className="react-select-container"
+                options={stages.map((s) => ({
+                  value: String(s.idStage),
+                  label: s.name
+                }))}
+                value={stages.map((s) => ({
+                  value: String(s.idStage),
+                  label: s.name
+                })).find((o) => o.value === String(idStage)) || null}
+                onChange={(opt) => setIdStage(opt ? opt.value : "")}
+                placeholder="Todas las etapas"
+                isSearchable
+                isClearable
+                isDisabled={!idConstruction}
+              />
             </div>
             <div className="col-3">
               <span className="label">Nivel de acceso</span>
-              <select
-                className="select"
-                value={accessType}
-                onChange={(e) => setAccessType(e.target.value)}
-              >
-                <option value="view">Solo ver</option>
-                <option value="full">Control completo</option>
-              </select>
+              <ReactSelect
+                className="react-select-container"
+                options={[
+                  { value: "view", label: "Solo ver" },
+                  { value: "full", label: "Control completo" }
+                ]}
+                value={[
+                  { value: "view", label: "Solo ver" },
+                  { value: "full", label: "Control completo" }
+                ].find((o) => o.value === accessType) || null}
+                onChange={(opt) => setAccessType(opt ? opt.value : "view")}
+                placeholder="Seleccionar acceso"
+                isSearchable={false}
+              />
             </div>
             <div className="col-3 pt-22">
               <button className="primary" onClick={onAdd} disabled={!idConstruction || (stages.length === 0 && idConstruction)}>
@@ -154,13 +169,12 @@ const UserRoleAssignment = ({
             <div className="center">Sin asignaciones. Este usuario no verá ninguna obra.</div>
           )}
 
-          <br />
-          <div className="right">
+      </Modal.Body>
+      <Modal.Footer>
             <button className="secondary" onClick={() => setSelectedUser(null)}>
               Cerrar
             </button>
-          </div>
-        </Modal.Body>
+      </Modal.Footer>
       </Modal.Dialog>
     </div>
   );

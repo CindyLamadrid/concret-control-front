@@ -360,7 +360,7 @@ const Inputs = ({}) => {
               className="primary"
               onClick={() => onAddCompountInput()}
             >
-              {"Agregar Insumo"}
+              <i className="fas fa-plus" /> {"Agregar Insumo"}
             </button>
             )}
            

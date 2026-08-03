@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "../../config/axiosConfig";
 import Modal from "react-bootstrap/Modal";
-import Select from "react-select";
+import ReactSelect from "react-select";
 import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
+import ModalHeader from "react-bootstrap/esm/ModalHeader";
+import ModalBody from "react-bootstrap/esm/ModalBody";
 
 const handlers = require("../utils/handlers");
 
@@ -15,7 +17,6 @@ const AdminOrder = ({ adminOrder, messageResultOperation, onSaveOrder, onCloseAd
   const [idPaymentMethod, setIdPaymentMethod] = useState("");
   const [paymentMethodsArray, setPaymentMethodsArray] = useState([]);
   const [cufe, setCufe] = useState("");
-  const [electronicDocumentId, setElectronicDocumentId] = useState("");
   const [observations, setObservations] = useState("");
 
   const getPaymentMethods = async () => {
@@ -37,11 +38,10 @@ const AdminOrder = ({ adminOrder, messageResultOperation, onSaveOrder, onCloseAd
     billNumber,
     idPaymentMethod,
     cufe,
-    electronicDocumentId,
     observations,
   });
 
-  const isValid = billDate && billNumber && idPaymentMethod && cufe && electronicDocumentId && observations;
+  const isValid = billDate && billNumber && idPaymentMethod;
 
   const Field = ({ label, mandatory, hidden, children }) => (
     <div className="row subcontainer-admin-options" hidden={hidden}>
@@ -59,13 +59,16 @@ const AdminOrder = ({ adminOrder, messageResultOperation, onSaveOrder, onCloseAd
 
   return (
     <Modal.Dialog>
+      <Modal.Header>
+         <div className="subtitle center"><b>CREAR ORDEN DE PAGO</b></div>
+      </Modal.Header>
       <Modal.Body>
         <div className="container-xl-modals">
-          <div className="subtitle center"><b>CREAR ORDEN DE PAGO</b></div>
-
           {messageResultOperation && (
-            <div className="center mandatory"><div>{messageResultOperation}</div><br /></div>
+            <div className="center mandatory"><div>{messageResultOperation}</div></div>
           )}
+
+          <div className="section-title">Datos de Factura</div>
 
           <div className="row subcontainer-admin-options">
             <div className="col-3 right label"><span>Fecha Factura &nbsp;</span></div>
@@ -109,16 +112,14 @@ const AdminOrder = ({ adminOrder, messageResultOperation, onSaveOrder, onCloseAd
           <div className="row subcontainer-admin-options">
             <div className="col-3 right label"><span>Forma de Pago &nbsp;</span></div>
             <div className="col-9">
-              <select
-                className="input-modal w-60"
-                value={idPaymentMethod}
-                onChange={(e) => setIdPaymentMethod(e.target.value)}
-              >
-                <option value="">-- Seleccione --</option>
-                {paymentMethodsArray.map((pm) => (
-                  <option key={pm.idPaymentMethod} value={pm.idPaymentMethod}>{pm.method}</option>
-                ))}
-              </select>
+              <ReactSelect
+                className="react-select-container w-60"
+                options={paymentMethodsArray.map((pm) => ({ value: pm.idPaymentMethod, label: pm.method || pm.name }))}
+                value={paymentMethodsArray.map((pm) => ({ value: pm.idPaymentMethod, label: pm.method || pm.name })).find((o) => String(o.value) === String(idPaymentMethod)) || null}
+                onChange={(opt) => setIdPaymentMethod(opt ? opt.value : "")}
+                placeholder="Seleccione..."
+                isSearchable
+              />
               <div className="mandatory left" hidden={idPaymentMethod}>
                 <i className="fas fa-exclamation-circle" /> &nbsp; Forma de Pago Obligatoria
               </div>
@@ -134,24 +135,6 @@ const AdminOrder = ({ adminOrder, messageResultOperation, onSaveOrder, onCloseAd
                 value={cufe}
                 onChange={(e) => setCufe(e.target.value)}
               />
-              <div className="mandatory left" hidden={cufe}>
-                <i className="fas fa-exclamation-circle" /> &nbsp; CUFE Obligatorio
-              </div>
-            </div>
-          </div>
-
-          <div className="row subcontainer-admin-options">
-            <div className="col-3 right label"><span>ID Documento Electrónico &nbsp;</span></div>
-            <div className="col-9">
-              <input
-                className="input-modal w-80"
-                type="text"
-                value={electronicDocumentId}
-                onChange={(e) => setElectronicDocumentId(e.target.value)}
-              />
-              <div className="mandatory left" hidden={electronicDocumentId}>
-                <i className="fas fa-exclamation-circle" /> &nbsp; ID Documento Obligatorio
-              </div>
             </div>
           </div>
 
@@ -164,16 +147,13 @@ const AdminOrder = ({ adminOrder, messageResultOperation, onSaveOrder, onCloseAd
                 value={observations}
                 onChange={(e) => setObservations(e.target.value)}
               />
-              <div className="mandatory left" hidden={observations}>
-                <i className="fas fa-exclamation-circle" /> &nbsp; Observaciones Obligatorias
-              </div>
             </div>
           </div>
 
-          <br />
-          <div className="right">
+        </div>
+      </Modal.Body>
+      <Modal.Footer>
             <button className="secondary" type="button" onClick={onCloseAdminOrder}>Cerrar</button>
-            &nbsp;&nbsp;
             <button
               className="primary"
               type="button"
@@ -182,9 +162,7 @@ const AdminOrder = ({ adminOrder, messageResultOperation, onSaveOrder, onCloseAd
             >
               Crear Orden
             </button>
-          </div>
-        </div>
-      </Modal.Body>
+      </Modal.Footer>
     </Modal.Dialog>
   );
 };

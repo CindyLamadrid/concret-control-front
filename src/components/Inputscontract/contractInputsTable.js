@@ -35,7 +35,7 @@ const ContractInputsTable = ({
               <tr key={index.toString()}>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
                   <i
-                    class="far fa-trash-alt icon-view-detail"
+                    class="fas fa-trash icon-view-detail"
                     onClick={() => onRemoveInput(index)}
                   />
                 </td>
@@ -109,7 +109,7 @@ const ContractInputsTable = ({
                 </td>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
                   <i
-                    className="far fa-save icon-view-detail"
+                    className="fas fa-check-circle icon-view-detail"
                     onClick={() => {
                       onSaveInformation(index);
                     }}

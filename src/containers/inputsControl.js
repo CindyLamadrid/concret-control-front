@@ -339,7 +339,7 @@ const InputsControl = () => {
             </div>
             <div className="col-4">
               <ChapterSelect
-                id="cod"
+                id="idInput"
                 name="name"
                 array={inputs}
                 selectedValue={inputSelected}
@@ -356,7 +356,7 @@ const InputsControl = () => {
               className="primary"
               onClick={() => onAddInputsContract()}
             >
-              {"Agregar Insumo"}
+              <i className="fas fa-plus" /> {"Agregar Insumo"}
             </button>
           </div>
  <br />

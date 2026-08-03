@@ -45,10 +45,12 @@ const AdminItem = ({ adminItem, messageResultOperation, setAdminItem, onSaveItem
 
   return (
     <Modal.Dialog>
-      <Modal.Body>
+      <Modal.Header>
         <div className="subtitle center">
          <b> {adminItem.action ==="edit" ? "EDITAR ITEM": "CREAR ITEM" } </b>
         </div>
+      </Modal.Header>
+      <Modal.Body>
         <div className="center mandatory">
           <div>{messageResultOperation}</div> <br/>
         </div>
@@ -84,8 +86,8 @@ const AdminItem = ({ adminItem, messageResultOperation, setAdminItem, onSaveItem
             />
           </div>
         </div>
-        <br />
-        <div className="right">
+      </Modal.Body>
+      <Modal.Footer>
           <button
             className="secondary"
             type="button"
@@ -93,7 +95,6 @@ const AdminItem = ({ adminItem, messageResultOperation, setAdminItem, onSaveItem
           >
             {"Cerrar"}
           </button>
-          &nbsp;&nbsp;
           <button
             className="primary"
             disabled={!name}
@@ -103,8 +104,7 @@ const AdminItem = ({ adminItem, messageResultOperation, setAdminItem, onSaveItem
           >
             {adminItem.action === "edit" ? "Guardar Item" : "Crear Item"}
           </button>
-        </div>
-      </Modal.Body>
+      </Modal.Footer>
     </Modal.Dialog>
   );
 };

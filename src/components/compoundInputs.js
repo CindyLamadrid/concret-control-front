@@ -333,7 +333,7 @@ const CompoundInputs = ({
               className="primary"
               onClick={() => onAddInputItems()}
             >
-              {"Agregar Insumo"}
+              <i className="fas fa-plus" /> {"Agregar Insumo"}
             </button>
           )}
         </div>

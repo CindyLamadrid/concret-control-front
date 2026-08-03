@@ -143,16 +143,18 @@ const AdminContract = ({
 
   return (
     <Modal.Dialog>
+      <Modal.Header>
+        <div className="subtitle center">
+          <b>
+            {" "}
+            {adminContract.action === "edit"
+              ? "EDITAR CONTRATO"
+              : "CREAR CONTRATO"}{" "}
+          </b>
+        </div>
+      </Modal.Header>
       <Modal.Body>
         <div className="container-xl-modals">
-          <div className="subtitle center">
-            <b>
-              {" "}
-              {adminContract.action === "edit"
-                ? "EDITAR CONTRATO"
-                : "CREAR CONTRATO"}{" "}
-            </b>
-          </div>
           {messageResultOperation && (
             <div className="center mandatory">
               <div>{messageResultOperation}</div>
@@ -463,9 +465,11 @@ const AdminContract = ({
               </div>
             </div>
 
-            <br />
+          
           </div>
-          <div className="right">
+        </div>
+      </Modal.Body>
+      <Modal.Footer>
             <button
               className="secondary"
               type="button"
@@ -473,7 +477,6 @@ const AdminContract = ({
             >
               Cerrar
             </button>
-            &nbsp;&nbsp;
             <button
               className="primary"
               hidden={!supplier}
@@ -486,9 +489,7 @@ const AdminContract = ({
                 ? "Guardar Contrato"
                 : "Crear Contrato"}
             </button>
-          </div>
-        </div>
-      </Modal.Body>
+      </Modal.Footer>
     </Modal.Dialog>
   );
 };

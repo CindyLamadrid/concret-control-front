@@ -4,6 +4,7 @@ import { ConstructionContext } from "../context/constructionContext";
 import NewUser from "../components/users/newUser";
 import UserRoleAssignment from "../components/users/userRoleAssignment";
 import bcrypt from "bcryptjs-react";
+import ReactSelect from "react-select";
 
 const Users = () => {
   const { user, role } = useContext(ConstructionContext);
@@ -205,17 +206,21 @@ const Users = () => {
                   <td className={idx % 2 === 0 ? "dark" : ""}>{u.UserName || u.userName}</td>
                   <td className={idx % 2 === 0 ? "dark" : ""}>{u.CompanyName || u.companyName || "Sin empresa"}</td>
                   <td className={idx % 2 === 0 ? "dark" : ""}>
-                    <select
-                      className="select"
-                      value={u.IdRole || u.idRole || ""}
-                      onChange={(e) => onChangeRole(u.IdUser || u.idUser, e.target.value)}
-                    >
-                      {rolesArray.map((r) => (
-                        <option key={r.IdRole || r.idRole} value={r.IdRole || r.idRole}>
-                          {r.Name || r.name}
-                        </option>
-                      ))}
-                    </select>
+                    <ReactSelect
+                      className="react-select-container"
+                      options={rolesArray.map((r) => ({
+                        value: String(r.IdRole || r.idRole),
+                        label: r.Name || r.name
+                      }))}
+                      value={rolesArray.map((r) => ({
+                        value: String(r.IdRole || r.idRole),
+                        label: r.Name || r.name
+                      })).find((o) => o.value === String(u.IdRole || u.idRole)) || null}
+                      onChange={(opt) => onChangeRole(u.IdUser || u.idUser, opt ? opt.value : "")}
+                      isSearchable={false}
+                      menuPortalTarget={document.body}
+                      styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+                    />
                   </td>
                   <td className={idx % 2 === 0 ? "dark center" : "center"}>
                     <button className="secondary" onClick={() => onSelectUser(u)}>

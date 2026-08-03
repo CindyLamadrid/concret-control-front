@@ -26,11 +26,11 @@ const OrderTable = ({ orderArray, onEditOrder, onViewDetail, canEdit }) => {
               <td className={index % 2 === 0 ? "dark left" : "left"}>{x.cufe}</td>
               <td className={index % 2 === 0 ? "dark left" : "left"}>{x.electronicDocumentId}</td>
               <td className={index % 2 === 0 ? "dark center" : "center"}>
-                <i className="fas fa-external-link-alt icon-view-detail" onClick={() => onViewDetail && onViewDetail(index)} />
+                <i className="fas fa-external-link-alt icon-view-detail" title="Ver insumos" onClick={() => onViewDetail && onViewDetail(index)} />
               </td>
               {canEdit && (
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
-                  <i className="fas fa-pencil-alt icon-view-detail" onClick={() => onEditOrder && onEditOrder(index)} />
+                  <i className="fas fa-pen icon-view-detail" title="Editar orden" onClick={() => onEditOrder && onEditOrder(index)} />
                 </td>
               )}
             </tr>

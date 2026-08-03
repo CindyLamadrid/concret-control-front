@@ -52,7 +52,7 @@ const ConstructionItemsTable = ({
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
                   {canEdit && (
                     <i
-                      class="far fa-trash-alt icon-view-detail"
+                      class="fas fa-trash icon-view-detail"
                       onClick={() => onRemoveItem(index)}
                     />
                   )}
@@ -91,7 +91,7 @@ const ConstructionItemsTable = ({
                   {canEdit && (
                     <>
                       <i
-                        className="far fa-save icon-view-detail"
+                        className="fas fa-check-circle icon-view-detail"
                         onClick={() => {
                           if(!(x.budgetStatus==="C" && budgetType==="I")) onSaveInformation(index)
                         }}
@@ -115,7 +115,7 @@ const ConstructionItemsTable = ({
                 </td>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
                   {canEdit && (
-                    <i className="fas fa-pencil-alt icon-view-detail" onClick={() => onEditItem(index)} />
+                    <i className="fas fa-pen icon-view-detail" onClick={() => onEditItem(index)} />
                   )}
                 </td>
               </tr>

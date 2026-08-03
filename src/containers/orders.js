@@ -36,11 +36,11 @@ const Orders = () => {
     }
   };
 
-  const onSearchOrders = async () => {
-    if (!supplier) return;
+  const onSearchOrders = async (id) => {
+    if (!supplier && !id) return;
     try {
       const result = await axios.get(`${process.env.REACT_APP_BUDGET_URL_API}/orders-supplier`, {
-        params: { idStage: stageSelected.idStage, idSupplier: parseInt(supplier.value, 10), type },
+        params: { idStage: stageSelected.idStage, idSupplier: parseInt(id || supplier.value, 10), type },
       });
       if (result?.data?.length > 0) {
         setOrderArray(result.data);
@@ -128,6 +128,18 @@ const Orders = () => {
     getSuppliers();
   }, []);
 
+  // Preselect supplier from URL params (e.g. when navigating back)
+  useEffect(() => {
+    const idSupplier = searchParams.get("idSupplier");
+    if (idSupplier && suppliersArray.length > 0) {
+      const found = suppliersArray.find((x) => String(x.value) === String(idSupplier));
+      if (found) {
+        setSupplier(found);
+        onSearchOrders(found.value);
+      }
+    }
+  }, [suppliersArray, searchParams]);
+
   useEffect(() => {
     const newType = searchParams.get("type");
     if (type !== newType) {
@@ -140,7 +152,8 @@ const Orders = () => {
     <div>
       <Resume constructionSelected={constructionSelected} stageSelected={stageSelected} />
       <div className="header-title">
-        <span>ÓRDENES DE PAGO</span>
+        <span>LISTADO DE ÓRDENES DE {type === 'L' ? 'MANO DE OBRA' : type === 'S' ? 'SERVICIOS' : type === 'M' ? 'SUMINISTRO MATERIALES' : type === 'C' ? 'CONSTRUCCIÓN' : ''}</span>
+        <span className="subheader-title">&nbsp;&nbsp;&nbsp;{orderArray.length} Orden(es)</span>
       </div>
       <AdminSelectOptions
         options={suppliersArray}
@@ -154,7 +167,7 @@ const Orders = () => {
       />
 
       {adminOrder.show && (
-        <div className="modal show modal-xl modal-inline">
+        <div className="modal show modal-lg modal-inline">
           <AdminOrder
             adminOrder={adminOrder}
             messageResultOperation={messageResultOperation}
@@ -165,7 +178,7 @@ const Orders = () => {
       )}
 
       {adminOrderEdit.show && (
-        <div className="modal show modal-xl modal-inline">
+        <div className="modal show modal-lg modal-inline">
           <AdminOrderEdit
             adminOrderEdit={adminOrderEdit}
             messageResultOperation={messageResultOperation}
@@ -177,10 +190,10 @@ const Orders = () => {
 
       {noData && <div>La búsqueda no arrojó resultados</div>}
 
+      <br/>
       {orderArray?.length > 0 && (
         <div>
-          <div className="subtitle"><span>LISTADO DE ÓRDENES</span></div>
-          <OrderTable orderArray={orderArray} onEditOrder={onEditOrder} onViewDetail={onViewDetail} />
+               <OrderTable orderArray={orderArray} onEditOrder={onEditOrder} onViewDetail={onViewDetail} canEdit={true} />
         </div>
       )}
     </div>

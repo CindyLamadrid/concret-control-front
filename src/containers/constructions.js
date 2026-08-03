@@ -153,7 +153,7 @@ const Constructions = ({}) => {
             className="primary"
             onClick={() => onCreateProject()}
           >
-            {"Agregar Projecto"}
+            <i className="fas fa-plus" /> {"Agregar Projecto"}
           </button>
         </div>
       )}

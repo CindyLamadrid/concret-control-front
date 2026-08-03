@@ -110,7 +110,7 @@ const Chapters = ({
 
   return (
     <div className="row">
-      <div className="col-3">
+      <div className="col-3 pr-10">
         <ChapterSelect
           id="idChapter"
           name="codName"

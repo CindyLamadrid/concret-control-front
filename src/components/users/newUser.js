@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from "react-bootstrap/Modal";
+import ReactSelect from "react-select";
 
 const NewUser = ({ setShowNewUser, onSaveUser, message }) => {
   const [name, setName] = useState("");
@@ -50,11 +51,13 @@ const NewUser = ({ setShowNewUser, onSaveUser, message }) => {
 
   return (
     <Modal.Dialog>
-      <Modal.Body>
-        <form autoComplete="off">
+      <Modal.Header>
         <div className="subtitle center">
           <b>CREAR USUARIO</b>
         </div>
+      </Modal.Header>
+      <Modal.Body>
+        <form autoComplete="off">
         <div className="center mandatory">
           <div>{message}</div>
         </div>
@@ -63,18 +66,20 @@ const NewUser = ({ setShowNewUser, onSaveUser, message }) => {
             <span>Empresa</span>
           </div>
           <div className="col-8">
-            <select
-              className="select w-100"
-              value={idCompany}
-              onChange={(e) => setIdCompany(e.target.value)}
-            >
-              <option value="">-- Seleccionar empresa --</option>
-              {companies.map((c) => (
-                <option key={c.IdCompany || c.idCompany} value={c.IdCompany || c.idCompany}>
-                  {c.Name || c.name} ({c.Nit || c.nit})
-                </option>
-              ))}
-            </select>
+            <ReactSelect
+              className="react-select-container w-100"
+              options={companies.map((c) => ({
+                value: String(c.IdCompany || c.idCompany),
+                label: `${c.Name || c.name} (${c.Nit || c.nit})`
+              }))}
+              value={companies.map((c) => ({
+                value: String(c.IdCompany || c.idCompany),
+                label: `${c.Name || c.name} (${c.Nit || c.nit})`
+              })).find((o) => o.value === String(idCompany)) || null}
+              onChange={(opt) => setIdCompany(opt ? opt.value : "")}
+              placeholder="-- Seleccionar empresa --"
+              isSearchable
+            />
             <div className="mandatory left" hidden={idCompany}>
               <i className="fas fa-exclamation-circle" />
               &nbsp; Empresa Obligatoria
@@ -87,17 +92,20 @@ const NewUser = ({ setShowNewUser, onSaveUser, message }) => {
             <span>Rol</span>
           </div>
           <div className="col-8">
-            <select
-              className="select w-100"
-              value={idRole}
-              onChange={(e) => setIdRole(e.target.value)}
-            >
-              {roles.map((r) => (
-                <option key={r.IdRole || r.idRole} value={r.IdRole || r.idRole}>
-                  {r.Name || r.name}
-                </option>
-              ))}
-            </select>
+            <ReactSelect
+              className="react-select-container w-100"
+              options={roles.map((r) => ({
+                value: String(r.IdRole || r.idRole),
+                label: r.Name || r.name
+              }))}
+              value={roles.map((r) => ({
+                value: String(r.IdRole || r.idRole),
+                label: r.Name || r.name
+              })).find((o) => o.value === String(idRole)) || null}
+              onChange={(opt) => setIdRole(opt ? opt.value : "")}
+              placeholder="-- Seleccionar rol --"
+              isSearchable
+            />
             <div className="mandatory left" hidden={idRole}>
               <i className="fas fa-exclamation-circle" />
               &nbsp; Rol Obligatorio
@@ -182,18 +190,16 @@ const NewUser = ({ setShowNewUser, onSaveUser, message }) => {
             )}
           </div>
         </div>
-        <br />
-        <div className="right">
+        </form>
+      </Modal.Body>
+      <Modal.Footer>
           <button className="secondary" type="button" onClick={() => setShowNewUser(false)}>
             Cerrar
           </button>
-          &nbsp;
           <button className="primary" type="button" disabled={!canSave} onClick={handleSave}>
             Crear Usuario
           </button>
-        </div>
-        </form>
-      </Modal.Body>
+      </Modal.Footer>
     </Modal.Dialog>
   );
 };

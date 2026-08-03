@@ -23,7 +23,7 @@ const Contracts = () => {
   const [noData, setNoData] = useState(false);
   const [searchParams] = useSearchParams();
   const [type,setType] = useState(searchParams.get('type'));
-  const [idSupplier] = useState(searchParams.get('idSupplier'));
+  const idSupplier = searchParams.get('idSupplier');
 
 
 
@@ -178,9 +178,9 @@ const Contracts = () => {
     <div>
       <Resume constructionSelected={constructionSelected} stageSelected={stageSelected} />
       <div>
-        <br />
         <div className="header-title">
-          <span>OPCIONES DE CONTRATOS</span>
+          <span>LISTADO DE CONTRATOS DE {type === 'L' ? 'MANO DE OBRA' : type === 'S' ? 'SERVICIOS' : type === 'M' ? 'SUMINISTRO MATERIALES' : type === 'C' ? 'CONSTRUCCIÓN' : ''}</span>
+          <span className="subheader-title">&nbsp;&nbsp;&nbsp;{contractsArray.length} Contrato(s)</span>
         </div>
         <AdminOptions
           options={suppliersArray}
@@ -189,7 +189,7 @@ const Contracts = () => {
           onSearch={onSearchContracts}
           onNewOption={onNewContract}
           onCancelOption={() => {}}
-          labelOption="Buscar Contrato"
+          labelOption="Crear Contrato"
           hideCancelOption
         />
       </div>
@@ -219,13 +219,8 @@ const Contracts = () => {
       )}
            {contractsArray  && contractsArray.length > 0 && (
         <div>
-          <div className="subtitle">
-            <span>LISTADO DE CONTRATOS</span>
-          </div>
-
-          <div>
-       
-          </div>
+        
+        
           <br />
           <ContractTable
             contractsArray={contractsArray}
