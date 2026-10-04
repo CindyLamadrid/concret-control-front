@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import Modal from "react-bootstrap/Modal";
+import ModalHeader from "../commons/modalHeader";
 import ReactSelect from "react-select";
 import axios from "../../config/axiosConfig";
 import { ConstructionContext } from "../../context/constructionContext";
@@ -141,11 +142,7 @@ const Charges = ({ show, onClose, onHandleSaveContracts, currentItem }) => {
       className="modal show modal-xs modal-inline"
     >
       <Modal.Dialog>
-        <Modal.Header>
-          <div className="subtitle center">
-            <b>IMPUTACIÓN</b>
-          </div>
-        </Modal.Header>
+        <ModalHeader title="IMPUTACIÓN" onClose={onClose} />
         <Modal.Body>
           <div>
 

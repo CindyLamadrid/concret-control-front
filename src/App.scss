@@ -4,6 +4,19 @@
 @import './styles/theme-apply';
 @import './styles/modal';
 
+.app-wrapper {
+  min-height: 100vh;
+  min-width: 900px;
+}
+
+// El menu y sus contenedores deben poder mostrar los dropdowns sin recorte
+.menu-container,
+.app-body,
+.nav-container,
+.menu-collapse {
+  overflow: visible !important;
+}
+
 .app-container {
   min-height: 100vh;
   display: flex;

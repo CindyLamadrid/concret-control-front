@@ -1,10 +1,10 @@
 import React from "react";
 import ReactSelect from "react-select";
 
-const Select = ({ id, name, array, selectedValue, setSelectedValue, disabled }) => {
+const Select = ({ id, name, array, selectedValue, setSelectedValue, disabled, secondaryLabel }) => {
   const options = (array || []).map((x) => ({
     value: x[id],
-    label: x[name],
+    label: secondaryLabel ? `${x[name]} - ${x[secondaryLabel]}` : x[name],
   }));
 
   const selected = options.find((o) => String(o.value) === String(selectedValue)) || null;
@@ -24,6 +24,12 @@ const Select = ({ id, name, array, selectedValue, setSelectedValue, disabled }) 
       placeholder="Seleccione..."
       menuPlacement="auto"
       isSearchable
+      menuPortalTarget={document.body}
+      styles={{
+        menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+        input: (base) => ({ ...base, color: '#333' }),
+        singleValue: (base) => ({ ...base, color: '#333' }),
+      }}
     />
   );
 };

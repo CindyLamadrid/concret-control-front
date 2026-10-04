@@ -47,14 +47,17 @@ const Stages = ({}) => {
       })
       .then((result) => {
         if (result && result.data) {
-          // Filtrar etapas según asignaciones (Admin ve todo)
           let stages = result.data;
-          if (role && !role.isAdmin) {
-            const allowedStages = userConstructions
-              .filter((uc) => (uc.IdConstruction || uc.idConstruction) === constructionSelected.idConstruction)
+          // Solo filtrar si NO es admin
+          if (role && role.isAdmin === false) {
+            const allowedStages = (userConstructions || [])
+              .filter((uc) => {
+                const ucConst = parseInt(uc.IdConstruction || uc.idConstruction, 10);
+                const selectedConst = parseInt(constructionSelected.idConstruction, 10);
+                return ucConst === selectedConst;
+              })
               .map((uc) => uc.IdStage || uc.idStage);
 
-            // Si alguna asignación tiene IdStage=null, tiene acceso a todas
             const hasAllStages = allowedStages.includes(null);
             if (!hasAllStages) {
               stages = stages.filter((s) => allowedStages.includes(s.idStage));

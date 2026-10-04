@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from "react-bootstrap/Modal";
 import ReactSelect from "react-select";
+import ModalHeader from "../commons/modalHeader";
 
 const UserRoleAssignment = ({
   selectedUser,
@@ -15,6 +16,7 @@ const UserRoleAssignment = ({
   const [idStage, setIdStage] = useState("");
   const [accessType, setAccessType] = useState("view");
   const [stages, setStages] = useState([]);
+  const [message, setMessage] = useState("");
 
   const token = localStorage.getItem("token");
   const headers = { Authorization: `Bearer ${token}` };
@@ -36,6 +38,21 @@ const UserRoleAssignment = ({
 
   const onAdd = () => {
     if (!idConstruction) return;
+    setMessage("");
+
+    // Verificar si ya existe una asignación para esa obra+etapa
+    const duplicate = userAssignments.find((a) => {
+      const aConst = parseInt(a.IdConstruction || a.idConstruction, 10);
+      const aStage = a.IdStage || a.idStage || null;
+      const newStage = idStage ? parseInt(idStage) : null;
+      return aConst === parseInt(idConstruction) && aStage === newStage;
+    });
+
+    if (duplicate) {
+      setMessage("Ya existe una asignación para esta obra y etapa.");
+      return;
+    }
+
     onAssignConstruction(
       parseInt(idConstruction),
       idStage ? parseInt(idStage) : null,
@@ -55,17 +72,19 @@ const UserRoleAssignment = ({
   return (
     <div className="modal show modal-inline">
       <Modal.Dialog size="lg">
-        <Modal.Header>
-          <div className="subtitle center">
-            <b>ASIGNAR OBRAS — {userName}</b>
-          </div>
-        </Modal.Header>
+        <ModalHeader title={`ASIGNAR OBRAS — ${userName}`} onClose={() => setSelectedUser(null)} />
         <Modal.Body>
 
+          {message && (
+            <div className="center mandatory" style={{ marginBottom: '10px' }}>
+              <i className="fas fa-exclamation-circle" /> {message}
+            </div>
+          )}
+
           {/* Formulario de asignación */}
-          <div className="row mb-15">
+          <div className="row" style={{ alignItems: 'flex-end', gap: '10px', marginBottom: '20px' }}>
             <div className="col-3">
-              <span className="label">Obra</span>
+              <span className="label" style={{ display: 'block', marginBottom: '6px' }}>Obra</span>
               <ReactSelect
                 className="react-select-container"
                 options={filteredConstructions.map((c) => ({
@@ -80,10 +99,12 @@ const UserRoleAssignment = ({
                 placeholder="-- Seleccionar --"
                 isSearchable
                 isClearable
+                menuPortalTarget={document.body}
+                styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }), input: (base) => ({ ...base, color: '#333' }) }}
               />
             </div>
             <div className="col-3">
-              <span className="label">Etapa (vacío = todas)</span>
+              <span className="label" style={{ display: 'block', marginBottom: '6px' }}>Etapa (vacío = todas)</span>
               <ReactSelect
                 className="react-select-container"
                 options={stages.map((s) => ({
@@ -99,10 +120,12 @@ const UserRoleAssignment = ({
                 isSearchable
                 isClearable
                 isDisabled={!idConstruction}
+                menuPortalTarget={document.body}
+                styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }), input: (base) => ({ ...base, color: '#333' }) }}
               />
             </div>
             <div className="col-3">
-              <span className="label">Nivel de acceso</span>
+              <span className="label" style={{ display: 'block', marginBottom: '6px' }}>Nivel de acceso</span>
               <ReactSelect
                 className="react-select-container"
                 options={[
@@ -116,19 +139,21 @@ const UserRoleAssignment = ({
                 onChange={(opt) => setAccessType(opt ? opt.value : "view")}
                 placeholder="Seleccionar acceso"
                 isSearchable={false}
+                menuPortalTarget={document.body}
+                styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }), input: (base) => ({ ...base, color: '#333' }) }}
               />
             </div>
-            <div className="col-3 pt-22">
-              <button className="primary" onClick={onAdd} disabled={!idConstruction || (stages.length === 0 && idConstruction)}>
+            <div className="col-2">
+              <button className="primary" onClick={onAdd} disabled={!idConstruction}>
                 <i className="fas fa-plus" /> Asignar
               </button>
-              {idConstruction && stages.length === 0 && (
-                <div className="mandatory text-sm mt-8">
-                  Esta obra no tiene etapas creadas
-                </div>
-              )}
             </div>
           </div>
+          {idConstruction && stages.length === 0 && (
+            <div className="mandatory text-sm" style={{ marginBottom: '10px' }}>
+              Esta obra no tiene etapas creadas
+            </div>
+          )}
 
           {/* Tabla de asignaciones actuales */}
           {userAssignments.length > 0 ? (

@@ -183,7 +183,7 @@ const InputItem = ({
   };
 
   const onRemoveInputItem = (index) => {
-    const inputItem = { ...itemInputsArray[index] };
+    const inputItem = { ...itemInputsArray[index], idConstructionStageItem: itemSelected.idConstructionStageItem };
 
     // removeInputItem(inputItem)
     setModalConfiguration({

@@ -269,12 +269,12 @@ const CompoundInputs = ({
   
 
   useEffect(() => {
-    if (compoundSelected.idInput) {
+    if (compoundSelected && compoundSelected.idInput) {
       getCompoundInputs(compoundSelected.idInput);
-      if(compoundSelected && !compoundSelected.name)
-         getItemsInputId(itemSelected.idItem,compoundSelected.idInput)
+      if(!compoundSelected.name)
+         getItemsInputId(itemSelected.idItem, compoundSelected.idInput)
     }
-  }, [compoundSelected.idInput]);
+  }, [compoundSelected?.idInput]);
 
     const onFocusInput=(index)=>{
      const newCompoundInputsArray = [...compoundInputsArray];

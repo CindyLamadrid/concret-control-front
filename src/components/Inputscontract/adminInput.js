@@ -42,7 +42,7 @@ const AdminContractInput = ({
           const { data } = result;
           setUnitsArray(data);
           if(adminInput.action!=="edit")
-          setUnitSelected(parseInt(data[0].idUnit));
+          setUnitSelected(parseInt(data[0].IdUnit));
         } else {
           setUnitsArray([]);
         }
@@ -61,7 +61,7 @@ const AdminContractInput = ({
         if (data && data.length>0) {
           setCategories(data);
           if(adminInput.action!=="edit")
-          setCategorySelected(parseInt(data[0].idCategory));
+          setCategorySelected(parseInt(data[0].IdCategory));
         } else {
           setCategories([]);
         }
@@ -80,7 +80,7 @@ const AdminContractInput = ({
         if (data && data.length>0) {
           setinputTypesArray(data);
           if(adminInput.action!=="edit")
-           setInputTypeSelected(parseInt(data[0].idInputType));
+           setInputTypeSelected(parseInt(data[0].IdInputType));
         } else {
           setinputTypesArray([]);
         }
@@ -105,7 +105,7 @@ const AdminContractInput = ({
       {
          setName(adminInput.input.name)
          if (unistsArray && unistsArray.length>0)
-          setUnitSelected(adminInput.input.idUnit)
+          setUnitSelected(adminInput.input.idUnit || adminInput.input.IdUnit)
           if (inputTypesArray && inputTypesArray.length>0)
           setInputTypeSelected(adminInput.input.idInputType)
           if(categoriesArray && categoriesArray.length>0)
@@ -148,8 +148,9 @@ const AdminContractInput = ({
           </div>
           <div className="col-8 container-select">
             <UnitSelect
-              id="idUnit"
-              name="name"
+              id="IdUnit"
+              name="Name"
+              secondaryLabel="Description"
               selectedValue={unitSelected}
               setSelectedValue={onChangeUnit}
               array={unistsArray}
@@ -162,8 +163,8 @@ const AdminContractInput = ({
           </div>
           <div className="col-8 container-select">
             <UnitSelect
-              id="idInputType"
-              name="name"
+              id="IdInputType"
+              name="Name"
               selectedValue={inputTypeSelected}
               setSelectedValue={onChangeInputType}
               array={inputTypesArray}
@@ -175,8 +176,8 @@ const AdminContractInput = ({
             </div>
             <div className="col-8 container-select">
               <UnitSelect
-                id="idCategory"
-                name="name"
+                id="IdCategory"
+                name="Name"
                 selectedValue={categorySelected}
                 setSelectedValue={onChangeCategory}
                 array={categoriesArray}

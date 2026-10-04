@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
+import ModalHeader from "../commons/modalHeader";
 import ReactSelect from "react-select";
 const handlers = require("../utils/handlers");
 
@@ -28,15 +29,7 @@ const AdminContruction = ({
 
   return (
     <Modal.Dialog>
-      <Modal.Header>
-        <div className="subtitle center">
-          <b>
-            {adminConstruction.action === "edit"
-              ? "EDITAR PROYECTO"
-              : "CREAR PROYECTO"}
-          </b>
-        </div>
-      </Modal.Header>
+      <ModalHeader title={adminConstruction.action === "edit" ? "EDITAR PROYECTO" : "CREAR PROYECTO"} onClose={() => setAdminConstruction({ show: false, construction: "", action: "" })} />
       <Modal.Body>
         <div className="center mandatory">
           <div>{messageResultOperation}</div> <br />

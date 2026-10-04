@@ -137,7 +137,7 @@ const CompoundInputTable = ({
               <td colSpan={8}></td>
               <td className="right">
                 {common.getMoneyFomat(
-                  common.getTotals(compoundInputsArray, "totalInput").toFixed(2)
+                  parseFloat(common.getTotals(compoundInputsArray, "totalInput") || 0).toFixed(2)
                 )}
               </td>
               <td></td>

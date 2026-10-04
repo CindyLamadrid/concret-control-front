@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
+import ModalHeader from "../commons/modalHeader";
 
 
 const AdminStage = ({
@@ -19,16 +20,7 @@ useEffect(() => {
 
   return (
     <Modal.Dialog>
-      <Modal.Header>
-        <div className="subtitle center">
-          <b>
-            {" "}
-            {adminStage.action === "edit"
-              ? "EDITAR ETAPA"
-              : "CREAR ETAPA"}{" "}
-          </b>
-        </div>
-      </Modal.Header>
+      <ModalHeader title={adminStage.action === "edit" ? "EDITAR ETAPA" : "CREAR ETAPA"} onClose={() => setAdminStage({ show: false, stage: "", action: "" })} />
       <Modal.Body>
         <div className="center mandatory">
           <div>{messageResultOperation}</div> <br />

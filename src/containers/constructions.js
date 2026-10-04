@@ -4,13 +4,16 @@ import { useNavigate, createSearchParams } from "react-router-dom";
 import { ConstructionContext } from "../context/constructionContext";
 import ConstructionTable from "../components/constructions/constructionTable";
 import AdminContruction from "../components/constructions/adminConstruction";
+import ReactSelect from "react-select";
 
 const Constructions = ({}) => {
   const navigate = useNavigate();
   const { setConstructionSelected, user, role, userConstructions, permissions, company } = useContext(ConstructionContext);
 
   const [constructionsArray, setConstructionsArray] = useState([]);
+  const [allConstructions, setAllConstructions] = useState([]);
   const [companiesArray, setCompaniesArray] = useState([]);
+  const [selectedCompany, setSelectedCompany] = useState(null);
   const [messageResultOperation, setMessageResultOperation] = useState("");
   const [adminConstruction, setAdminConstruction] = useState({
     show: false,
@@ -18,7 +21,12 @@ const Constructions = ({}) => {
     action: "",
   });
 
-  const getConstructions = () => {
+  const filterByCompany = (constructions, companyId) => {
+    if (!companyId) return constructions;
+    return constructions.filter((c) => parseInt(c.IdCompany || c.idCompany, 10) === parseInt(companyId, 10));
+  };
+
+  const getConstructions = (companyId) => {
     const token = localStorage.getItem("token");
     axios
       .get(`${process.env.REACT_APP_BUDGET_URL_API}/constructions`, {
@@ -26,14 +34,10 @@ const Constructions = ({}) => {
       })
       .then((result) => {
         if (result && result.data) {
-          // Filtrar obras según asignaciones (Admin ve todo de su empresa)
+          setAllConstructions(result.data);
           if (role && role.isAdmin) {
-            // Admin: filtra por su empresa
-            const idComp = company && company.idCompany;
-            const filtered = idComp
-              ? result.data.filter((c) => (c.IdCompany || c.idCompany) === idComp)
-              : result.data;
-            setConstructionsArray(filtered);
+            const filterCompId = companyId || (company && company.idCompany);
+            setConstructionsArray(filterByCompany(result.data, filterCompId));
           } else {
             const allowedIds = userConstructions.map((uc) => uc.IdConstruction || uc.idConstruction);
             const filtered = result.data.filter((c) => allowedIds.includes(c.idConstruction));
@@ -41,6 +45,7 @@ const Constructions = ({}) => {
           }
         } else {
           setConstructionsArray([]);
+          setAllConstructions([]);
         }
       })
       .catch((error) => {
@@ -49,14 +54,34 @@ const Constructions = ({}) => {
       });
   };
 
+  const onCompanyChange = (option) => {
+    setSelectedCompany(option);
+    if (option) {
+      setConstructionsArray(filterByCompany(allConstructions, option.value));
+    } else {
+      // Si limpia el filtro, muestra todos
+      setConstructionsArray(allConstructions);
+    }
+  };
+
   useEffect(() => {
     localStorage.setItem(
       "chapterValues",
       JSON.stringify({ chapterSelected: 0, subchapterSelected: 0 })
     );
     getConstructions();
-    getCompanies();
+    if (role && role.isAdmin) getCompanies();
   }, []);
+
+  // Cuando cargan las empresas, preseleccionar la del usuario
+  useEffect(() => {
+    if (companiesArray.length > 0 && company && company.idCompany && !selectedCompany) {
+      const found = companiesArray.find((c) => parseInt(c.IdCompany || c.idCompany, 10) === parseInt(company.idCompany, 10));
+      if (found) {
+        setSelectedCompany({ value: parseInt(found.IdCompany || found.idCompany, 10), label: found.Name || found.name });
+      }
+    }
+  }, [companiesArray]);
 
   const getCompanies = () => {
     const token = localStorage.getItem("token");
@@ -146,7 +171,47 @@ const Constructions = ({}) => {
   return (
     <div>
       <br/>
-      {canManage() && (
+      {/* Selector de empresa y botón agregar - solo para admins */}
+      {role && role.isAdmin && (
+        <div className="row mb-15" style={{ alignItems: 'center' }}>
+          <div className="col-1 right label">
+            <span>Empresa</span>
+          </div>
+          <div className="col-4">
+            <ReactSelect
+              className="react-select-container"
+              classNamePrefix="react-select"
+              options={companiesArray.map((c) => ({
+                value: parseInt(c.IdCompany || c.idCompany, 10),
+                label: `${c.Nit || c.nit} - ${c.Name || c.name}`,
+              }))}
+              value={selectedCompany}
+              onChange={onCompanyChange}
+              placeholder="Seleccione empresa..."
+              isClearable
+              menuPortalTarget={document.body}
+              styles={{
+                menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                input: (base) => ({ ...base, color: '#333' }),
+              }}
+            />
+          </div>
+          <div className="col-3">
+            {canManage() && (
+              <button
+                type="button"
+                className="primary"
+                onClick={() => onCreateProject()}
+              >
+                <i className="fas fa-plus" /> {"Agregar Projecto"}
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Botón para usuarios no admin */}
+      {(!role || !role.isAdmin) && canManage() && (
         <div>
           <button
             type="button"

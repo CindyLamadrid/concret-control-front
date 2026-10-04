@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
+import ModalHeader from "../commons/modalHeader";
 import ReactSelect from "react-select";
 import axios from "../../config/axiosConfig";
 
@@ -96,9 +97,7 @@ const AddOrderInput = ({ idOrder, idSupplier, type, stageSelected, onSave, onClo
 
   return (
     <Modal.Dialog size="xl">
-      <Modal.Header>
-        <div className="subtitle center"><b>AGREGAR INSUMOS A LA ORDEN</b></div>
-      </Modal.Header>
+      <ModalHeader title="AGREGAR INSUMOS A LA ORDEN" onClose={onClose} />
       <Modal.Body>
         <div className="container-xl-modals">
 

@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "../../config/axiosConfig";
 import Modal from "react-bootstrap/Modal";
+import ModalHeader from "../commons/modalHeader";
 import ReactSelect from "react-select";
 import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
-import ModalHeader from "react-bootstrap/esm/ModalHeader";
-import ModalBody from "react-bootstrap/esm/ModalBody";
 
 const handlers = require("../utils/handlers");
 
@@ -59,9 +58,7 @@ const AdminOrder = ({ adminOrder, messageResultOperation, onSaveOrder, onCloseAd
 
   return (
     <Modal.Dialog>
-      <Modal.Header>
-         <div className="subtitle center"><b>CREAR ORDEN DE PAGO</b></div>
-      </Modal.Header>
+      <ModalHeader title="CREAR ORDEN DE PAGO" onClose={onCloseAdminOrder} />
       <Modal.Body>
         <div className="container-xl-modals">
           {messageResultOperation && (

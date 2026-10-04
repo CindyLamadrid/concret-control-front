@@ -98,25 +98,6 @@ const OrderInputs = () => {
 
   const onSaveRow = async (index) => {
     const row = orderInputsArray[index];
-    const qty = parseFloat(row.quantity) || 0;
-    const val = parseFloat(row.unitValue) || 0;
-    const maxQty = parseFloat(row.budgetQuantity) || 0;
-    const maxVal = parseFloat(row.budgetUnitValue) || 0;
-
-    let errors = [];
-    if (maxQty > 0 && qty > maxQty) {
-      errors.push(`La cantidad (${qty}) sobrepasa la del contrato (${maxQty})`);
-    }
-    if (maxVal > 0 && val > maxVal) {
-      const fmtVal = val.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 });
-      const fmtMax = maxVal.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 });
-      errors.push(`El valor unitario (${fmtVal}) sobrepasa el del contrato (${fmtMax})`);
-    }
-
-    if (errors.length > 0) {
-      setValidationModal({ show: true, message: errors.join(". ") });
-      return;
-    }
     setValidationModal({ show: false, message: "" });
 
     try {
@@ -145,6 +126,9 @@ const OrderInputs = () => {
       };
       setOrderInputsArray([...arr]);
     } catch (error) {
+      if (error.response && error.response.status === 409) {
+        setValidationModal({ show: true, message: error.response.data.error || error.response.data.message || "El valor sobrepasa el presupuesto modificado" });
+      }
       console.error("Error saving order input:", error);
     }
   };

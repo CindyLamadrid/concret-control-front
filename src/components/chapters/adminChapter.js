@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
+import ModalHeader from "../commons/modalHeader";
 
 const handlers = require("../utils/handlers");
 
@@ -21,16 +22,7 @@ useEffect(() => {
 
   return (
     <Modal.Dialog>
-      <Modal.Header>
-        <div className="subtitle center">
-          <b>
-            {" "}
-            {adminChapter.action === "edit"
-              ? "EDITAR CAPITUILO"
-              : "CREAR CAPITUILO"}{" "}
-          </b>
-        </div>
-      </Modal.Header>
+      <ModalHeader title={adminChapter.action === "edit" ? "EDITAR CAPITULO" : "CREAR CAPITULO"} onClose={() => setAdminChapter({ show: false, chapter: "", action: "" })} />
       <Modal.Body>
         <div className="center mandatory">
           <div>{messageResultOperation}</div> <br />

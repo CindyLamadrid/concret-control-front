@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from "react-bootstrap/Modal";
 import ReactSelect from "react-select";
+import ModalHeader from "../commons/modalHeader";
 
 const NewUser = ({ setShowNewUser, onSaveUser, message }) => {
   const [name, setName] = useState("");
@@ -27,7 +28,6 @@ const NewUser = ({ setShowNewUser, onSaveUser, message }) => {
       .then((r) => {
         const rolesData = r.data || [];
         setRoles(rolesData);
-        // Default: Presupuestador
         const presupuestador = rolesData.find(
           (rol) => (rol.Name || rol.name || "").toLowerCase() === "presupuestador"
         );
@@ -40,8 +40,13 @@ const NewUser = ({ setShowNewUser, onSaveUser, message }) => {
       .catch(() => {});
   }, []);
 
+  // Password validation
+  const hasMinLength = password.length >= 8;
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+  const isPasswordValid = hasMinLength && hasUpperCase && hasSpecialChar;
   const passwordsMatch = password && confirmPassword && password === confirmPassword;
-  const canSave = name && userName && password && passwordsMatch && idCompany && idRole;
+  const canSave = name && userName && isPasswordValid && passwordsMatch && idCompany && idRole;
 
   const handleSave = () => {
     if (canSave) {
@@ -49,156 +54,179 @@ const NewUser = ({ setShowNewUser, onSaveUser, message }) => {
     }
   };
 
+  const selectStyles = {
+    menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+    input: (base) => ({ ...base, color: '#333' }),
+  };
+
   return (
     <Modal.Dialog>
-      <Modal.Header>
-        <div className="subtitle center">
-          <b>CREAR USUARIO</b>
-        </div>
-      </Modal.Header>
+      <ModalHeader title="CREAR USUARIO" onClose={() => setShowNewUser(false)} />
       <Modal.Body>
         <form autoComplete="off">
-        <div className="center mandatory">
-          <div>{message}</div>
-        </div>
-        <div className="row">
-          <div className="col-4 right label">
-            <span>Empresa</span>
-          </div>
-          <div className="col-8">
-            <ReactSelect
-              className="react-select-container w-100"
-              options={companies.map((c) => ({
-                value: String(c.IdCompany || c.idCompany),
-                label: `${c.Name || c.name} (${c.Nit || c.nit})`
-              }))}
-              value={companies.map((c) => ({
-                value: String(c.IdCompany || c.idCompany),
-                label: `${c.Name || c.name} (${c.Nit || c.nit})`
-              })).find((o) => o.value === String(idCompany)) || null}
-              onChange={(opt) => setIdCompany(opt ? opt.value : "")}
-              placeholder="-- Seleccionar empresa --"
-              isSearchable
-            />
-            <div className="mandatory left" hidden={idCompany}>
-              <i className="fas fa-exclamation-circle" />
-              &nbsp; Empresa Obligatoria
+          {message && (
+            <div className="center mandatory" style={{ marginBottom: '10px' }}>
+              <b>{message}</b>
+            </div>
+          )}
+
+          <div className="row" style={{ marginBottom: '15px' }}>
+            <div className="col-5 right label">
+              <span>Empresa</span>
+            </div>
+            <div className="col-7">
+              <ReactSelect
+                className="react-select-container w-100"
+                options={companies.map((c) => ({
+                  value: String(c.IdCompany || c.idCompany),
+                  label: `${c.Name || c.name} (${c.Nit || c.nit})`
+                }))}
+                value={companies.map((c) => ({
+                  value: String(c.IdCompany || c.idCompany),
+                  label: `${c.Name || c.name} (${c.Nit || c.nit})`
+                })).find((o) => o.value === String(idCompany)) || null}
+                onChange={(opt) => setIdCompany(opt ? opt.value : "")}
+                placeholder="-- Seleccionar empresa --"
+                isSearchable
+                menuPortalTarget={document.body}
+                styles={selectStyles}
+              />
+              {!idCompany && (
+                <div className="mandatory left">
+                  <i className="fas fa-exclamation-circle" /> Empresa Obligatoria
+                </div>
+              )}
             </div>
           </div>
-        </div>
-        <br />
-        <div className="row">
-          <div className="col-4 right label">
-            <span>Rol</span>
-          </div>
-          <div className="col-8">
-            <ReactSelect
-              className="react-select-container w-100"
-              options={roles.map((r) => ({
-                value: String(r.IdRole || r.idRole),
-                label: r.Name || r.name
-              }))}
-              value={roles.map((r) => ({
-                value: String(r.IdRole || r.idRole),
-                label: r.Name || r.name
-              })).find((o) => o.value === String(idRole)) || null}
-              onChange={(opt) => setIdRole(opt ? opt.value : "")}
-              placeholder="-- Seleccionar rol --"
-              isSearchable
-            />
-            <div className="mandatory left" hidden={idRole}>
-              <i className="fas fa-exclamation-circle" />
-              &nbsp; Rol Obligatorio
+
+          <div className="row" style={{ marginBottom: '15px' }}>
+            <div className="col-5 right label">
+              <span>Rol</span>
+            </div>
+            <div className="col-7">
+              <ReactSelect
+                className="react-select-container w-100"
+                options={roles.map((r) => ({
+                  value: String(r.IdRole || r.idRole),
+                  label: r.Name || r.name
+                }))}
+                value={roles.map((r) => ({
+                  value: String(r.IdRole || r.idRole),
+                  label: r.Name || r.name
+                })).find((o) => o.value === String(idRole)) || null}
+                onChange={(opt) => setIdRole(opt ? opt.value : "")}
+                placeholder="-- Seleccionar rol --"
+                isSearchable
+                menuPortalTarget={document.body}
+                styles={selectStyles}
+              />
             </div>
           </div>
-        </div>
-        <br />
-        <div className="row">
-          <div className="col-4 right label">
-            <span>Nombre Completo</span>
-          </div>
-          <div className="col-8">
-            <input
-              className="input w-100"
-              type="text"
-              autoComplete="off"
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-            />
-            <div className="mandatory left" hidden={name}>
-              <i className="fas fa-exclamation-circle" />
-              &nbsp; Nombre Obligatorio
+
+          <div className="row" style={{ marginBottom: '15px' }}>
+            <div className="col-5 right label">
+              <span>Nombre Completo</span>
+            </div>
+            <div className="col-7">
+              <input
+                className="input w-100"
+                type="text"
+                autoComplete="off"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              {!name && (
+                <div className="mandatory left">
+                  <i className="fas fa-exclamation-circle" /> Nombre Obligatorio
+                </div>
+              )}
             </div>
           </div>
-        </div>
-        <br />
-        <div className="row">
-          <div className="col-4 right label">
-            <span>Usuario</span>
-          </div>
-          <div className="col-8">
-            <input
-              className="input w-100"
-              type="text"
-              autoComplete="new-username"
-              value={userName}
-              onChange={(event) => setUserName(event.target.value)}
-            />
-            <div className="mandatory left" hidden={userName}>
-              <i className="fas fa-exclamation-circle" />
-              &nbsp; Usuario Obligatorio
+
+          <div className="row" style={{ marginBottom: '15px' }}>
+            <div className="col-5 right label">
+              <span>Usuario</span>
+            </div>
+            <div className="col-7">
+              <input
+                className="input w-100"
+                type="text"
+                autoComplete="new-username"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+              />
+              {!userName && (
+                <div className="mandatory left">
+                  <i className="fas fa-exclamation-circle" /> Usuario Obligatorio
+                </div>
+              )}
             </div>
           </div>
-        </div>
-        <br />
-        <div className="row">
-          <div className="col-4 right label">
-            <span>Contraseña</span>
-          </div>
-          <div className="col-8">
-            <input
-              className="input w-100"
-              type="password"
-              autoComplete="new-password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-            />
-            <div className="mandatory left" hidden={password}>
-              <i className="fas fa-exclamation-circle" />
-              &nbsp; Contraseña Obligatoria
+
+          <div className="row" style={{ marginBottom: '8px' }}>
+            <div className="col-5 right label">
+              <span>Contraseña</span>
+            </div>
+            <div className="col-7">
+              <input
+                className="input w-100"
+                type="password"
+                autoComplete="new-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
           </div>
-        </div>
-        <br />
-        <div className="row">
-          <div className="col-4 right label">
-            <span>Confirmar Contraseña</span>
-          </div>
-          <div className="col-8">
-            <input
-              className="input w-100"
-              type="password"
-              autoComplete="new-password"
-              value={confirmPassword}
-              onChange={(event) => setConfirmPassword(event.target.value)}
-            />
-            {confirmPassword && !passwordsMatch && (
-              <div className="mandatory left">
-                <i className="fas fa-exclamation-circle" />
-                &nbsp; Las contraseñas no coinciden
+
+          {/* Password requirements */}
+          <div className="row" style={{ marginBottom: '15px' }}>
+            <div className="col-5"></div>
+            <div className="col-7">
+              <div style={{ fontSize: '10px', color: '#666', lineHeight: '1.6' }}>
+                <div>
+                  <i className={`fas ${hasMinLength ? 'fa-check-circle' : 'fa-circle'}`} style={{ color: hasMinLength ? '#28a745' : '#ccc', marginRight: '5px' }} />
+                  Minimo 8 caracteres
+                </div>
+                <div>
+                  <i className={`fas ${hasUpperCase ? 'fa-check-circle' : 'fa-circle'}`} style={{ color: hasUpperCase ? '#28a745' : '#ccc', marginRight: '5px' }} />
+                  Al menos una letra mayuscula
+                </div>
+                <div>
+                  <i className={`fas ${hasSpecialChar ? 'fa-check-circle' : 'fa-circle'}`} style={{ color: hasSpecialChar ? '#28a745' : '#ccc', marginRight: '5px' }} />
+                  Al menos un caracter especial (!@#$%&*)
+                </div>
               </div>
-            )}
+            </div>
           </div>
-        </div>
+
+          <div className="row" style={{ marginBottom: '15px' }}>
+            <div className="col-5 right label">
+              <span>Confirmar Contraseña</span>
+            </div>
+            <div className="col-7">
+              <input
+                className="input w-100"
+                type="password"
+                autoComplete="new-password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+              {confirmPassword && !passwordsMatch && (
+                <div className="mandatory left">
+                  <i className="fas fa-exclamation-circle" /> Las contraseñas no coinciden
+                </div>
+              )}
+            </div>
+          </div>
         </form>
       </Modal.Body>
       <Modal.Footer>
-          <button className="secondary" type="button" onClick={() => setShowNewUser(false)}>
-            Cerrar
-          </button>
-          <button className="primary" type="button" disabled={!canSave} onClick={handleSave}>
-            Crear Usuario
-          </button>
+        <button className="secondary" type="button" onClick={() => setShowNewUser(false)}>
+          Cerrar
+        </button>
+        <button className="primary" type="button" disabled={!canSave} onClick={handleSave}>
+          Crear Usuario
+        </button>
       </Modal.Footer>
     </Modal.Dialog>
   );

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "../../config/axiosConfig";
 import Modal from "react-bootstrap/Modal";
+import ModalHeader from "../commons/modalHeader";
 import UnitSelect from "../commons/select";
 
 const handlers = require("../utils/handlers");
@@ -42,7 +43,7 @@ const AdminInput = ({
           const { data } = result;
           setUnitsArray(data);
           if(adminInput.action!=="edit")
-          setUnitSelected(parseInt(data[0].idUnit));
+          setUnitSelected(parseInt(data[0].IdUnit));
         } else {
           setUnitsArray([]);
         }
@@ -61,7 +62,7 @@ const AdminInput = ({
         if (data && data.length>0) {
           setCategories(data);
           if(adminInput.action!=="edit")
-          setCategorySelected(parseInt(data[0].idCategory));
+          setCategorySelected(parseInt(data[0].IdCategory));
         } else {
           setCategories([]);
         }
@@ -80,7 +81,7 @@ const AdminInput = ({
         if (data && data.length>0) {
           setinputTypesArray(data);
           if(adminInput.action!=="edit")
-           setInputTypeSelected(parseInt(data[0].idInputType));
+           setInputTypeSelected(parseInt(data[0].IdInputType));
         } else {
           setinputTypesArray([]);
         }
@@ -105,7 +106,7 @@ const AdminInput = ({
       {
          setName(adminInput.input.name)
          if (unistsArray && unistsArray.length>0)
-          setUnitSelected(adminInput.input.idUnit)
+          setUnitSelected(adminInput.input.idUnit || adminInput.input.IdUnit)
           if (inputTypesArray && inputTypesArray.length>0)
           setInputTypeSelected(adminInput.input.idInputType)
           if(categoriesArray && categoriesArray.length>0)
@@ -117,11 +118,7 @@ const AdminInput = ({
 
   return (
     <Modal.Dialog>
-      <Modal.Header>
-        <div className="subtitle center">
-          <b> {adminInput.action ==="edit" ? "EDITAR INSUMO": "CREAR INSUMO" } </b>
-        </div>
-      </Modal.Header>
+      <ModalHeader title={adminInput.action === "edit" ? "EDITAR INSUMO" : "CREAR INSUMO"} onClose={() => onCloseAdminInput()} />
       <Modal.Body>
         <div className="center mandatory">
           <div>{messageResultOperation}</div> <br/>
@@ -150,8 +147,9 @@ const AdminInput = ({
           </div>
           <div className="col-8 container-select">
             <UnitSelect
-              id="idUnit"
-              name="name"
+              id="IdUnit"
+              name="Name"
+              secondaryLabel="Description"
               selectedValue={unitSelected}
               setSelectedValue={onChangeUnit}
               array={unistsArray}
@@ -164,8 +162,8 @@ const AdminInput = ({
           </div>
           <div className="col-8 container-select">
             <UnitSelect
-              id="idInputType"
-              name="name"
+              id="IdInputType"
+              name="Name"
               selectedValue={inputTypeSelected}
               setSelectedValue={onChangeInputType}
               array={inputTypesArray}
@@ -178,8 +176,8 @@ const AdminInput = ({
           </div>
           <div className="col-8 container-select">
             <UnitSelect
-              id="idCategory"
-              name="name"
+              id="IdCategory"
+              name="Name"
               selectedValue={categorySelected}
               setSelectedValue={onChangeCategory}
               array={categoriesArray}

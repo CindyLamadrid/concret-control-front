@@ -5,7 +5,7 @@
   width: 100%;
   border-bottom: 2px solid $lightgray;
   height: $header-height;
-  min-width: 700px;
+  min-width: 900px;
   min-height: 90px;
   background-color: var(--color-header-bg, #1a2744);
   padding-bottom: 2px;
@@ -113,6 +113,21 @@
   position: absolute;
   right: 1%;
 
+  // Bootstrap pone position:static en .navbar-nav .dropdown-menu, lo forzamos a absolute
+  .dropdown-menu {
+    position: absolute !important;
+    z-index: 1050;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  // Submenus de segundo nivel (drop=end) deben abrirse completos a la derecha
+  .dropdown-menu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-left: 1px;
+  }
+
   @include respond-to(mobile) {
     position: relative;
     right: 0;
@@ -121,6 +136,11 @@
     overflow-y: auto;
     overflow-x: hidden;
   }
+}
+
+// Forzar position absolute en los dropdowns del navbar (Bootstrap los pone static)
+.navbar-nav .dropdown-menu {
+  position: absolute !important;
 }
 
 .no-margin {

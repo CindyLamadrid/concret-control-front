@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "../../config/axiosConfig";
 import Modal from "react-bootstrap/Modal";
+import ModalHeader from "../commons/modalHeader";
 import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
@@ -143,16 +144,7 @@ const AdminContract = ({
 
   return (
     <Modal.Dialog>
-      <Modal.Header>
-        <div className="subtitle center">
-          <b>
-            {" "}
-            {adminContract.action === "edit"
-              ? "EDITAR CONTRATO"
-              : "CREAR CONTRATO"}{" "}
-          </b>
-        </div>
-      </Modal.Header>
+      <ModalHeader title={adminContract.action === "edit" ? "EDITAR CONTRATO" : "CREAR CONTRATO"} onClose={() => onCloseAdminContract()} />
       <Modal.Body>
         <div className="container-xl-modals">
           {messageResultOperation && (

@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import axios from "axios";
 import Modal from "react-bootstrap/Modal";
 import { ConstructionContext } from "../context/constructionContext";
+import ModalHeader from "../components/commons/modalHeader";
 
 const Companies = () => {
   const { role } = useContext(ConstructionContext);
@@ -16,6 +17,19 @@ const Companies = () => {
 
   const token = localStorage.getItem("token");
   const headers = { Authorization: `Bearer ${token}` };
+
+  // ─── Helpers ───
+  const formatPhone = (value) => {
+    const digits = (value || "").replace(/\D/g, "");
+    if (digits.length === 10) return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
+    if (digits.length === 7) return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+    return value;
+  };
+
+  const isValidEmail = (email) => {
+    if (!email) return true;
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
 
   const searchCompanies = async () => {
     if (!searchText || searchText.trim().length < 2) {
@@ -93,13 +107,21 @@ const Companies = () => {
       setMessage("NIT y Nombre son obligatorios");
       return;
     }
+    if (form.email && !isValidEmail(form.email)) {
+      setMessage("El formato del correo no es válido");
+      return;
+    }
     try {
       const url = editCompany
         ? `${process.env.REACT_APP_SECURITY_URL_API}/update-company`
         : `${process.env.REACT_APP_SECURITY_URL_API}/create-company`;
 
       const body = {
-        ...form,
+        nit: form.nit,
+        name: form.name.toUpperCase(),
+        address: (form.address || "").toUpperCase(),
+        phone: (form.phone || "").replace(/\D/g, ""),
+        email: (form.email || "").toLowerCase(),
         idCompany: editCompany ? (editCompany.IdCompany || editCompany.idCompany) : undefined,
       };
 
@@ -161,11 +183,7 @@ const Companies = () => {
       {showAdmin && (
         <div className="modal show modal-inline">
           <Modal.Dialog>
-            <Modal.Header>
-              <div className="subtitle center">
-                <b>{editCompany ? "EDITAR EMPRESA" : "CREAR EMPRESA"}</b>
-              </div>
-            </Modal.Header>
+            <ModalHeader title={editCompany ? "EDITAR EMPRESA" : "CREAR EMPRESA"} onClose={() => setShowAdmin(false)} />
             <Modal.Body>
               {message && <div className="center mandatory"><b>{message}</b></div>}
               <br />
@@ -199,7 +217,8 @@ const Companies = () => {
                 <div className="col-4 right label"><span>Teléfono</span></div>
                 <div className="col-8">
                   <input className="input w-100" type="text" value={form.phone}
-                    onChange={(e) => setForm({ ...form, phone: e.target.value })} />
+                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                    onBlur={(e) => setForm({ ...form, phone: formatPhone(e.target.value) })} />
                 </div>
               </div>
               <br />
@@ -208,6 +227,9 @@ const Companies = () => {
                 <div className="col-8">
                   <input className="input w-100" type="text" value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })} />
+                  {form.email && !isValidEmail(form.email) && (
+                    <div className="mandatory left"><i className="fas fa-exclamation-circle" /> Formato de correo inválido</div>
+                  )}
                 </div>
               </div>
               <br />
@@ -271,7 +293,7 @@ const Companies = () => {
                 <td className={index % 2 === 0 ? "dark" : ""}>{c.Nit || c.nit}</td>
                 <td className={index % 2 === 0 ? "dark" : ""}>{c.Name || c.name}</td>
                 <td className={index % 2 === 0 ? "dark" : ""}>{c.Address || c.address || ""}</td>
-                <td className={index % 2 === 0 ? "dark" : ""}>{c.Phone || c.phone || ""}</td>
+                <td className={index % 2 === 0 ? "dark" : ""}>{formatPhone(c.Phone || c.phone || "")}</td>
                 <td className={index % 2 === 0 ? "dark" : ""}>{c.Email || c.email || ""}</td>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
                   <i className="fas fa-pen icon-view-detail" onClick={() => openEdit(index)} />

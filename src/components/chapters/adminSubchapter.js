@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
+import ModalHeader from "../commons/modalHeader";
 import axios from "../../config/axiosConfig";
 import ChapterSelect from "../commons/select";
 const handlers = require("../utils/handlers");
@@ -45,16 +46,7 @@ const AdminSubchapter = ({
 
   return (
     <Modal.Dialog>
-      <Modal.Header>
-        <div className="subtitle center">
-          <b>
-            {" "}
-            {adminSubchapter.action === "edit"
-              ? "EDITAR SUBCAPITUILO"
-              : "CREAR SUBCAPITUILO"}{" "}
-          </b>
-        </div>
-      </Modal.Header>
+      <ModalHeader title={adminSubchapter.action === "edit" ? "EDITAR SUBCAPITUILO" : "CREAR SUBCAPITUILO"} onClose={() => setAdminSubchapter({ show: false, chapter: "", action: "" })} />
       <Modal.Body>
         <div className="center mandatory">
           <div>{messageResultOperation}</div> <br />
@@ -76,6 +68,7 @@ const AdminSubchapter = ({
             </div>
           </div>
         </div>
+        <br />
         <div className="row ">
           <div className="col-4 right label">
             <span>Capitulo</span>

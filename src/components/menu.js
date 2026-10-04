@@ -152,6 +152,11 @@ const Menu = ({ setReportOption }) => {
                         Subcapitulos
                       </Dropdown.Item>
                     )}
+                    {isCostControl && stageSelected && stageSelected.idStage && (
+                      <Dropdown.Item className="submenu-option" onClick={() => navigate(`/control?option=constructionItems&user=${btoa(user)}&idStage=${stageSelected.idStage}`)}>
+                        Control de Costos
+                      </Dropdown.Item>
+                    )}
                     {hasPermission("suppliers") && isCostControl && (
                       <Dropdown.Item className="submenu-option" onClick={() => navigate(`/suppliers?user=${btoa(user)}`)}>
                         Proveedores

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "../../config/axiosConfig";
 import Modal from "react-bootstrap/Modal";
+import ModalHeader from "../commons/modalHeader";
 import UnitSelect from "../commons/select";
 
 
@@ -20,7 +21,7 @@ const AdminItem = ({ adminItem, messageResultOperation, setAdminItem, onSaveItem
         if (result && result.data) {
           const { data } = result;
           setUnitsArray(data);
-          if (adminItem.action !== "edit") setUnitSelected(data[0].idUnit);
+          if (adminItem.action !== "edit") setUnitSelected(data[0].IdUnit);
         } else {
           setUnitsArray([]);
         }
@@ -35,7 +36,7 @@ const AdminItem = ({ adminItem, messageResultOperation, setAdminItem, onSaveItem
     if (adminItem.action === "edit") {
       setName(adminItem.item.name);
       if (unistsArray && unistsArray.length > 0)
-        setUnitSelected(adminItem.item.idUnit);
+        setUnitSelected(adminItem.item.idUnit || adminItem.item.IdUnit);
     }
   }, [adminItem.action, unistsArray]);
 
@@ -45,11 +46,7 @@ const AdminItem = ({ adminItem, messageResultOperation, setAdminItem, onSaveItem
 
   return (
     <Modal.Dialog>
-      <Modal.Header>
-        <div className="subtitle center">
-         <b> {adminItem.action ==="edit" ? "EDITAR ITEM": "CREAR ITEM" } </b>
-        </div>
-      </Modal.Header>
+      <ModalHeader title={adminItem.action === "edit" ? "EDITAR ITEM" : "CREAR ITEM"} onClose={() => setAdminItem({ show: false, item: "", action: "" })} />
       <Modal.Body>
         <div className="center mandatory">
           <div>{messageResultOperation}</div> <br/>
@@ -78,8 +75,9 @@ const AdminItem = ({ adminItem, messageResultOperation, setAdminItem, onSaveItem
           </div>
           <div className="col-8">
             <UnitSelect
-              id="idUnit"
-              name="name"
+              id="IdUnit"
+              name="Name"
+              secondaryLabel="Description"
               selectedValue={unitSelected}
               setSelectedValue={onChangeUnit}
               array={unistsArray}
