@@ -71,19 +71,17 @@ const ContractInputsTable = ({
                  <td className={index % 2 === 0 ? "dark right" : "right"}>
                   <input
                     type="text"
-                    className={`${"input input-table right"} ${x.quantityChanged ? "pending-changes" : ""
-                      }`}
-                    value={x.quantityDone ? x.quantityDone.toString() : "0"}
-                  
+                    className="input input-table right"
+                    value={x.executedQuantity ? x.executedQuantity.toString() : "0"}
+                    disabled
                   />
                 </td>
                  <td className={index % 2 === 0 ? "dark right" : "right"}>
                   <input
                     type="text"
-                    className={`${"input input-table right"} ${x.quantityChanged ? "pending-changes" : ""
-                      }`}
-                    value={x.quantityAvailable ? x.quantityAvailable.toString() : "0"}
-                  
+                    className="input input-table right"
+                    value={x.availableQuantity !== undefined && x.availableQuantity !== null ? x.availableQuantity.toString() : "0"}
+                    disabled
                   />
                 </td>
                 <td className={index % 2 === 0 ? "dark right" : "right"}>

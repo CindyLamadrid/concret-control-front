@@ -123,11 +123,12 @@ const InputsContract = () => {
     let errors = [];
     
     if (isGL) {
-      // Para unidad GL: no validar cantidad, validar valor unitario contra unitValue * totalQuantity
-      if (budgetTotalValue > 0 && val > budgetTotalValue) {
-        const fmtVal = val.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 });
+      // Para unidad GL: no validar cantidad; validar que el TOTAL (qty * val) no sobrepase el presupuesto por invertir
+      const total = qty * val;
+      if (budgetTotalValue > 0 && total > budgetTotalValue) {
+        const fmtVal = total.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 });
         const fmtMax = budgetTotalValue.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 });
-        errors.push(`El valor unitario (${fmtVal}) sobrepasa el total del presupuesto (${fmtMax})`);
+        errors.push(`El valor total (${fmtVal}) sobrepasa el presupuesto por invertir (${fmtMax})`);
       }
     } else {
       // Para otras unidades: validar cantidad contra totalQuantity y valor contra unitValue

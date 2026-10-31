@@ -6,6 +6,8 @@ import { ConstructionContext } from "../context/constructionContext";
 import Back from "../components/commons/back";
 import OrderInputsTable from "../components/orders/orderInputsTable";
 import AddOrderInput from "../components/orders/addOrderInput";
+import OrderEntriesTable from "../components/orders/orderEntriesTable";
+import AddOrderEntries from "../components/orders/addOrderEntries";
 import ResumeSupplier from "../components/commons/resumeSupplier";
 import Notifications from "../components/commons/modal";
 import ImputationProperties from "../components/commons/imputationProperties";
@@ -21,6 +23,9 @@ const OrderInputs = () => {
   const idOrder = searchParams.get("idOrder");
   const idSupplier = searchParams.get("idSupplier");
   const type = searchParams.get("type");
+
+  // Suministros y materiales: los "insumos" de la orden son entradas de almacen
+  const isSupply = type === "M";
 
   const [orderInputsArray, setOrderInputsArray] = useState([]);
   const [addModal, setAddModal] = useState(false);
@@ -70,6 +75,24 @@ const OrderInputs = () => {
         setOrderInputsArray([]);
         console.error("Error fetching getOrderInputs:", error);
       });
+  };
+
+  // Suministros (type 'M'): entradas de almacen vinculadas a la orden
+  const getOrderEntries = () => {
+    axios
+      .get(`${process.env.REACT_APP_BUDGET_URL_API}/warehouse-order-entries`, {
+        params: { idOrder },
+      })
+      .then((result) => setOrderInputsArray(result?.data?.length > 0 ? result.data : []))
+      .catch((error) => {
+        setOrderInputsArray([]);
+        console.error("Error fetching getOrderEntries:", error);
+      });
+  };
+
+  const loadDetail = () => {
+    if (isSupply) getOrderEntries();
+    else getOrderInputs();
   };
 
   const onBack = () => {
@@ -209,11 +232,40 @@ const OrderInputs = () => {
     }
   };
 
+  // Suministros (type 'M'): vincular entradas seleccionadas a la orden
+  const onSaveEntries = async (selectedIds) => {
+    try {
+      await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/warehouse-link-entries`, {
+        idOrder,
+        idMovements: selectedIds.join(","),
+        user,
+      });
+      setAddModal(false);
+      getOrderEntries();
+    } catch (error) {
+      console.error("Error linking entries to order:", error);
+    }
+  };
+
+  // Suministros (type 'M'): quitar (desvincular) una entrada de la orden
+  const onRemoveEntry = async (entry) => {
+    try {
+      await axios.post(`${process.env.REACT_APP_BUDGET_URL_API}/warehouse-unlink-entry`, {
+        idMovement: entry.idMovement,
+        user,
+      });
+      getOrderEntries();
+    } catch (error) {
+      console.error("Error unlinking entry:", error);
+    }
+  };
+
   useEffect(() => {
     if (idOrder) {
-      getOrderInputs();
+      loadDetail();
       getOrderData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idOrder]);
 
   const getContractTypeName = () => {
@@ -247,6 +299,27 @@ const OrderInputs = () => {
         const qty = parseFloat(x.quantity) || 0;
         const price = parseFloat(x.unitValue) || 0;
         const valor = qty * price;
+
+        // En suministros (type 'M') las entradas no tienen IVA/retenciones ni imputacion
+        if (isSupply) {
+          return {
+            imputation: '',
+            imputationDesc: x.observations || '',
+            contractInfo: '',
+            name: x.inputName || '',
+            unit: x.unit || '',
+            quantity: qty,
+            unitValue: fmt(price),
+            valor: fmt(valor),
+            iva: fmt(0),
+            ivaPercent: 0,
+            reteFte: fmt(0),
+            reteIva: fmt(0),
+            reteIca: fmt(0),
+            base: fmt(valor),
+          };
+        }
+
         const iva = valor * (parseFloat(x.ivaPercent) || 0) / 100;
         const reteFte = valor * (parseFloat(x.reteFtePercent) || 0) / 100;
         const reteIva = valor * (parseFloat(x.reteIvaPercent) || 0) / 100;
@@ -337,7 +410,7 @@ const OrderInputs = () => {
           <Back onBack={onBack} />
           &nbsp;&nbsp;
           <button type="button" className="primary" onClick={() => setAddModal(true)}>
-            <i className="fas fa-plus" /> Agregar Insumo
+            <i className="fas fa-plus" /> {isSupply ? "Agregar Entrada" : "Agregar Insumo"}
           </button>
         </div>
         <div>
@@ -348,16 +421,35 @@ const OrderInputs = () => {
       </div>
 
       <br />
-      <OrderInputsTable
-        orderInputsArray={orderInputsArray}
-        onChangeField={onChangeField}
-        onSaveRow={onSaveRow}
-        onRefresh={onRefresh}
-        onRemoveInput={onRemoveInput}
-        onImputation={onImputation}
-      />
+      {isSupply ? (
+        <OrderEntriesTable
+          entriesArray={orderInputsArray}
+          onRemoveEntry={onRemoveEntry}
+        />
+      ) : (
+        <OrderInputsTable
+          orderInputsArray={orderInputsArray}
+          onChangeField={onChangeField}
+          onSaveRow={onSaveRow}
+          onRefresh={onRefresh}
+          onRemoveInput={onRemoveInput}
+          onImputation={onImputation}
+        />
+      )}
 
-      {addModal && (
+      {addModal && isSupply && (
+        <div className="modal show modal-xl modal-inline">
+          <AddOrderEntries
+            idOrder={idOrder}
+            idStage={stageSelected?.idStage}
+            idSupplier={idSupplier}
+            onSave={onSaveEntries}
+            onClose={() => setAddModal(false)}
+          />
+        </div>
+      )}
+
+      {addModal && !isSupply && (
         <div className="modal show modal-xl modal-inline">
           <AddOrderInput
             idOrder={idOrder}

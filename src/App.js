@@ -31,6 +31,7 @@ import InputsControl from "./containers/inputsControl"
 import Orders from "./containers/orders"
 import OrderInputs from "./containers/orderInputs"
 import Companies from "./containers/companies"
+import Warehouse from "./containers/warehouse"
 
 function RouteLogger() {
   // Componente de debug — se puede eliminar en producción
@@ -89,6 +90,7 @@ function App() {
                   <Route exact path="/orders" element={<div className="component"><Orders /></div>} /> 
                   <Route exact path="/order-inputs" element={<div className="component"><OrderInputs /></div>} />
                   <Route exact path="/companies" element={<div className="component"><Companies /></div>} />
+                  <Route exact path="/warehouse" element={<div className="component"><Warehouse /></div>} />
                 {/* <Route exact path="/reports" element={<Reports />} /> */}
                 <Route path="*" element={<Navigate to="/" replace />} />
                 

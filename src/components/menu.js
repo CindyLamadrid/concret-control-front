@@ -157,6 +157,19 @@ const Menu = ({ setReportOption }) => {
                         Control de Costos
                       </Dropdown.Item>
                     )}
+                    {isCostControl && stageSelected && stageSelected.idStage && (
+                      <DropdownButton title="Almacén" className="submenu-option submenu-main" key="warehouse" drop="end">
+                        <Dropdown.Item className="submenu-option" onClick={() => navigate(`/warehouse?user=${btoa(user)}&idStage=${stageSelected.idStage}&tab=entries`)}>
+                          Entradas
+                        </Dropdown.Item>
+                        <Dropdown.Item className="submenu-option" onClick={() => navigate(`/warehouse?user=${btoa(user)}&idStage=${stageSelected.idStage}&tab=exits`)}>
+                          Salidas
+                        </Dropdown.Item>
+                        <Dropdown.Item className="submenu-option" onClick={() => navigate(`/warehouse?user=${btoa(user)}&idStage=${stageSelected.idStage}&tab=stock`)}>
+                          Control de Inventario
+                        </Dropdown.Item>
+                      </DropdownButton>
+                    )}
                     {hasPermission("suppliers") && isCostControl && (
                       <Dropdown.Item className="submenu-option" onClick={() => navigate(`/suppliers?user=${btoa(user)}`)}>
                         Proveedores
@@ -170,9 +183,6 @@ const Menu = ({ setReportOption }) => {
                         </Dropdown.Item>
                         <Dropdown.Item className="submenu-option" onClick={() => navigate(`/contracts?user=${btoa(user)}&type=S${stageSelected ? `&idStage=${stageSelected.idStage}` : ""}`, { replace: true })}>
                           Servicios
-                        </Dropdown.Item>
-                        <Dropdown.Item className="submenu-option" onClick={() => navigate(`/contracts?user=${btoa(user)}&type=M${stageSelected ? `&idStage=${stageSelected.idStage}` : ""}`)}>
-                          Suministros de Materiales
                         </Dropdown.Item>
                         <Dropdown.Item className="submenu-option" onClick={() => navigate(`/contracts?user=${btoa(user)}&type=C${stageSelected ? `&idStage=${stageSelected.idStage}` : ""}`)}>
                           Construcción

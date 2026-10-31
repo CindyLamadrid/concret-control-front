@@ -31,10 +31,10 @@ const ContractTable = ({
                   {x.name}
                 </td>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
-                  {x.initialDate}
+                  {common.getDateFormat(x.initialDate)}
                 </td>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
-                  {x.finalDate}
+                  {common.getDateFormat(x.finalDate)}
                 </td>
                 <td className={index % 2 === 0 ? "dark center" : "center"}>
                         <input
